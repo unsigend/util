@@ -1,0 +1,8 @@
+# Ignore Mac system files
+.DS_Store
+# Ignore build directories
+build/
+# Ignore VS Code settings
+.vscode/
+# Ignore Python cache files
+__pycache__/

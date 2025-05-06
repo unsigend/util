@@ -22,13 +22,16 @@
 
 # Makefile for building and running test in util
 
+CUR_PATH        :=  $(CURDIR)
+CONFIG_PATH     :=  ./config
 BUILD_PATH		:= 	./build
 SCRIPT_PATH		:= 	./script
 INSTALL_PATH    :=  ./include
 MODULE_PATH		:= 	./module
+LIB_PATH		:= 	./lib
 
 # Include the sub-makefile script
-include $(SCRIPT_PATH)/config.mk
+include $(CONFIG_PATH)/config.mk
 
 # Automatically detect all modules in the module path
 ifndef $(MODULES)
@@ -53,7 +56,7 @@ GCC_FLAGS		+= 	    -std=c11
 GCC_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
 
 GCC_DEPS_FLAGS	:=
-GCC_DEPS_FLAGS	+= 	    -MMD -MF -MP
+GCC_DEPS_FLAGS	+= 	    -MMD -MP -MF
 
 # Flags for Archive
 AR_FLAGS		:=
@@ -65,15 +68,70 @@ CXX_FLAGS		:=
 CXX_FLAGS		+= 	    -std=c++17
 CXX_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
 
+# Cancel Implicit rules
+%.o : %.c
+%.o: %.cpp
+%.o: %.s
+%: %.o
+%.out: %.o
 
 # Variables for each module
 
+# Variable $(module)_SRC : Module source files
+$(foreach module, $(MODULES),$(eval $(module)_SRC := $(wildcard $(MODULE_PATH)/$(module)/src/*.c)))
+# Variable $(module)_OBJ : Module object files
+$(foreach module, $(MODULES),$(eval $(module)_OBJ := $(patsubst $(MODULE_PATH)/$(module)/src/%.c, \
+	$(BUILD_PATH)/$(module)/obj/%.o, $($(module)_SRC))))
+# Variable $(module)_INC : Module include files
+$(foreach module, $(MODULES),$(eval $(module)_INC := $(wildcard $(MODULE_PATH)/$(module)/include)))
+# Variable $(module)_DEP : Module depedency files
+$(foreach module, $(MODULES),$(eval $(module)_DEP := $(wildcard $(BUILD_PATH)/$(module)/dep/*.d)))
+# Variable ALL_OBJ : All object files
+ALL_OBJ			:= $(foreach module, $(MODULES), $($(module)_OBJ))
+
+# Automatically generate targets for each module
+
+# generate rules for directory check 
+# $(module)_check_dir:
+$(foreach module, $(MODULES), \
+$(eval \
+$(module)_check_dir:;\
+	$(shell mkdir -p $(BUILD_PATH)/$(module)/obj) \
+	$(shell mkdir -p $(BUILD_PATH)/$(module)/dep) \
+	@echo "Start building module : $(module)"; \
+))
+
+# generate rule for module
+# $(module): $(module)_OBJ
+$(foreach module, $(MODULES), \
+$(eval \
+$(module): $(module)_check_dir $($(module)_OBJ); \
+	@echo "Build Module : $(module)\n"; \
+))
+
+# generate rules for build .o files
+# $(module)_OBJ: $(module)_check_dir $($(module)_SRC)
+$(foreach module, $(MODULES), \
+$(eval \
+$($(module)_OBJ): $($(module)_SRC); \
+	@$(GCC) $(GCC_FLAGS) $(GCC_DEPS_FLAGS)  \
+	$$(addprefix $(BUILD_PATH)/$(module)/dep/, $$(patsubst %.o, %.d,$$(notdir $$@))) \
+	-I $($(module)_INC) -c $$< -o $$@; \
+	echo "  + CC\t$$<" \
+))
+
+# generate include the dependency files for each module
+# -include $($(module)_DEP)
+$(foreach module, $(MODULES), \
+$(eval \
+-include $($(module)_DEP) \
+))
 
 # Targets will defined here #
 
 # Default Goal will be help
 .DEFAULT_GOAL	:= 	help
-.PHONY:				all clean help always list
+.PHONY:				all clean help always list info lib
 
 # help target
 help:
@@ -84,18 +142,41 @@ help:
 	@echo "\tmake clean\tclean builds"
 	@echo "\tmake list\tlist all modules"
 	@echo "\tmake help\tshow this help message"
-	
-# all target
-all:
+	@echo ""
+	@echo "You can change the configuration in config/config.mk"
+# info target
+info: 
+	@echo "Building util library"
+	@echo "Selected Module : $(shell echo $(MODULES) | wc -w | xargs)"
+	@echo "Building Method : $(LIB_METHOD)\n"
 
+# all target
+all: info $(MODULES) lib
+	
 # clean target
 clean:
 	@rm -rf $(BUILD_PATH)
+	@rm -rf $(LIB_PATH)
 
 # always target
 always:
 	@:
 
+# lib target
+lib: $(ALL_OBJ)
+	@mkdir -p $(LIB_PATH)
+ifeq ($(LIB_METHOD), static)
+	@$(AR) $(AR_FLAGS) $(LIB_PATH)/lib$(LIB_NAME).a $^
+	@echo "  + AR\tlib$(LIB_NAME).a"
+	@echo "Building $(LIB_METHOD) library : $(LIB_PATH)/lib$(LIB_NAME).a"
+else ifeq ($(LIB_METHOD), shared)
+	@$(LD) -shared -o $(LIB_PATH)/lib$(LIB_NAME).so $^
+	@echo "+ LD\tlib$(LIB_NAME).so"
+	@echo "Building $(LIB_METHOD) library : $(LIB_PATH)/lib$(LIB_NAME).so"
+else
+	@echo "Error: Unknown library method: $(LIB_METHOD)"
+endif
+	
 # list target
 list:
 	@echo "Module List : "

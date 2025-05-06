@@ -20,24 +20,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# This file will define some common functions and variables for the makefile
-# It will be included in the main makefile
+# Configuration for makefile
 
-# Check and create a directory
-# Usage: check_dir <dir>
-define check_dir
-	@mkdir -p $(1)
-endef
+# Configure for verbose mode
+VERBOSE 	:= 		0
 
-# Execute a command with hint message
-# Usage: exec_cmd <command>
-ifeq ($(VERBOSE), 1)
-define exec_cmd
-	$(1)
-endef
-else
-define exec_cmd
-	@$(1)
-	@echo "$(2)"
-endef
-endif
+# Configure for debug mode
+DEBUG 		:= 		0
+
+# Configure for Modules (default : all)
+# MODULES		:= 		
+
+# Configure for library name
+LIB_NAME	:= 		util
+
+# Configure for library build method
+# LIB_METHOD	:= 		static
+LIB_METHOD	:= 		shared
