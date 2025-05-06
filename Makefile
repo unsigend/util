@@ -22,6 +22,15 @@
 
 # Makefile for building and running test in util
 
+# The project is structured by modules
+# Module Hierarchy:
+# module:
+# ├── src/
+# ├── include/
+# ├── test/
+#      └── Makefile
+
+# Declare the path variables
 CUR_PATH        :=  $(CURDIR)
 CONFIG_PATH     :=  ./config
 BUILD_PATH		:= 	./build
@@ -55,6 +64,13 @@ GCC_FLAGS		:=
 GCC_FLAGS		+= 	    -std=c11
 GCC_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
 
+ifeq ($(DEBUG), 1)
+GCC_FLAGS		+= 	    -g
+GCC_FLAGS		+= 	    -O0
+else
+GCC_FLAGS		+= 	    -O2
+endif
+
 GCC_DEPS_FLAGS	:=
 GCC_DEPS_FLAGS	+= 	    -MMD -MP -MF
 
@@ -68,7 +84,7 @@ CXX_FLAGS		:=
 CXX_FLAGS		+= 	    -std=c++17
 CXX_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
 
-# Cancel Implicit rules
+# Cancel implicit rules
 %.o : %.c
 %.o: %.cpp
 %.o: %.s
@@ -161,6 +177,11 @@ clean:
 # always target
 always:
 	@:
+
+# empty module check
+ifeq ($(MODULES),)
+$(error "Error: No module selected.")
+endif
 
 # lib target
 lib: $(ALL_OBJ)

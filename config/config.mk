@@ -25,9 +25,6 @@
 # The Makefile of this project is designed to be simple and easy to include more modules.
 # Configuration for makefile
 
-# Configure for verbose mode
-VERBOSE 	:= 		0
-
 # Configure for debug mode
 DEBUG 		:= 		0
 
