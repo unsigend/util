@@ -143,21 +143,40 @@ $(eval \
 -include $($(module)_DEP) \
 ))
 
+# generate rules test-module for each module
+# test-$(module): 
+$(foreach module, $(MODULES), \
+$(eval \
+test-$(module):; \
+	@$(MAKE) -C $(MODULE_PATH)/$(module)/test \
+))
+
+# generate rules clean-module for each module
+# clean-$(module):
+$(foreach module, $(MODULES), \
+$(eval \
+clean-$(module):; \
+	@$(MAKE) -C $(MODULE_PATH)/$(module)/test clean \
+))
+
 # Targets will defined here #
 
 # Default Goal will be help
 .DEFAULT_GOAL	:= 	help
-.PHONY:				all clean help always list info lib
+.PHONY:				all clean help always list info lib clean-all
 
 # help target
 help:
 	@echo "Makefile for building the util library"
 	@echo "Copyright (c) 2025 QIU YIXIANG"
 	@echo "USAGE:"
-	@echo "\tmake all\tbuild all modules"
-	@echo "\tmake clean\tclean builds"
-	@echo "\tmake list\tlist all modules"
-	@echo "\tmake help\tshow this help message"
+	@echo "\tmake all\t\tbuild all modules"
+	@echo "\tmake clean\t\tclean builds"
+	@echo "\tmake list\t\tlist all modules"
+	@echo "\tmake help\t\tshow this help message"
+	@echo "\tmake test-<module>\tbuild test for <module>"
+	@echo "\tmake clean-<module>\tclean test for <module>"
+	@echo "\tmake clean-all\t\tcompletely clean all builds"
 	@echo ""
 	@echo "You can change the configuration in config/config.mk"
 # info target
@@ -182,6 +201,13 @@ always:
 ifeq ($(MODULES),)
 $(error "Error: No module selected.")
 endif
+
+# clean-all target
+clean-all:
+	@$(MAKE) clean
+	@for module in $(MODULES); do \
+		$(MAKE) -C $(MODULE_PATH)/$$module/test clean; \
+	done
 
 # lib target
 lib: $(ALL_OBJ)
