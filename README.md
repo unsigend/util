@@ -17,7 +17,6 @@ You can configure the modules you need in the config/config.mk file. By default,
 # Modules
 The util library includes several modules that can be selected based on your requirements. Below is an overview of the available modules:
 
-- [utest](#): A C Unit Test Framework.
 - [argparse](#): A command-line argument parsing library.
 
 
