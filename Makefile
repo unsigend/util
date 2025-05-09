@@ -79,7 +79,7 @@ AR_FLAGS		:=
 AR_FLAGS		+= 	    -rcs
 
 # Flags for CXX flags
-# Compitable with C++ program
+# Compatible with C++ program
 CXX_FLAGS		:=
 CXX_FLAGS		+= 	    -std=c++17
 CXX_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
@@ -100,7 +100,7 @@ $(foreach module, $(MODULES),$(eval $(module)_OBJ := $(patsubst $(MODULE_PATH)/$
 	$(BUILD_PATH)/$(module)/obj/%.o, $($(module)_SRC))))
 # Variable $(module)_INC : Module include files
 $(foreach module, $(MODULES),$(eval $(module)_INC := $(wildcard $(MODULE_PATH)/$(module)/include)))
-# Variable $(module)_DEP : Module depedency files
+# Variable $(module)_DEP : Module dependency files
 $(foreach module, $(MODULES),$(eval $(module)_DEP := $(wildcard $(BUILD_PATH)/$(module)/dep/*.d)))
 # Variable ALL_OBJ : All object files
 ALL_OBJ			:= $(foreach module, $(MODULES), $($(module)_OBJ))

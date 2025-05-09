@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 # util is a library which extends many features in C library.
-# It is a collection of utility modules can be easily used and embeded in C programs.
+# It is a collection of utility modules can be easily used and embedded in C programs.
 # The Makefile of this project is designed to be simple and easy to include more modules.
 # Configuration for makefile
 
