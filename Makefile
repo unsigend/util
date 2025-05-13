@@ -241,7 +241,6 @@ list:
 install:
 	@mkdir -p $(INSTALL_PATH)
 	@for module in $(MODULES); do \
-		mkdir -p $(INSTALL_PATH)/$$module; \
-		cp -r $(MODULE_PATH)/$$module/include/* $(INSTALL_PATH)/$$module/; \
+		cp -r $(MODULE_PATH)/$$module/include/* $(INSTALL_PATH)/; \
 	done
 	@echo "Install all headers to $(INSTALL_PATH)"
