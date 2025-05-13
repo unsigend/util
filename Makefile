@@ -38,6 +38,7 @@ SCRIPT_PATH		:= 	./script
 INSTALL_PATH    :=  ./include
 MODULE_PATH		:= 	./module
 LIB_PATH		:= 	./lib
+INSTALL_PATH    :=  ./include
 
 # Include the sub-makefile script
 include $(CONFIG_PATH)/config.mk
@@ -163,7 +164,7 @@ clean-$(module):; \
 
 # Default Goal will be help
 .DEFAULT_GOAL	:= 	help
-.PHONY:				all clean help always list info lib clean-all
+.PHONY:				all clean help always list info lib clean-all install
 
 # help target
 help:
@@ -177,30 +178,34 @@ help:
 	@echo "\tmake test-<module>\tbuild test for <module>"
 	@echo "\tmake clean-<module>\tclean test for <module>"
 	@echo "\tmake clean-all\t\tcompletely clean all builds"
+	@echo "\tmake install\tinstall all headers to $(INSTALL_PATH)"
 	@echo ""
 	@echo "You can change the configuration in config/config.mk"
+
 # info target
 info: 
 	@echo "Building util library"
 	@echo "Selected Module : $(shell echo $(MODULES) | wc -w | xargs)"
 	@echo "Building Method : $(LIB_METHOD)\n"
 
+
 # all target
+ifeq ($(MODULES),)
+all:
+	@echo "No module selected, please select a module in config/config.mk"
+else
 all: info $(MODULES) lib
+endif
 	
 # clean target
 clean:
 	@rm -rf $(BUILD_PATH)
 	@rm -rf $(LIB_PATH)
+	@rm -rf $(INSTALL_PATH)
 
 # always target
 always:
 	@:
-
-# empty module check
-ifeq ($(MODULES),)
-$(error "Error: No module selected.")
-endif
 
 # clean-all target
 clean-all:
@@ -232,3 +237,11 @@ list:
 	done
 	@echo "Total: $(shell echo $(MODULES) | wc -w | xargs) modules"
 	
+# install target
+install:
+	@mkdir -p $(INSTALL_PATH)
+	@for module in $(MODULES); do \
+		mkdir -p $(INSTALL_PATH)/$$module; \
+		cp -r $(MODULE_PATH)/$$module/include/* $(INSTALL_PATH)/$$module/; \
+	done
+	@echo "Install all headers to $(INSTALL_PATH)"
