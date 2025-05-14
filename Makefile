@@ -178,7 +178,7 @@ help:
 	@echo "\tmake test-<module>\tbuild test for <module>"
 	@echo "\tmake clean-<module>\tclean test for <module>"
 	@echo "\tmake clean-all\t\tcompletely clean all builds"
-	@echo "\tmake install\tinstall all headers to $(INSTALL_PATH)"
+	@echo "\tmake install\t\tinstall all headers to $(INSTALL_PATH)"
 	@echo ""
 	@echo "You can change the configuration in config/config.mk"
 

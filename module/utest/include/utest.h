@@ -32,110 +32,133 @@
  * through the UTEST_SET_FLAGS macro.
  */
 
-/**
- * @brief the none flag
- */
+
 #define UTEST_FLAG_NONE
-/**
- * @brief the default flag
- */
-#define UTEST_FLAG_DEFAULT
-/**
- * @brief the flag to show the test case message
- */
 #define UTEST_FLAG_SHOW_CASE
-/**
- * @brief the flag to show the test suite message
- */
 #define UTEST_FLAG_SHOW_SUITE
+#define UTEST_FLAG_STOP_ON_FAILURE
+#define UTEST_FLAG_CONTINUE_ON_FAILURE
+#define UTEST_FLAG_DEFAULT
 
-/**
- * @brief declare a test case
- * @param TEST_CASE_NAME The name of the test case
- */
-#define UTEST_TEST_CASE(TEST_CASE_NAME)
-/**
- * @brief run a test case
- * @param TEST_CASE_NAME The name of the test case
- */
-#define UTEST_RUN_TEST_CASE(TEST_CASE_NAME)
-
-
-/**
- * @brief declare a test suite
- * @param TEST_SUITE_NAME The name of the test suite
- */
-#define UTEST_TEST_SUITE(TEST_SUITE_NAME)
-/**
- * @brief run a test suite
- * @param TEST_SUITE_NAME The name of the test suite
- */
-#define UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)
-
-
-/**
- * @brief set the flags for the utest library
- * @param UTEST_FLAG The flag to set
- */
-#define UTEST_SET_FLAGS(UTEST_FLAG)
-
-
-/**
- * @brief expect something to be equal
- * @param EXPECTED The expected value
- * @param ACTUAL The actual value
- */
-#define UTEST_EXPECT_EQUAL(EXPECTED, ACTUAL)
-/**
- * @brief expect something to not be equal
- * @param EXPECTED The expected value
- * @param ACTUAL The actual value
- */
-#define UTEST_EXPECT_NOT_EQUAL(EXPECTED, ACTUAL)
-/**
- * @brief expect something to be true
- * @param EXPRESSION The expression to evaluate
- */
-#define UTEST_EXPECT_TRUE(EXPRESSION)
-/**
- * @brief expect something to be false
- * @param EXPRESSION The expression to evaluate
- */
-#define UTEST_EXPECT_FALSE(EXPRESSION)
-/**
- * @brief expect the pointer to be null
- * @param POINTER The pointer to evaluate
- */
-#define UTEST_EXPECT_NULL(POINTER)
-/**
- * @brief expect the pointer to not be null
- * @param POINTER The pointer to evaluate
- */
-#define UTEST_EXPECT_NOT_NULL(POINTER)
-/**
- * @brief expect something to be greater than
- * @param EXPECTED The expected value
- * @param ACTUAL The actual value
- */
-#define UTEST_EXPECT_GREATER(EXPECTED, ACTUAL)
-/**
- * @brief expect something to be less than
- * @param EXPECTED The expected value
- * @param ACTUAL The actual value
- */
-#define UTEST_EXPECT_LESS(EXPECTED, ACTUAL)
-/**
- * @brief expect something to be greater than or equal to
- * @param EXPECTED The expected value
- * @param ACTUAL The actual value
- */
-#define UTEST_EXPECT_GREATER_EQUAL(EXPECTED, ACTUAL)
-/**
- * @brief expect something to be less than or equal to
- * @param EXPECTED The expected value
- * @param ACTUAL The actual value
- */
-#define UTEST_EXPECT_LESS_EQUAL(EXPECTED, ACTUAL)
 
 #include <utest/utest_internals.h>
+
+/* core macros */
+#define UTEST_TEST_CASE(TEST_CASE_NAME)
+#define UTEST_RUN_TEST_CASE(TEST_CASE_NAME)
+#define UTEST_TEST_SUITE(TEST_SUITE_NAME)
+#define UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)
+#define UTEST_SET_FLAGS(UTEST_FLAG)
+
+/* boolean expression */
+#define EXPECT_TRUE(EXPRESSION)
+#define EXPECT_FALSE(EXPRESSION)
+
+
+/* integer equal */
+#define EXPECT_EQUAL_INT(EXPECTED, ACTUAL)
+#define EXPECT_EQUAL_INT8(EXPECTED, ACTUAL)
+#define EXPECT_EQUAL_INT16(EXPECTED, ACTUAL)
+#define EXPECT_EQUAL_INT32(EXPECTED, ACTUAL)
+#define EXPECT_EQUAL_INT64(EXPECTED, ACTUAL)
+/* integer not equal */
+#define EXPECT_NOT_EQUAL_INT(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_INT8(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_INT16(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_INT32(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_INT64(EXPECTED, ACTUAL)
+/* integer greater than */
+#define EXPECT_GREATER_INT(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_INT8(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_INT16(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_INT32(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_INT64(EXPECTED, ACTUAL)
+/* integer greater than or equal to */
+#define EXPECT_GREATER_EQUAL_INT(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_INT8(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_INT16(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_INT32(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_INT64(EXPECTED, ACTUAL)
+/* integer less than */
+#define EXPECT_LESS_INT(EXPECTED, ACTUAL)
+#define EXPECT_LESS_INT8(EXPECTED, ACTUAL)
+#define EXPECT_LESS_INT16(EXPECTED, ACTUAL)
+#define EXPECT_LESS_INT32(EXPECTED, ACTUAL)
+#define EXPECT_LESS_INT64(EXPECTED, ACTUAL)
+/* integer less than or equal to */
+#define EXPECT_LESS_EQUAL_INT(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_INT8(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_INT16(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_INT32(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_INT64(EXPECTED, ACTUAL)
+
+
+
+/* unsigned integer equal */
+#define EXPECT_EQUAL_UINT(EXPECTED, ACTUAL)
+#define EXPECT_EQUAL_UINT8(EXPECTED, ACTUAL)
+#define EXPECT_EQUAL_UINT16(EXPECTED, ACTUAL)
+#define EXPECT_EQUAL_UINT32(EXPECTED, ACTUAL)
+#define EXPECT_EQUAL_UINT64(EXPECTED, ACTUAL)
+/* unsigned integer not equal */
+#define EXPECT_NOT_EQUAL_UINT(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_UINT8(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_UINT16(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_UINT32(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_UINT64(EXPECTED, ACTUAL)
+/* unsigned integer greater than */
+#define EXPECT_GREATER_UINT(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_UINT8(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_UINT16(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_UINT32(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_UINT64(EXPECTED, ACTUAL)
+/* unsigned integer greater than or equal to */
+#define EXPECT_GREATER_EQUAL_UINT(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_UINT8(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_UINT16(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_UINT32(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_UINT64(EXPECTED, ACTUAL)
+/* unsigned integer less than */
+#define EXPECT_LESS_UINT(EXPECTED, ACTUAL)
+#define EXPECT_LESS_UINT8(EXPECTED, ACTUAL)
+#define EXPECT_LESS_UINT16(EXPECTED, ACTUAL)
+#define EXPECT_LESS_UINT32(EXPECTED, ACTUAL)
+#define EXPECT_LESS_UINT64(EXPECTED, ACTUAL)
+/* unsigned integer less than or equal to */
+#define EXPECT_LESS_EQUAL_UINT(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_UINT8(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_UINT16(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_UINT32(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_UINT64(EXPECTED, ACTUAL)
+
+
+/* float assertion */
+#define EXPECT_EQUAL_FLOAT(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_FLOAT(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_FLOAT(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_FLOAT(EXPECTED, ACTUAL)
+#define EXPECT_LESS_FLOAT(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_FLOAT(EXPECTED, ACTUAL)
+
+/* double assertion */
+#define EXPECT_EQUAL_DOUBLE(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_DOUBLE(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_DOUBLE(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_DOUBLE(EXPECTED, ACTUAL)
+#define EXPECT_LESS_DOUBLE(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_DOUBLE(EXPECTED, ACTUAL)
+
+/* string assertion */
+#define EXPECT_EQUAL_STRING(EXPECTED, ACTUAL)
+#define EXPECT_NOT_EQUAL_STRING(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_STRING(EXPECTED, ACTUAL)
+#define EXPECT_GREATER_EQUAL_STRING(EXPECTED, ACTUAL)
+#define EXPECT_LESS_STRING(EXPECTED, ACTUAL)
+#define EXPECT_LESS_EQUAL_STRING(EXPECTED, ACTUAL)
+
+/* pointer assertion */
+#define UTEST_EXPECT_NULL(POINTER)
+#define UTEST_EXPECT_NOT_NULL(POINTER)
+
+
 #endif

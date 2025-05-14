@@ -26,7 +26,7 @@
 
 #include <stdint.h>
 
-typedef uint32_t        UTEST_BOLEAN_TYPE;
+typedef uint32_t        UTEST_BOOLEAN_TYPE;
 typedef uint32_t        UTEST_FLAG_TYPE;
 typedef uint64_t        UTEST_COUNTER_TYPE;
 typedef const char *    UTEST_STRING_TYPE;
@@ -36,15 +36,17 @@ typedef enum{
     UTEST_RESULT_FAILURE,
 } UtestResultType;
 
+
 typedef struct{
-    UTEST_COUNTER_TYPE TestPassed;
-    UTEST_COUNTER_TYPE TestFailed;
-    UTEST_COUNTER_TYPE TestTotal;
-}UtestGlobalStatsType;
+    UTEST_COUNTER_TYPE  TestPassed;
+    UTEST_COUNTER_TYPE  TestFailed;
+    UTEST_COUNTER_TYPE  TestTotal;
+    UTEST_FLAG_TYPE     TestFlag;
+}UtestGlobalStatusType;
 
 typedef struct{
     UTEST_STRING_TYPE TestCaseName;
-
+    UtestResultType   TestCaseStatus;
 }UtestTestCaseType;
 
 #endif
