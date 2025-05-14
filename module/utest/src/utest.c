@@ -41,46 +41,106 @@
 #define _ASCII_COLOR_BOLD       "\033[1m"
 
 UtestGlobalStatusType _UtestGlobalStatus;
+UtestTestCaseType _CurrentTestCaseStatus;
 
-void UtestInitStatus(UTEST_FLAG_TYPE flag){
+static UTEST_STRING_TYPE _UtestTestCasePrefix = " |- ";
+
+static void UtestInitStatus(){
+    // Initialize the global status
     _UtestGlobalStatus.TestPassed = 0;
     _UtestGlobalStatus.TestFailed = 0;
     _UtestGlobalStatus.TestTotal = 0;
-    _UtestGlobalStatus.TestFlag = flag;
+    _UtestGlobalStatus.TestFlag = UTEST_FLAG_DEFAULT;
+    _UtestGlobalStatus.TestHasFailed = false;
+    
+    if (_UtestGlobalStatus.TestFlag & UTEST_FLAG_SHOW_SUITE) {
+        _UtestGlobalStatus.TestCasePrefix = _UtestTestCasePrefix;
+    }else{
+        _UtestGlobalStatus.TestCasePrefix = NULL;
+    }
+
+    // Initialize the current test case status
+    _CurrentTestCaseStatus.TestCaseName = NULL;
+    _CurrentTestCaseStatus.TestCaseStatus = UTEST_RESULT_SUCCESS;
 }
-void UtestResetStatus(void){
-    _UtestGlobalStatus.TestPassed = 0;
-    _UtestGlobalStatus.TestFailed = 0;
-    _UtestGlobalStatus.TestTotal = 0;
-}
-void UtestCaseMessage(UtestResultType result, UTEST_STRING_TYPE case_name){
+
+static void UtestCaseMessage(UtestResultType result, UTEST_STRING_TYPE case_name){
     if (_UtestGlobalStatus.TestFlag & UTEST_FLAG_SHOW_CASE) {
-        if (_UtestGlobalStatus.TestFlag & UTEST_FLAG_SHOW_SUITE){
-            fprintf(stdout, " |- ");
+        if (_UtestGlobalStatus.TestCasePrefix != NULL) {
+            fprintf(stdout, "%s", _UtestGlobalStatus.TestCasePrefix);
         }
         if (result == UTEST_RESULT_FAILURE){
-            fprintf(stdout, "[" _ASCII_COLOR_RED "FAILED" _ASCII_COLOR_RESET "] ");
+            fprintf(stdout, "[" _ASCII_COLOR_RED "FAILED " _ASCII_COLOR_RESET "] ");
         }else{
-            fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED" _ASCII_COLOR_RESET "] ");
+            fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED " _ASCII_COLOR_RESET "] ");
         }
         fprintf(stdout, "TEST CASE: %s\n", case_name);
     };
 }
 
-void UtestSuiteMessage(UtestResultType result, UTEST_STRING_TYPE suite_name){
+static void UtestSuiteMessage(UtestResultType result, UTEST_STRING_TYPE suite_name){
     if (_UtestGlobalStatus.TestFlag & UTEST_FLAG_SHOW_SUITE) {
         if (result == UTEST_RESULT_FAILURE){
-            fprintf(stdout, "[" _ASCII_COLOR_RED "FAILED" _ASCII_COLOR_RESET "] ");
+            fprintf(stdout, "[" _ASCII_COLOR_RED "FAILED " _ASCII_COLOR_RESET "] ");
+        }else if (result == UTEST_RESULT_RUNNING){
+            fprintf(stdout, "[" _ASCII_COLOR_YELLOW "RUNNING" _ASCII_COLOR_RESET "] ");
         }else{
-            fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED" _ASCII_COLOR_RESET "] ");
+            fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED " _ASCII_COLOR_RESET "] ");
         }
         fprintf(stdout, "TEST SUITE: %s\n", suite_name);
     };
 }
 
-void UtestAssertErrorMessage(UTEST_STRING_TYPE expected, UTEST_STRING_TYPE actual,
-    UTEST_STRING_TYPE filename, UTEST_COUNTER_TYPE line){
-    if (_UtestGlobalStatus.TestFlag & UTEST_FLAG_SHOW_CASE) {
-        fprintf(stdout, " |- ");
+void UtestRunTestCase(UTEST_GENERAL_FUNC_PTR test_case_func, UTEST_STRING_TYPE case_name){
+    // reinitialize the current test case status
+    _CurrentTestCaseStatus.TestCaseName = case_name;
+    _CurrentTestCaseStatus.TestCaseStatus = UTEST_RESULT_SUCCESS;
+    // run the test case
+    test_case_func();
+    if (_CurrentTestCaseStatus.TestCaseStatus == UTEST_RESULT_SUCCESS){
+        _UtestGlobalStatus.TestPassed++;
+    }else{
+        _UtestGlobalStatus.TestFailed++;
+        _UtestGlobalStatus.TestHasFailed = true;
+    }
+    _UtestGlobalStatus.TestTotal++;
+    // print the test case result
+    UtestCaseMessage(_CurrentTestCaseStatus.TestCaseStatus, _CurrentTestCaseStatus.TestCaseName);
+}
+void UtestRunTestSuite(UTEST_GENERAL_FUNC_PTR test_suite_func, UTEST_STRING_TYPE suite_name){
+    UtestSuiteMessage(UTEST_RESULT_RUNNING, suite_name);
+    test_suite_func();
+    if (_UtestGlobalStatus.TestHasFailed == true){
+        _UtestGlobalStatus.TestHasFailed = false;
+        UtestSuiteMessage(UTEST_RESULT_FAILURE, suite_name);
+    }else{
+        UtestSuiteMessage(UTEST_RESULT_SUCCESS, suite_name);
+    }
+}
+
+void UtestBegin(){
+    UtestInitStatus();
+}
+void UtestEnd(void) {
+    if (_UtestGlobalStatus.TestFlag != UTEST_FLAG_NONE) {
+        if (_UtestGlobalStatus.TestFlag & UTEST_FLAG_STYLE_FULL){
+            fprintf(stdout, "----------------------------------------\n");
+            fprintf(stdout, "Total : %llu\n", _UtestGlobalStatus.TestTotal);
+            fprintf(stdout, "Passed: %llu\n", _UtestGlobalStatus.TestPassed);
+            fprintf(stdout, "Failed: %llu\n", _UtestGlobalStatus.TestFailed);
+            fprintf(stdout, "----------------------------------------\n");
+        }else if (_UtestGlobalStatus.TestFlag & UTEST_FLAG_STYLE_SHORT){
+            fprintf(stdout, "Passed: %llu/%llu\n", 
+                    _UtestGlobalStatus.TestPassed, _UtestGlobalStatus.TestTotal);
+        }
+    }
+}
+
+void UtestSetFlag(const UTEST_FLAG_TYPE flag){
+    _UtestGlobalStatus.TestFlag = flag;
+    if (_UtestGlobalStatus.TestFlag & UTEST_FLAG_SHOW_SUITE) {
+        _UtestGlobalStatus.TestCasePrefix = _UtestTestCasePrefix;
+    }else{
+        _UtestGlobalStatus.TestCasePrefix = NULL;
     }
 }

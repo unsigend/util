@@ -6,3 +6,5 @@ build/
 .vscode/
 # Ignore Python cache files
 __pycache__/
+# Ignore lib directory in current directory
+lib/

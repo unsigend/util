@@ -25,28 +25,55 @@
 #define UTEST_TYPES_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
-typedef uint32_t        UTEST_BOOLEAN_TYPE;
-typedef uint32_t        UTEST_FLAG_TYPE;
-typedef uint64_t        UTEST_COUNTER_TYPE;
-typedef const char *    UTEST_STRING_TYPE;
+typedef int8_t              UTEST_INT8_TYPE;
+typedef int16_t             UTEST_INT16_TYPE;
+typedef int32_t             UTEST_INT32_TYPE;
+typedef int64_t             UTEST_INT64_TYPE;
+
+typedef uint8_t             UTEST_UINT8_TYPE;
+typedef uint16_t            UTEST_UINT16_TYPE;
+typedef uint32_t            UTEST_UINT32_TYPE;
+typedef uint64_t            UTEST_UINT64_TYPE;
+
+typedef int64_t             UTEST_INT_TYPE;
+typedef uint64_t            UTEST_UINT_TYPE;
+typedef float               UTEST_FLOAT_TYPE;
+typedef double              UTEST_DOUBLE_TYPE;
+typedef bool                UTEST_BOOLEAN_TYPE;
+typedef UTEST_UINT_TYPE     UTEST_COUNTER_TYPE;
+typedef UTEST_UINT64_TYPE   UTEST_FLAG_TYPE;
+typedef const char *        UTEST_STRING_TYPE;
+typedef void (*UTEST_GENERAL_FUNC_PTR)(void);
 
 typedef enum{
     UTEST_RESULT_SUCCESS,
     UTEST_RESULT_FAILURE,
+    UTEST_RESULT_RUNNING,
 } UtestResultType;
 
+typedef enum{
+    UTEST_COMPARISON_EQUAL,
+    UTEST_COMPARISON_NOT_EQUAL,
+    UTEST_COMPARISON_LESS,
+    UTEST_COMPARISON_LESS_EQUAL,
+    UTEST_COMPARISON_GREATER,
+    UTEST_COMPARISON_GREATER_EQUAL,
+} UtestComparisonType;
 
 typedef struct{
     UTEST_COUNTER_TYPE  TestPassed;
     UTEST_COUNTER_TYPE  TestFailed;
     UTEST_COUNTER_TYPE  TestTotal;
     UTEST_FLAG_TYPE     TestFlag;
-}UtestGlobalStatusType;
+    UTEST_STRING_TYPE   TestCasePrefix;
+    UTEST_BOOLEAN_TYPE  TestHasFailed;
+} UtestGlobalStatusType;
 
 typedef struct{
     UTEST_STRING_TYPE TestCaseName;
     UtestResultType   TestCaseStatus;
-}UtestTestCaseType;
+} UtestTestCaseType;
 
 #endif

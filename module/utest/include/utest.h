@@ -31,29 +31,22 @@
  * You can set the flag to UTEST_FLAG_NONE to disable all features
  * through the UTEST_SET_FLAGS macro.
  */
-
-
 #define UTEST_FLAG_NONE
 #define UTEST_FLAG_SHOW_CASE
 #define UTEST_FLAG_SHOW_SUITE
-#define UTEST_FLAG_STOP_ON_FAILURE
-#define UTEST_FLAG_CONTINUE_ON_FAILURE
 #define UTEST_FLAG_DEFAULT
 
 
 #include <utest/utest_internals.h>
 
 /* core macros */
-#define UTEST_TEST_CASE(TEST_CASE_NAME)
-#define UTEST_RUN_TEST_CASE(TEST_CASE_NAME)
-#define UTEST_TEST_SUITE(TEST_SUITE_NAME)
-#define UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)
-#define UTEST_SET_FLAGS(UTEST_FLAG)
-
-/* boolean expression */
-#define EXPECT_TRUE(EXPRESSION)
-#define EXPECT_FALSE(EXPRESSION)
-
+#define UTEST_TEST_CASE(TEST_CASE_NAME)                 _UTEST_TEST_CASE(TEST_CASE_NAME)
+#define UTEST_RUN_TEST_CASE(TEST_CASE_NAME)             _UTEST_RUN_TEST_CASE(TEST_CASE_NAME)
+#define UTEST_TEST_SUITE(TEST_SUITE_NAME)               _UTEST_TEST_SUITE(TEST_SUITE_NAME)
+#define UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)           _UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)
+#define UTEST_BEGIN()                                   _UTEST_BEGIN()
+#define UTEST_END()                                     _UTEST_END()
+#define UTEST_SET_FLAG(UTEST_FLAG)                      _UTEST_SET_FLAG(UTEST_FLAG)
 
 /* integer equal */
 #define EXPECT_EQUAL_INT(EXPECTED, ACTUAL)
@@ -159,6 +152,10 @@
 /* pointer assertion */
 #define UTEST_EXPECT_NULL(POINTER)
 #define UTEST_EXPECT_NOT_NULL(POINTER)
+
+/* boolean expression */
+#define EXPECT_TRUE(EXPRESSION)
+#define EXPECT_FALSE(EXPRESSION)
 
 
 #endif
