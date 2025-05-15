@@ -32,8 +32,6 @@ extern "C" {
 #include <utest/utest_types.h>
 
 
-
-
 #ifdef __cplusplus
 }  
 #endif
