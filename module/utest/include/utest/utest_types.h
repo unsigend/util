@@ -48,7 +48,27 @@ typedef const char *        UTEST_STRING_TYPE;
 
 typedef void (*UTEST_GENERAL_FUNC_PTR)(void);
 
+typedef enum{
+    UTEST_RESULT_SUCCESS,
+    UTEST_RESULT_FAILURE,
+    UTEST_RESULT_RUNNING,
+} UtestResultType;
 
+typedef struct{
+    UTEST_STRING_TYPE   TestSuiteName;
+    UTEST_BOOLEAN_TYPE  IsFailed;
+} UtestSuiteType;
 
+typedef struct{
+    UTEST_STRING_TYPE TestCaseName;
+    UTEST_BOOLEAN_TYPE IsFailed;
+} UtestCaseType;
+
+typedef struct{
+    UTEST_COUNTER_TYPE PassedTestCases;
+    UTEST_COUNTER_TYPE FailedTestCases;
+    UTEST_COUNTER_TYPE TotalTestCases;
+    UTEST_FLAG_TYPE    Flags;
+} UtestStateType;
 
 #endif

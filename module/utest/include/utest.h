@@ -28,13 +28,7 @@
 /**
  * The Utest flag is used to control the behavior of the utest library.
  * The default value is UTEST_FLAG_DEFAULT.
- * You can set the flag to UTEST_FLAG_NONE to disable all features
- * through the UTEST_SET_FLAGS macro.
  */
-#define UTEST_FLAG_NONE
-#define UTEST_FLAG_SHOW_CASE
-#define UTEST_FLAG_SHOW_SUITE
-#define UTEST_FLAG_DEFAULT
 
 
 #include <utest/utest_internals.h>
@@ -47,6 +41,8 @@
 #define UTEST_BEGIN()                                   _UTEST_BEGIN()
 #define UTEST_END()                                     _UTEST_END()
 #define UTEST_SET_FLAG(UTEST_FLAG)                      _UTEST_SET_FLAG(UTEST_FLAG)
+#define UTEST_CLEAR_FLAG(UTEST_FLAG)                    _UTEST_CLEAR_FLAG(UTEST_FLAG)
+#define UTEST_FLAG_RESET()                              _UTEST_FLAG_RESET()
 
 /* integer equal */
 #define EXPECT_EQUAL_INT(EXPECTED, ACTUAL)

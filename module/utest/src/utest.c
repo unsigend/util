@@ -40,3 +40,110 @@
 #define _ASCII_COLOR_RESET      "\033[0m"
 #define _ASCII_COLOR_BOLD       "\033[1m"
 
+UtestStateType   _GlobalTestState;
+
+static UtestCaseType    _CurrentTestCase;
+static UtestSuiteType   _CurrentTestSuite;
+
+static void PrintUtestVersion(){
+    fprintf(stdout, "Utest version: %d.%d\n", _UTEST_VERSION_MAJOR, _UTEST_VERSION_MINOR);
+}
+static void TestCasePrintResult(UtestResultType result){
+    if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_CASE){
+        if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_SUITE){
+            fprintf(stdout, " |- ");
+        }
+        if (result == UTEST_RESULT_SUCCESS){
+            fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED " _ASCII_COLOR_RESET "]");
+        } else if (result == UTEST_RESULT_FAILURE){
+            fprintf(stdout, "[" _ASCII_COLOR_RED "FAILED " _ASCII_COLOR_RESET "]");
+        }else if (result == UTEST_RESULT_RUNNING){
+            fprintf(stdout, "[" _ASCII_COLOR_YELLOW "RUNNING" _ASCII_COLOR_RESET "]");
+        }
+        fprintf(stdout, "  TEST CASE: %s\n", _CurrentTestCase.TestCaseName);
+    }
+}
+static void TestSuitePrintResult(UtestResultType result){
+    if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_SUITE){
+        if (result == UTEST_RESULT_SUCCESS){
+            fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED " _ASCII_COLOR_RESET "]");
+        } else if (result == UTEST_RESULT_FAILURE){
+            fprintf(stdout, "[" _ASCII_COLOR_RED "FAILED " _ASCII_COLOR_RESET "]");
+        }else if (result == UTEST_RESULT_RUNNING){
+            fprintf(stdout, "[" _ASCII_COLOR_YELLOW "RUNNING" _ASCII_COLOR_RESET "]");
+        }
+        fprintf(stdout, "  TEST SUITE: %s\n", _CurrentTestSuite.TestSuiteName);
+    }
+}
+static void PrintNextLine(){
+    if ((_GlobalTestState.Flags & UTEST_FLAG_SHOW_SUITE) &&
+        (_GlobalTestState.Flags & UTEST_FLAG_SHOW_CASE)){
+        fputc('\n', stdout);
+    }
+}
+// static void PrintAssertErrorPrefix(){
+//     if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_CASE){
+//         if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_SUITE){
+//             fprintf(stdout, " |- ");
+//         }
+//     }
+// }
+
+void UtestBegin(){
+    // initialize the global state
+    _GlobalTestState.PassedTestCases = 0;
+    _GlobalTestState.FailedTestCases = 0;
+    _GlobalTestState.TotalTestCases = 0;
+    _GlobalTestState.Flags = UTEST_FLAG_DEFAULT;
+    // initialize the current test case
+    _CurrentTestCase.TestCaseName = NULL;
+    _CurrentTestCase.IsFailed = false;
+    // initialize the current test suite
+    _CurrentTestSuite.TestSuiteName = NULL;
+    _CurrentTestSuite.IsFailed = false;
+
+    // print the version
+    PrintUtestVersion();
+}
+
+void UtestEnd(){
+    if (_GlobalTestState.Flags & UTEST_FLAG_STYLE_FULL){
+        fprintf(stdout, "====================\n");
+        fprintf(stdout, "TOTAL  : %llu\n", _GlobalTestState.TotalTestCases);
+        fprintf(stdout, "PASSED : %llu\n", _GlobalTestState.PassedTestCases);
+        fprintf(stdout, "FAILED : %llu\n", _GlobalTestState.FailedTestCases);
+        fprintf(stdout, "====================\n");
+    }else{
+        fprintf(stdout, "PASSED : %llu/%llu\n", _GlobalTestState.PassedTestCases, 
+                _GlobalTestState.TotalTestCases);
+    }
+}
+
+void UtestRunTestCase(UTEST_GENERAL_FUNC_PTR test_case_ptr, UTEST_STRING_TYPE test_case_name){
+    _CurrentTestCase.TestCaseName = test_case_name;
+    _CurrentTestCase.IsFailed = false;
+    test_case_ptr();
+    if (_CurrentTestCase.IsFailed){
+        _GlobalTestState.FailedTestCases++;
+        _CurrentTestSuite.IsFailed = true;
+        TestCasePrintResult(UTEST_RESULT_FAILURE);
+    }else{
+        _GlobalTestState.PassedTestCases++;
+        TestCasePrintResult(UTEST_RESULT_SUCCESS);
+    }
+    _GlobalTestState.TotalTestCases++;
+}
+
+void UtestRunTestSuite(UTEST_GENERAL_FUNC_PTR test_suite_ptr, UTEST_STRING_TYPE test_suite_name){
+    _CurrentTestSuite.TestSuiteName = test_suite_name;
+    _CurrentTestSuite.IsFailed = false;
+
+    TestSuitePrintResult(UTEST_RESULT_RUNNING);
+    test_suite_ptr();
+    if (_CurrentTestSuite.IsFailed){
+        TestSuitePrintResult(UTEST_RESULT_FAILURE);
+    }else{
+        TestSuitePrintResult(UTEST_RESULT_SUCCESS);
+    }
+    PrintNextLine();
+}

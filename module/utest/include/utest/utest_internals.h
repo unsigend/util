@@ -31,17 +31,28 @@ extern "C" {
 
 #include <utest/utest_types.h>
 
+extern UtestStateType   _GlobalTestState;
+
+extern void UtestBegin();
+extern void UtestEnd();
+extern void UtestRunTestCase(UTEST_GENERAL_FUNC_PTR test_case_ptr, UTEST_STRING_TYPE test_case_name);
+extern void UtestRunTestSuite(UTEST_GENERAL_FUNC_PTR test_suite_ptr, UTEST_STRING_TYPE test_suite_name);
 
 #ifdef __cplusplus
 }  
 #endif
 
+/* utest library version macros */
+#define _UTEST_VERSION_MAJOR       1
+#define _UTEST_VERSION_MINOR       0
+
+/* help macros */
 #define _UTEST_STRINGIFY(X)         # X
 #define UTEST_STRINGIFY(X)          _UTEST_STRINGIFY(X)
 #define UTEST_CONCATENATE(A, B)     A ## B
 #define UTEST_CONCATENATE3(A, B, C) UTEST_CONCATENATE(A, UTEST_CONCATENATE(B, C))
 
-// flags for utest library
+/* flags for utest library */
 #undef UTEST_FLAG_NONE
 #undef UTEST_FLAG_SHOW_CASE
 #undef UTEST_FLAG_SHOW_SUITE
@@ -53,17 +64,22 @@ extern "C" {
 #define UTEST_FLAG_SHOW_CASE            0x01
 #define UTEST_FLAG_SHOW_SUITE           0x02
 #define UTEST_FLAG_STYLE_FULL           0x04
-#define UTEST_FLAG_STYLE_SHORT          0x08
 #define UTEST_FLAG_DEFAULT              (UTEST_FLAG_SHOW_CASE | UTEST_FLAG_SHOW_SUITE \
                                         | UTEST_FLAG_STYLE_FULL)
 
-#define _UTEST_BEGIN()                              
-#define _UTEST_END()                                
-#define _UTEST_SET_FLAG(UTEST_FLAG)                 
+/* implementation of core macros */                              
+#define _UTEST_BEGIN()                              UtestBegin()
+#define _UTEST_END()                                UtestEnd()                  
+#define _UTEST_SET_FLAG(UTEST_FLAG)                 _GlobalTestState.Flags |= UTEST_FLAG
+#define _UTEST_CLEAR_FLAG(UTEST_FLAG)               _GlobalTestState.Flags &= ~(UTEST_FLAG)
+#define _UTEST_FLAG_RESET()                         _GlobalTestState.Flags = UTEST_FLAG_DEFAULT
 #define _UTEST_TEST_CASE(TEST_CASE_NAME)            static void UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME)(void)
 #define _UTEST_TEST_SUITE(TEST_SUITE_NAME)          void UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME)(void)
-#define _UTEST_RUN_TEST_CASE(TEST_CASE_NAME)        
-#define _UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)      
-            
+#define _UTEST_RUN_TEST_CASE(TEST_CASE_NAME)        UtestRunTestCase(UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME), \
+                                                    UTEST_STRINGIFY(TEST_CASE_NAME))
+#define _UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)      UtestRunTestSuite(UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME), \
+                                                    UTEST_STRINGIFY(TEST_SUITE_NAME))
+
+/* Assertion Macros */                                              
 
 #endif
