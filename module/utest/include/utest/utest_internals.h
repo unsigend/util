@@ -27,17 +27,12 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif 
 
 #include <utest/utest_types.h>
 
-extern void UtestRunTestCase(UTEST_GENERAL_FUNC_PTR test_case_func, UTEST_STRING_TYPE case_name);
-extern void UtestRunTestSuite(UTEST_GENERAL_FUNC_PTR test_suite_func, UTEST_STRING_TYPE suite_name);
-extern void UtestSetFlag(const UTEST_FLAG_TYPE flag);
-extern void UtestBegin();
-extern void UtestEnd(void);
 
-extern UtestGlobalStatusType _UtestGlobalStatus;
+
 
 #ifdef __cplusplus
 }  
@@ -64,15 +59,13 @@ extern UtestGlobalStatusType _UtestGlobalStatus;
 #define UTEST_FLAG_DEFAULT              (UTEST_FLAG_SHOW_CASE | UTEST_FLAG_SHOW_SUITE \
                                         | UTEST_FLAG_STYLE_FULL)
 
-#define _UTEST_BEGIN()                              UtestBegin()
-#define _UTEST_END()                                UtestEnd()
-#define _UTEST_SET_FLAG(UTEST_FLAG)                 UtestSetFlag(UTEST_FLAG)
+#define _UTEST_BEGIN()                              
+#define _UTEST_END()                                
+#define _UTEST_SET_FLAG(UTEST_FLAG)                 
 #define _UTEST_TEST_CASE(TEST_CASE_NAME)            static void UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME)(void)
 #define _UTEST_TEST_SUITE(TEST_SUITE_NAME)          void UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME)(void)
-#define _UTEST_RUN_TEST_CASE(TEST_CASE_NAME)        UtestRunTestCase(UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME), \
-                                                    UTEST_STRINGIFY(TEST_CASE_NAME))
-#define _UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)      UtestRunTestSuite(UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME), \
-                                                    UTEST_STRINGIFY(TEST_SUITE_NAME))
-
+#define _UTEST_RUN_TEST_CASE(TEST_CASE_NAME)        
+#define _UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)      
+            
 
 #endif

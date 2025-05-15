@@ -45,35 +45,10 @@ typedef bool                UTEST_BOOLEAN_TYPE;
 typedef UTEST_UINT_TYPE     UTEST_COUNTER_TYPE;
 typedef UTEST_UINT64_TYPE   UTEST_FLAG_TYPE;
 typedef const char *        UTEST_STRING_TYPE;
+
 typedef void (*UTEST_GENERAL_FUNC_PTR)(void);
 
-typedef enum{
-    UTEST_RESULT_SUCCESS,
-    UTEST_RESULT_FAILURE,
-    UTEST_RESULT_RUNNING,
-} UtestResultType;
 
-typedef enum{
-    UTEST_COMPARISON_EQUAL,
-    UTEST_COMPARISON_NOT_EQUAL,
-    UTEST_COMPARISON_LESS,
-    UTEST_COMPARISON_LESS_EQUAL,
-    UTEST_COMPARISON_GREATER,
-    UTEST_COMPARISON_GREATER_EQUAL,
-} UtestComparisonType;
 
-typedef struct{
-    UTEST_COUNTER_TYPE  TestPassed;
-    UTEST_COUNTER_TYPE  TestFailed;
-    UTEST_COUNTER_TYPE  TestTotal;
-    UTEST_FLAG_TYPE     TestFlag;
-    UTEST_STRING_TYPE   TestCasePrefix;
-    UTEST_BOOLEAN_TYPE  TestHasFailed;
-} UtestGlobalStatusType;
-
-typedef struct{
-    UTEST_STRING_TYPE TestCaseName;
-    UtestResultType   TestCaseStatus;
-} UtestTestCaseType;
 
 #endif
