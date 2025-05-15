@@ -81,13 +81,14 @@ static void PrintNextLine(){
         fputc('\n', stdout);
     }
 }
-// static void PrintAssertErrorPrefix(){
-//     if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_CASE){
-//         if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_SUITE){
-//             fprintf(stdout, " |- ");
-//         }
-//     }
-// }
+static void PrintAssertErrorPrefix(){
+    fprintf(stdout, "   ");
+    if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_CASE){
+        if (_GlobalTestState.Flags & UTEST_FLAG_SHOW_SUITE){
+            fprintf(stdout, " |- ");
+        }
+    }
+}
 
 void UtestBegin(){
     // initialize the global state
@@ -146,4 +147,47 @@ void UtestRunTestSuite(UTEST_GENERAL_FUNC_PTR test_suite_ptr, UTEST_STRING_TYPE 
         TestSuitePrintResult(UTEST_RESULT_SUCCESS);
     }
     PrintNextLine();
+}
+/**
+ * @brief Print the assert error message. In this format:
+ *   <file>:<line> failure
+ *   expect: <expect1><expect2>
+ *   actual: <actual1><actual2>
+ * And if enable string_wrapper, the expect2 and actual2 will be
+ * wrapped with double quotes.
+ */
+void UtestGeneralAssertError(UTEST_STRING_TYPE expect1, UTEST_STRING_TYPE expect2,
+    UTEST_STRING_TYPE actual1, UTEST_STRING_TYPE actual2, 
+    UTEST_STRING_TYPE file, UTEST_UINT_TYPE line,  bool string_wrapper){
+    if ( (!(_GlobalTestState.Flags & UTEST_FLAG_STOP_ON_FAILURE) ) 
+    ||  (!(_CurrentTestCase.IsFailed))){
+
+        TestCasePrintResult(UTEST_RESULT_FAILURE);
+        _CurrentTestCase.IsFailed = true;
+
+        PrintAssertErrorPrefix();
+        fprintf(stdout, "%s:%lld failure \n", file, line);
+
+        PrintAssertErrorPrefix();
+        fprintf(stdout, "expect %s", expect1);
+        if (expect2 != NULL){
+            if (string_wrapper){
+                fprintf(stdout, "\"%s\"", expect2);
+            }else{
+                fprintf(stdout, "%s", expect2);
+            }
+        }
+        fputc('\n', stdout);
+
+        PrintAssertErrorPrefix();
+        fprintf(stdout, "actual %s", actual1);
+        if (actual2 != NULL){
+            if (string_wrapper){
+                fprintf(stdout, "\"%s\"", actual2);
+            }else{
+                fprintf(stdout, "%s", actual2);
+            }
+        }
+        fputc('\n', stdout);
+    }
 }

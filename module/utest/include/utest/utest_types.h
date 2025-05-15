@@ -54,6 +54,17 @@ typedef enum{
     UTEST_RESULT_RUNNING,
 } UtestResultType;
 
+typedef enum{
+    UTEST_CMP_EQUAL,
+    UTEST_CMP_NOT_EQUAL,
+    UTEST_CMP_GREATER,
+    UTEST_CMP_GREATER_EQUAL,
+    UTEST_CMP_LESS,
+    UTEST_CMP_LESS_EQUAL,
+    UTEST_CMP_NULL,
+    UTEST_CMP_NOT_NULL,
+} UtestCompareType;
+
 typedef struct{
     UTEST_STRING_TYPE   TestSuiteName;
     UTEST_BOOLEAN_TYPE  IsFailed;

@@ -12,7 +12,8 @@ DEMO_PATH     	:=      $(CUR_PATH)/demo
 
 GCC_FLAGS   	:=      -std=gnu99
 GCC_FLAGS 		+= 		-Wall -Werror -Wextra -O0
-GCC_FLAGS   	+=      -Wno-unused-parameter
+GCC_FLAGS   	+=      -Wno-unused-parameter -Wno-unused-variable
+GCC_FLAGS   	+=      -Wno-unused-function -Wno-unused-label
 GCC_FLAGS   	+=      -I$(INCLUDE_PATH)
 
 LIB_NAME      	:=      $(UTIL_LIBRARY_NAME)
