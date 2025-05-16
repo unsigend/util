@@ -24,6 +24,15 @@
 
 #ifndef UTEST_INTERNALS_H
 #define UTEST_INTERNALS_H
+/**
+ * @file utest_internals.h
+ * @version 1.0
+ * @date 2025-05-16
+ * @author QIU YIXIANG
+ * @brief This file contains the internal definitions and declarations for the utest library.
+ *        If you are using the utest library, you should not need to include this file directly.
+ *        Instead, you should include the utest.h file.
+ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -31,6 +40,7 @@ extern "C" {
 
 #include <stddef.h>
 #include <string.h>
+
 #include <utest/utest_types.h>
 
 extern UtestStateType   _GlobalTestState;
@@ -148,4 +158,228 @@ extern void UtestAssertionError(UTEST_STRING_TYPE FILE, UTEST_INT_TYPE LINE, con
         "expect " UTEST_STRINGIFY(ACTUAL) " <= \"%s\","                             \
         " actual was \"%s\"", EXPECTED, ACTUAL);                                    \
     }
+
+/* float assertion */
+#define _EXPECT_EQUAL_FLOAT(ACTUAL, EXPECTED)                                       \
+    if ((ACTUAL) != (EXPECTED)){                                                    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " == %f,"                                 \
+        " actual was %f", EXPECTED, ACTUAL);                                        \
+    }
+#define _EXPECT_NOT_EQUAL_FLOAT(ACTUAL, EXPECTED)                                   \
+    if ((ACTUAL) == (EXPECTED)){                                                    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " != %f,"                                 \
+        " actual was %f", EXPECTED, ACTUAL);                                        \
+    }
+#define _EXPECT_GREATER_FLOAT(ACTUAL, EXPECTED)                                     \
+    if ((ACTUAL) <= (EXPECTED)){                                                    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " > %f,"                                  \
+        " actual was %f", EXPECTED, ACTUAL);                                        \
+    }
+#define _EXPECT_GREATER_EQUAL_FLOAT(ACTUAL, EXPECTED)                               \
+    if ((ACTUAL) < (EXPECTED)){                                                     \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " >= %f,"                                 \
+        " actual was %f", EXPECTED, ACTUAL);                                        \
+    }
+#define _EXPECT_LESS_FLOAT(ACTUAL, EXPECTED)                                        \
+    if ((ACTUAL) >= (EXPECTED)){                                                    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " < %f,"                                  \
+        " actual was %f", EXPECTED, ACTUAL);                                        \
+    }
+#define _EXPECT_LESS_EQUAL_FLOAT(ACTUAL, EXPECTED)                                  \
+    if ((ACTUAL) > (EXPECTED)){                                                     \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " <= %f,"                                 \
+        " actual was %f", EXPECTED, ACTUAL);                                        \
+    }
+
+/* double assertion */
+#define _EXPECT_EQUAL_DOUBLE(ACTUAL, EXPECTED)                                      \
+    if ((ACTUAL) != (EXPECTED)){                                                    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " == %lf,"                                \
+        " actual was %lf", EXPECTED, ACTUAL);                                       \
+    }
+#define _EXPECT_NOT_EQUAL_DOUBLE(ACTUAL, EXPECTED)                                  \
+    if ((ACTUAL) == (EXPECTED)){                                                    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " != %lf,"                                \
+        " actual was %lf", EXPECTED, ACTUAL);                                       \
+    }
+#define _EXPECT_GREATER_DOUBLE(ACTUAL, EXPECTED)                                    \
+    if ((ACTUAL) <= (EXPECTED)){                                                    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " > %lf,"                                 \
+        " actual was %lf", EXPECTED, ACTUAL);                                       \
+    }
+#define _EXPECT_GREATER_EQUAL_DOUBLE(ACTUAL, EXPECTED)                              \
+    if ((ACTUAL) < (EXPECTED)){                                                     \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " >= %lf,"                                \
+        " actual was %lf", EXPECTED, ACTUAL);                                       \
+    }
+#define _EXPECT_LESS_DOUBLE(ACTUAL, EXPECTED)                                       \
+    if ((ACTUAL) >= (EXPECTED)){                                                    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " < %lf,"                                 \
+        " actual was %lf", EXPECTED, ACTUAL);                                       \
+    }
+#define _EXPECT_LESS_EQUAL_DOUBLE(ACTUAL, EXPECTED)                                 \
+    if ((ACTUAL) > (EXPECTED)){                                                     \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " <= %lf,"                                \
+        " actual was %lf", EXPECTED, ACTUAL);                                       \
+    }
+/* unsigned integer assertion */
+#define _EXPECT_EQUAL_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                             \
+    if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) != (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){      \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " == %llu,"                               \
+        " actual was %llu", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_NOT_EQUAL_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                         \
+    if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) == (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){      \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " != %llu,"                               \
+        " actual was %llu", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_GREATER_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                           \
+    if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) <= (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){      \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " > %llu,"                                \
+        " actual was %llu", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_GREATER_EQUAL_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                     \
+    if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) < (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){       \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " >= %llu,"                               \
+        " actual was %llu", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_LESS_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                              \
+    if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) >= (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){      \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " < %llu,"                                \
+        " actual was %llu", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_LESS_EQUAL_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                        \
+    if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) > (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){       \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " <= %llu,"                               \
+        " actual was %llu", EXPECTED, ACTUAL);                                      \
+    }
+
+/* signed integer assertion */
+#define _EXPECT_EQUAL_INT_TYPE(TYPE, ACTUAL, EXPECTED)                              \
+    if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) != (UTEST_INT_TYPE)(TYPE)(EXPECTED)){        \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " == %lld,"                               \
+        " actual was %lld", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_NOT_EQUAL_INT_TYPE(TYPE, ACTUAL, EXPECTED)                          \
+    if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) == (UTEST_INT_TYPE)(TYPE)(EXPECTED)){        \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " != %lld,"                               \
+        " actual was %lld", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_GREATER_INT_TYPE(TYPE, ACTUAL, EXPECTED)                            \
+    if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) <= (UTEST_INT_TYPE)(TYPE)(EXPECTED)){        \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " > %lld,"                                \
+        " actual was %lld", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_GREATER_EQUAL_INT_TYPE(TYPE, ACTUAL, EXPECTED)                      \
+    if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) < (UTEST_INT_TYPE)(TYPE)(EXPECTED)){         \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " >= %lld,"                               \
+        " actual was %lld", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_LESS_INT_TYPE(TYPE, ACTUAL, EXPECTED)                               \
+    if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) >= (UTEST_INT_TYPE)(TYPE)(EXPECTED)){        \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " < %lld,"                                \
+        " actual was %lld", EXPECTED, ACTUAL);                                      \
+    }
+#define _EXPECT_LESS_EQUAL_INT_TYPE(TYPE, ACTUAL, EXPECTED)                         \
+    if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) > (UTEST_INT_TYPE)(TYPE)(EXPECTED)){         \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " <= %lld,"                               \
+        " actual was %lld", EXPECTED, ACTUAL);                                      \
+    }
+
+
+#define _EXPECT_EQUAL_UINT(ACTUAL, EXPECTED)            _EXPECT_EQUAL_UINT_TYPE(UTEST_UINT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_EQUAL_UINT8(ACTUAL, EXPECTED)           _EXPECT_EQUAL_UINT_TYPE(UTEST_UINT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_EQUAL_UINT16(ACTUAL, EXPECTED)          _EXPECT_EQUAL_UINT_TYPE(UTEST_UINT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_EQUAL_UINT32(ACTUAL, EXPECTED)          _EXPECT_EQUAL_UINT_TYPE(UTEST_UINT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_EQUAL_UINT64(ACTUAL, EXPECTED)          _EXPECT_EQUAL_UINT_TYPE(UTEST_UINT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_NOT_EQUAL_UINT(ACTUAL, EXPECTED)        _EXPECT_NOT_EQUAL_UINT_TYPE(UTEST_UINT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_NOT_EQUAL_UINT8(ACTUAL, EXPECTED)       _EXPECT_NOT_EQUAL_UINT_TYPE(UTEST_UINT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_NOT_EQUAL_UINT16(ACTUAL, EXPECTED)      _EXPECT_NOT_EQUAL_UINT_TYPE(UTEST_UINT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_NOT_EQUAL_UINT32(ACTUAL, EXPECTED)      _EXPECT_NOT_EQUAL_UINT_TYPE(UTEST_UINT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_NOT_EQUAL_UINT64(ACTUAL, EXPECTED)      _EXPECT_NOT_EQUAL_UINT_TYPE(UTEST_UINT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_GREATER_UINT(ACTUAL, EXPECTED)          _EXPECT_GREATER_UINT_TYPE(UTEST_UINT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_UINT8(ACTUAL, EXPECTED)         _EXPECT_GREATER_UINT_TYPE(UTEST_UINT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_UINT16(ACTUAL, EXPECTED)        _EXPECT_GREATER_UINT_TYPE(UTEST_UINT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_UINT32(ACTUAL, EXPECTED)        _EXPECT_GREATER_UINT_TYPE(UTEST_UINT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_UINT64(ACTUAL, EXPECTED)        _EXPECT_GREATER_UINT_TYPE(UTEST_UINT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_GREATER_EQUAL_UINT(ACTUAL, EXPECTED)    _EXPECT_GREATER_EQUAL_UINT_TYPE(UTEST_UINT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_EQUAL_UINT8(ACTUAL, EXPECTED)   _EXPECT_GREATER_EQUAL_UINT_TYPE(UTEST_UINT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_EQUAL_UINT16(ACTUAL, EXPECTED)  _EXPECT_GREATER_EQUAL_UINT_TYPE(UTEST_UINT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_EQUAL_UINT32(ACTUAL, EXPECTED)  _EXPECT_GREATER_EQUAL_UINT_TYPE(UTEST_UINT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_EQUAL_UINT64(ACTUAL, EXPECTED)  _EXPECT_GREATER_EQUAL_UINT_TYPE(UTEST_UINT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_LESS_UINT(ACTUAL, EXPECTED)             _EXPECT_LESS_UINT_TYPE(UTEST_UINT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_UINT8(ACTUAL, EXPECTED)            _EXPECT_LESS_UINT_TYPE(UTEST_UINT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_UINT16(ACTUAL, EXPECTED)           _EXPECT_LESS_UINT_TYPE(UTEST_UINT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_UINT32(ACTUAL, EXPECTED)           _EXPECT_LESS_UINT_TYPE(UTEST_UINT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_UINT64(ACTUAL, EXPECTED)           _EXPECT_LESS_UINT_TYPE(UTEST_UINT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_LESS_EQUAL_UINT(ACTUAL, EXPECTED)       _EXPECT_LESS_EQUAL_UINT_TYPE(UTEST_UINT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_EQUAL_UINT8(ACTUAL, EXPECTED)      _EXPECT_LESS_EQUAL_UINT_TYPE(UTEST_UINT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_EQUAL_UINT16(ACTUAL, EXPECTED)     _EXPECT_LESS_EQUAL_UINT_TYPE(UTEST_UINT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_EQUAL_UINT32(ACTUAL, EXPECTED)     _EXPECT_LESS_EQUAL_UINT_TYPE(UTEST_UINT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_EQUAL_UINT64(ACTUAL, EXPECTED)     _EXPECT_LESS_EQUAL_UINT_TYPE(UTEST_UINT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_EQUAL_INT(ACTUAL, EXPECTED)             _EXPECT_EQUAL_INT_TYPE(UTEST_INT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_EQUAL_INT8(ACTUAL, EXPECTED)            _EXPECT_EQUAL_INT_TYPE(UTEST_INT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_EQUAL_INT16(ACTUAL, EXPECTED)           _EXPECT_EQUAL_INT_TYPE(UTEST_INT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_EQUAL_INT32(ACTUAL, EXPECTED)           _EXPECT_EQUAL_INT_TYPE(UTEST_INT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_EQUAL_INT64(ACTUAL, EXPECTED)           _EXPECT_EQUAL_INT_TYPE(UTEST_INT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_NOT_EQUAL_INT(ACTUAL, EXPECTED)         _EXPECT_NOT_EQUAL_INT_TYPE(UTEST_INT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_NOT_EQUAL_INT8(ACTUAL, EXPECTED)        _EXPECT_NOT_EQUAL_INT_TYPE(UTEST_INT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_NOT_EQUAL_INT16(ACTUAL, EXPECTED)       _EXPECT_NOT_EQUAL_INT_TYPE(UTEST_INT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_NOT_EQUAL_INT32(ACTUAL, EXPECTED)       _EXPECT_NOT_EQUAL_INT_TYPE(UTEST_INT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_NOT_EQUAL_INT64(ACTUAL, EXPECTED)       _EXPECT_NOT_EQUAL_INT_TYPE(UTEST_INT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_GREATER_INT(ACTUAL, EXPECTED)           _EXPECT_GREATER_INT_TYPE(UTEST_INT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_INT8(ACTUAL, EXPECTED)          _EXPECT_GREATER_INT_TYPE(UTEST_INT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_INT16(ACTUAL, EXPECTED)         _EXPECT_GREATER_INT_TYPE(UTEST_INT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_INT32(ACTUAL, EXPECTED)         _EXPECT_GREATER_INT_TYPE(UTEST_INT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_INT64(ACTUAL, EXPECTED)         _EXPECT_GREATER_INT_TYPE(UTEST_INT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_GREATER_EQUAL_INT(ACTUAL, EXPECTED)     _EXPECT_GREATER_EQUAL_INT_TYPE(UTEST_INT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_EQUAL_INT8(ACTUAL, EXPECTED)    _EXPECT_GREATER_EQUAL_INT_TYPE(UTEST_INT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_EQUAL_INT16(ACTUAL, EXPECTED)   _EXPECT_GREATER_EQUAL_INT_TYPE(UTEST_INT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_EQUAL_INT32(ACTUAL, EXPECTED)   _EXPECT_GREATER_EQUAL_INT_TYPE(UTEST_INT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_GREATER_EQUAL_INT64(ACTUAL, EXPECTED)   _EXPECT_GREATER_EQUAL_INT_TYPE(UTEST_INT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_LESS_INT(ACTUAL, EXPECTED)              _EXPECT_LESS_INT_TYPE(UTEST_INT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_INT8(ACTUAL, EXPECTED)             _EXPECT_LESS_INT_TYPE(UTEST_INT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_INT16(ACTUAL, EXPECTED)            _EXPECT_LESS_INT_TYPE(UTEST_INT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_INT32(ACTUAL, EXPECTED)            _EXPECT_LESS_INT_TYPE(UTEST_INT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_INT64(ACTUAL, EXPECTED)            _EXPECT_LESS_INT_TYPE(UTEST_INT64_TYPE, ACTUAL, EXPECTED)
+
+#define _EXPECT_LESS_EQUAL_INT(ACTUAL, EXPECTED)        _EXPECT_LESS_EQUAL_INT_TYPE(UTEST_INT_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_EQUAL_INT8(ACTUAL, EXPECTED)       _EXPECT_LESS_EQUAL_INT_TYPE(UTEST_INT8_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_EQUAL_INT16(ACTUAL, EXPECTED)      _EXPECT_LESS_EQUAL_INT_TYPE(UTEST_INT16_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_EQUAL_INT32(ACTUAL, EXPECTED)      _EXPECT_LESS_EQUAL_INT_TYPE(UTEST_INT32_TYPE, ACTUAL, EXPECTED)
+#define _EXPECT_LESS_EQUAL_INT64(ACTUAL, EXPECTED)      _EXPECT_LESS_EQUAL_INT_TYPE(UTEST_INT64_TYPE, ACTUAL, EXPECTED)
 #endif

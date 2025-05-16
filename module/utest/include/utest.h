@@ -29,20 +29,70 @@
  * The Utest flag is used to control the behavior of the utest library.
  * The default value is UTEST_FLAG_DEFAULT.
  */
-
+#define UTEST_FLAG_NONE
+#define UTEST_FLAG_SHOW_CASE
+#define UTEST_FLAG_SHOW_SUITE
+#define UTEST_FLAG_STYLE_FULL
+#define UTEST_FLAG_STOP_ON_FAILURE
+#define UTEST_FLAG_DEFAULT
 
 #include <utest/utest_internals.h>
 
 /* core macros */
+
+/**
+ * @brief Declare a test case.
+ * @param TEST_CASE_NAME The name of the test case.: 
+ */
 #define UTEST_TEST_CASE(TEST_CASE_NAME)                     _UTEST_TEST_CASE(TEST_CASE_NAME)
+
+/**
+ * @brief Run a test case.
+ * @param TEST_CASE_NAME The name of the test case.
+ * @note This macro is used to run a test case. It should be called in the test suite.
+ */
 #define UTEST_RUN_TEST_CASE(TEST_CASE_NAME)                 _UTEST_RUN_TEST_CASE(TEST_CASE_NAME)
+
+/**
+ * @brief Declare a test suite.
+ * @param TEST_SUITE_NAME The name of the test suite.
+ */
 #define UTEST_TEST_SUITE(TEST_SUITE_NAME)                   _UTEST_TEST_SUITE(TEST_SUITE_NAME)
+
+/**
+ * @brief Run a test suite.
+ * @param TEST_SUITE_NAME The name of the test suite.
+ * @note This macro is used to run a test suite. It should be called in the main function.
+ */
 #define UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)               _UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)
+
+/**
+ * @brief Initialize the utest library.
+ */
 #define UTEST_BEGIN()                                       _UTEST_BEGIN()
+
+/**
+ * @brief Finalize the utest library.
+ */
 #define UTEST_END()                                         _UTEST_END()
+
+/**
+ * @brief Set a flag (bitwise) for the utest library.
+ * @param UTEST_FLAG The flag to set.
+ */
 #define UTEST_SET_FLAG(UTEST_FLAG)                          _UTEST_SET_FLAG(UTEST_FLAG)
+
+/**
+ * @brief Clear a flag (bitwise) for the utest library.
+ * @param UTEST_FLAG The flag to clear.
+ */
 #define UTEST_CLEAR_FLAG(UTEST_FLAG)                        _UTEST_CLEAR_FLAG(UTEST_FLAG)
+
+/**
+ * @brief Reset all flags to the default value.
+ */
 #define UTEST_FLAG_RESET()                                  _UTEST_FLAG_RESET()
+
 
 /* integer equal */
 #define EXPECT_EQUAL_INT(ACTUAL, EXPECTED)                  _EXPECT_EQUAL_INT(ACTUAL, EXPECTED)
