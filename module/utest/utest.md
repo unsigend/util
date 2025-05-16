@@ -90,25 +90,25 @@ Test Declaration and Execution
 **Integer Assertions**
 
 - Equality
-    - EXPECT_EQUAL_INT(actual, expected)
-    - EXPECT_EQUAL_INT8(actual, expected)
-    - EXPECT_EQUAL_INT16(actual, expected)
-    - EXPECT_EQUAL_INT32(actual, expected)
-    - EXPECT_EQUAL_INT64(actual, expected)
+    - `EXPECT_EQUAL_INT(actual, expected)`
+    - `EXPECT_EQUAL_INT8(actual, expected)`
+    - `EXPECT_EQUAL_INT16(actual, expected)`
+    - `EXPECT_EQUAL_INT32(actual, expected)`
+    - `EXPECT_EQUAL_INT64(actual, expected)`
     
 - Inequality
-    - EXPECT_NOT_EQUAL_INT(actual, expected)
+    - `EXPECT_NOT_EQUAL_INT(actual, expected)`
     - ... (same variants as above)
     
 - Greater/Less Than
-    - EXPECT_GREATER_INT(actual, expected)
-    - EXPECT_LESS_INT(actual, expected)
+    - `EXPECT_GREATER_INT(actual, expected)`
+    - `EXPECT_LESS_INT(actual, expected)`
     - ... (same variants as above)
     
 - Greater/Less or Equal
-    - EXPECT_GREATER_EQUAL_INT(actual, expected)
+    - `EXPECT_GREATER_EQUAL_INT(actual, expected)`
     
-    - EXPECT_LESS_EQUAL_INT(actual, expected)
+    - `EXPECT_LESS_EQUAL_INT(actual, expected)`
 
     - ... (same variants as above)
     
@@ -122,17 +122,17 @@ Test Declaration and Execution
 
 **Floating Point Assertions**
 
-- EXPECT_EQUAL_FLOAT(actual, expected)
+- `EXPECT_EQUAL_FLOAT(actual, expected)`
 
-- EXPECT_NOT_EQUAL_FLOAT(actual, expected)
+- `EXPECT_NOT_EQUAL_FLOAT(actual, expected)`
 
-- EXPECT_GREATER_FLOAT(actual, expected)
+- `EXPECT_GREATER_FLOAT(actual, expected)`
 
-- EXPECT_GREATER_EQUAL_FLOAT(actual, expected)
+- `EXPECT_GREATER_EQUAL_FLOAT(actual, expected)`
 
-- EXPECT_LESS_FLOAT(actual, expected)
+- `EXPECT_LESS_FLOAT(actual, expected)`
 
-- EXPECT_LESS_EQUAL_FLOAT(actual, expected)
+- `EXPECT_LESS_EQUAL_FLOAT(actual, expected)`
 
   
 
@@ -143,31 +143,31 @@ Test Declaration and Execution
 
 **String Assertions**
 
-- EXPECT_EQUAL_STRING(actual, expected)
+- `EXPECT_EQUAL_STRING(actual, expected)`
 
-- EXPECT_NOT_EQUAL_STRING(actual, expected)
+- `EXPECT_NOT_EQUAL_STRING(actual, expected)`
 
-- EXPECT_GREATER_STRING(actual, expected)
+- `EXPECT_GREATER_STRING(actual, expected)`
 
-- EXPECT_GREATER_EQUAL_STRING(actual, expected)
+- `EXPECT_GREATER_EQUAL_STRING(actual, expected)`
 
-- EXPECT_LESS_STRING(actual, expected)
+- `EXPECT_LESS_STRING(actual, expected)`
 
-- EXPECT_LESS_EQUAL_STRING(actual, expected)
+- `EXPECT_LESS_EQUAL_STRING(actual, expected)`
 
   
 
 **Pointer Assertions**
-- EXPECT_NULL(pointer)
+- `EXPECT_NULL(pointer)`
 
-- EXPECT_NOT_NULL(pointer)
+- `EXPECT_NOT_NULL(pointer)`
 
   
 
 **Boolean Assertions**
-- EXPECT_TRUE(expression)
+- `EXPECT_TRUE(expression)`
 
-- EXPECT_FALSE(expression)
+- `EXPECT_FALSE(expression)`
 
   
 
@@ -213,9 +213,10 @@ int main(void) {
 ```
 
 ## License
-MIT License. See the source file headers for details.
+This project is licensed under the [MIT License](https://github.com/unsigend/util/blob/main/LICENSE). 
+Copyright (C) 2025 - 2026 QIU YIXIANG
 
 ## Notes
-- All macros expand to internal implementations prefixed with _UTEST_ or _EXPECT_.
+- All macros expand to internal implementations prefixed with `_UTEST_` or `_EXPECT_`.
 - Utest is designed to be header-only and easy to integrate.
 - For more advanced usage, see the source and internal documentation.
