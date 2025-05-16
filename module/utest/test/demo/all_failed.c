@@ -2,19 +2,18 @@
 #include <stdbool.h>
 
 // all of the assertions in this file are expected to fail
+UTEST_TEST_CASE(boolean_assertion){
+    bool true_value = true;
+    bool false_value = false;
+    EXPECT_TRUE(false_value);
+    EXPECT_FALSE(true_value);
+}
 UTEST_TEST_CASE(pointer_assertion){
     int * ptr1 = NULL;
     int value = 0;
     int * ptr2 = &value;
     EXPECT_NULL(ptr2);
     EXPECT_NOT_NULL(ptr1);
-}
-
-UTEST_TEST_CASE(boolean_assertion){
-    bool true_value = true;
-    bool false_value = false;
-    EXPECT_TRUE(false_value);
-    EXPECT_FALSE(true_value);
 }
 UTEST_TEST_CASE(string_assertion){
     const char *str1 = "hello world";
@@ -27,10 +26,10 @@ UTEST_TEST_CASE(string_assertion){
     EXPECT_LESS_STRING(str3, str2);
     EXPECT_LESS_EQUAL_STRING(str1, str2);
 }
-UTEST_TEST_SUITE(error_display){
+UTEST_TEST_SUITE(all_failed_test_suite){
     UTEST_CLEAR_FLAG(UTEST_FLAG_STOP_ON_FAILURE);
-    //UTEST_RUN_TEST_CASE(pointer_assertion);
-    //UTEST_RUN_TEST_CASE(boolean_assertion);
-    // UTEST_RUN_TEST_CASE(string_assertion);
+    UTEST_RUN_TEST_CASE(boolean_assertion);
+    UTEST_RUN_TEST_CASE(pointer_assertion);
+    UTEST_RUN_TEST_CASE(string_assertion);
     UTEST_SET_FLAG(UTEST_FLAG_STOP_ON_FAILURE);
 }
