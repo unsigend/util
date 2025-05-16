@@ -10,7 +10,7 @@ INCLUDE_PATH  	:=      $(ROOT_PATH)/include
 LIB_PATH      	:=      $(UTIL_LIBRARY_PATH)
 DEMO_PATH     	:=      $(CUR_PATH)/demo
 
-GCC_FLAGS   	:=      -std=gnu99
+GCC_FLAGS   	:=      -std=gnu11
 GCC_FLAGS 		+= 		-Wall -Werror -Wextra -O0
 GCC_FLAGS   	+=      -Wno-unused-parameter -Wno-unused-variable
 GCC_FLAGS   	+=      -Wno-unused-function -Wno-unused-label
@@ -28,7 +28,7 @@ TARGET          :=      test.out
 all: $(OBJS)
 	@$(LD) $(GCC_FLAGS) -o $(CUR_PATH)/$(TARGET) $^ -L$(LIB_PATH) -l$(LIB_NAME) && $(CUR_PATH)/$(TARGET)
 
-$(DEMO_PATH)/%.o : $(DEMO_PATH)/%.c
+$(DEMO_PATH)/%.o : $(DEMO_PATH)/%.c 
 	@$(GCC) $(GCC_FLAGS) -c $< -o $@
 
 clean:

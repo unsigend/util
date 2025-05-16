@@ -39,8 +39,7 @@ extern void UtestBegin();
 extern void UtestEnd();
 extern void UtestRunTestCase(UTEST_GENERAL_FUNC_PTR test_case_ptr, UTEST_STRING_TYPE test_case_name);
 extern void UtestRunTestSuite(UTEST_GENERAL_FUNC_PTR test_suite_ptr, UTEST_STRING_TYPE test_suite_name);
-extern void UtestGeneralAssertError(UTEST_STRING_TYPE expect1, UTEST_STRING_TYPE expect2, UTEST_STRING_TYPE actual1, 
-    UTEST_STRING_TYPE actual2, UTEST_STRING_TYPE file, UTEST_UINT_TYPE line, bool string_wrapper);
+extern void UtestAssertionError(UTEST_STRING_TYPE FILE, UTEST_INT_TYPE LINE, const char * format_msg, ...);
 
 #ifdef __cplusplus
 }  
@@ -50,7 +49,7 @@ extern void UtestGeneralAssertError(UTEST_STRING_TYPE expect1, UTEST_STRING_TYPE
 #define _UTEST_VERSION_MAJOR       1
 #define _UTEST_VERSION_MINOR       0
 
-/* help macros */
+/* utility macros */
 #define _UTEST_STRINGIFY(X)         # X
 #define UTEST_STRINGIFY(X)          _UTEST_STRINGIFY(X)
 #define UTEST_CONCATENATE(A, B)     A ## B
@@ -80,9 +79,9 @@ extern void UtestGeneralAssertError(UTEST_STRING_TYPE expect1, UTEST_STRING_TYPE
 #define _UTEST_FLAG_RESET()                         _GlobalTestState.Flags = UTEST_FLAG_DEFAULT
 #define _UTEST_TEST_CASE(TEST_CASE_NAME)            static void UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME)(void)
 #define _UTEST_TEST_SUITE(TEST_SUITE_NAME)          void UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME)(void)
-#define _UTEST_RUN_TEST_CASE(TEST_CASE_NAME)        UtestRunTestCase(UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME), \
+#define _UTEST_RUN_TEST_CASE(TEST_CASE_NAME)        UtestRunTestCase(UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME),        \
                                                     UTEST_STRINGIFY(TEST_CASE_NAME))
-#define _UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)      UtestRunTestSuite(UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME), \
+#define _UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)      UtestRunTestSuite(UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME),     \
                                                     UTEST_STRINGIFY(TEST_SUITE_NAME))
 
 /* Assertion Macros */ 
@@ -90,56 +89,63 @@ extern void UtestGeneralAssertError(UTEST_STRING_TYPE expect1, UTEST_STRING_TYPE
 /* boolean expression */
 #define _EXPECT_TRUE(EXPRESSION)                                                    \
     if (!(EXPRESSION)){                                                             \
-        UtestGeneralAssertError(UTEST_STRINGIFY(EXPRESSION), " was true",           \
-        "was false", NULL, __FILE__, __LINE__, false);                              \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(EXPRESSION) " was true, actual was false");       \
     }
 #define _EXPECT_FALSE(EXPRESSION)                                                   \
     if ((EXPRESSION)){                                                              \
-        UtestGeneralAssertError(UTEST_STRINGIFY(EXPRESSION), " was false",          \
-        "was true", NULL,  __FILE__, __LINE__, false);                              \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(EXPRESSION) " was false, actual was true");       \
     }
 
 /* pointer assertion */
 #define _EXPECT_NULL(POINTER)                                                       \
     if ((POINTER) != NULL){                                                         \
-        UtestGeneralAssertError(UTEST_STRINGIFY(POINTER), " was NULL",              \
-        "was not NULL", NULL, __FILE__, __LINE__, false);                           \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(POINTER) " was NULL, actual was not NULL");       \
     }
+        
 #define _EXPECT_NOT_NULL(POINTER)                                                   \
     if ((POINTER) == NULL){                                                         \
-        UtestGeneralAssertError(UTEST_STRINGIFY(POINTER), " was not NULL",          \
-        "was NULL", NULL, __FILE__, __LINE__, false);                               \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(POINTER) " was not NULL, actual was NULL");       \
     }
 
 /* string assertion */
 #define _EXPECT_EQUAL_STRING(ACTUAL, EXPECTED)                                      \
     if (strcmp((ACTUAL), (EXPECTED)) != 0){                                         \
-        UtestGeneralAssertError(UTEST_STRINGIFY(ACTUAL) " == ", EXPECTED,           \
-        UTEST_STRINGIFY(ACTUAL) " was ",  (ACTUAL) ,  __FILE__, __LINE__, true);    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " == \"%s\","                             \
+        " actual was \"%s\"", EXPECTED, ACTUAL);                                    \
     }              
 #define _EXPECT_NOT_EQUAL_STRING(ACTUAL, EXPECTED)                                  \
     if (strcmp((ACTUAL), (EXPECTED)) == 0){                                         \
-        UtestGeneralAssertError(UTEST_STRINGIFY(ACTUAL) " != ", EXPECTED,           \
-        UTEST_STRINGIFY(ACTUAL) " was ",  (ACTUAL) ,  __FILE__, __LINE__, true);    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " != \"%s\","                             \
+        " actual was \"%s\"", EXPECTED, ACTUAL);                                    \
     }     
 #define _EXPECT_GREATER_STRING(ACTUAL, EXPECTED)                                    \
     if (strcmp((ACTUAL), (EXPECTED)) <= 0){                                         \
-        UtestGeneralAssertError(UTEST_STRINGIFY(ACTUAL) " > ", EXPECTED,            \
-        UTEST_STRINGIFY(ACTUAL) " was ",  (ACTUAL) ,  __FILE__, __LINE__, true);    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " > \"%s\","                              \
+        " actual was \"%s\"", EXPECTED, ACTUAL);                                    \
     }
 #define _EXPECT_GREATER_EQUAL_STRING(ACTUAL, EXPECTED)                              \
     if (strcmp((ACTUAL), (EXPECTED)) < 0){                                          \
-        UtestGeneralAssertError(UTEST_STRINGIFY(ACTUAL) " >= ", EXPECTED,           \
-        UTEST_STRINGIFY(ACTUAL) " was ",  (ACTUAL) ,  __FILE__, __LINE__, true);    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " >= \"%s\","                             \
+        " actual was \"%s\"", EXPECTED, ACTUAL);                                    \
     }
 #define _EXPECT_LESS_STRING(ACTUAL, EXPECTED)                                       \
     if (strcmp((ACTUAL), (EXPECTED)) >= 0){                                         \
-        UtestGeneralAssertError(UTEST_STRINGIFY(ACTUAL) " < ", EXPECTED,            \
-        UTEST_STRINGIFY(ACTUAL) " was ",  (ACTUAL) ,  __FILE__, __LINE__, true);    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " < \"%s\","                              \
+        " actual was \"%s\"", EXPECTED, ACTUAL);                                    \
     }
 #define _EXPECT_LESS_EQUAL_STRING(ACTUAL, EXPECTED)                                 \
     if (strcmp((ACTUAL), (EXPECTED)) > 0){                                          \
-        UtestGeneralAssertError(UTEST_STRINGIFY(ACTUAL) " <= ", EXPECTED,           \
-        UTEST_STRINGIFY(ACTUAL) " was ",  (ACTUAL) ,  __FILE__, __LINE__, true);    \
+        UtestAssertionError(__FILE__, __LINE__,                                     \
+        "expect " UTEST_STRINGIFY(ACTUAL) " <= \"%s\","                             \
+        " actual was \"%s\"", EXPECTED, ACTUAL);                                    \
     }
 #endif

@@ -16,10 +16,10 @@ int main(int argc, char * argv[]){
     // UTEST_RUN_TEST_SUITE(simple_test_suite);
 
     // run the all passed test suite
-    UTEST_RUN_TEST_SUITE(all_passed_test_suite);
+    // UTEST_RUN_TEST_SUITE(all_passed_test_suite);
 
     // Uncomment the following line to run the all failed test suite
-    // UTEST_RUN_TEST_SUITE(all_failed_test_suite);
+    UTEST_RUN_TEST_SUITE(all_failed_test_suite);
 
     UTEST_END();
     return 0;

@@ -28,6 +28,7 @@
  */
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <utest/utest_internals.h>
 
 #define _ASCII_COLOR_RED        "\033[31m"
@@ -148,17 +149,7 @@ void UtestRunTestSuite(UTEST_GENERAL_FUNC_PTR test_suite_ptr, UTEST_STRING_TYPE 
     }
     PrintNextLine();
 }
-/**
- * @brief Print the assert error message. In this format:
- *   <file>:<line> failure
- *   expect: <expect1><expect2>
- *   actual: <actual1><actual2>
- * And if enable string_wrapper, the expect2 and actual2 will be
- * wrapped with double quotes.
- */
-void UtestGeneralAssertError(UTEST_STRING_TYPE expect1, UTEST_STRING_TYPE expect2,
-    UTEST_STRING_TYPE actual1, UTEST_STRING_TYPE actual2, 
-    UTEST_STRING_TYPE file, UTEST_UINT_TYPE line,  bool string_wrapper){
+void UtestAssertionError(UTEST_STRING_TYPE file, UTEST_INT_TYPE line, const char * format_msg, ...){
     if ( (!(_GlobalTestState.Flags & UTEST_FLAG_STOP_ON_FAILURE) ) 
     ||  (!(_CurrentTestCase.IsFailed))){
 
@@ -166,28 +157,15 @@ void UtestGeneralAssertError(UTEST_STRING_TYPE expect1, UTEST_STRING_TYPE expect
         _CurrentTestCase.IsFailed = true;
 
         PrintAssertErrorPrefix();
-        fprintf(stdout, "%s:%lld failure \n", file, line);
+        fprintf(stdout, "%s:%lld failure", file, line);
+        PrintNextLine();
 
         PrintAssertErrorPrefix();
-        fprintf(stdout, "expect %s", expect1);
-        if (expect2 != NULL){
-            if (string_wrapper){
-                fprintf(stdout, "\"%s\"", expect2);
-            }else{
-                fprintf(stdout, "%s", expect2);
-            }
-        }
-        fputc('\n', stdout);
+        va_list args;
+        va_start(args, format_msg);
+        vprintf(format_msg, args);
+        va_end(args);
 
-        PrintAssertErrorPrefix();
-        fprintf(stdout, "actual %s", actual1);
-        if (actual2 != NULL){
-            if (string_wrapper){
-                fprintf(stdout, "\"%s\"", actual2);
-            }else{
-                fprintf(stdout, "%s", actual2);
-            }
-        }
-        fputc('\n', stdout);
+        PrintNextLine();
     }
 }

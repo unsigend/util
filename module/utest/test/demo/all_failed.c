@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 // all of the assertions in this file are expected to fail
+
 UTEST_TEST_CASE(boolean_assertion){
     bool true_value = true;
     bool false_value = false;

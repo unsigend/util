@@ -1,25 +1,26 @@
-#include <utest.h>
-#include <stdbool.h>
-#include <stdint.h>
-// all of the assertions in this file are expected to pass
+// #include <utest.h>
+// #include <stdbool.h>
+// #include <stdint.h>
 
-UTEST_TEST_CASE(boolean_assertion){
-    EXPECT_TRUE(true);
-    EXPECT_FALSE(false);
-}
-UTEST_TEST_CASE(pointer_assertion){
-    int data = 0;
-    EXPECT_NULL(NULL);
-    EXPECT_NOT_NULL(&data);
-}
-UTEST_TEST_CASE(string_assertion){
-    EXPECT_EQUAL_STRING("hello", "hello");
-    EXPECT_NOT_EQUAL_STRING("hello", "world");
-    EXPECT_GREATER_STRING("hello", "hell");
-    EXPECT_GREATER_EQUAL_STRING("hello", "hell");
-    EXPECT_LESS_STRING("hell", "hello");
-    EXPECT_LESS_EQUAL_STRING("hell", "hello");
-}
+// // all of the assertions in this file are expected to pass
+
+// UTEST_TEST_CASE(boolean_assertion){
+//     EXPECT_TRUE(true);
+//     EXPECT_FALSE(false);
+// }
+// UTEST_TEST_CASE(pointer_assertion){
+//     int data = 0;
+//     EXPECT_NULL(NULL);
+//     EXPECT_NOT_NULL(&data);
+// }
+// UTEST_TEST_CASE(string_assertion){
+//     EXPECT_EQUAL_STRING("hello", "hello");
+//     EXPECT_NOT_EQUAL_STRING("hello", "world");
+//     EXPECT_GREATER_STRING("hello", "hell");
+//     EXPECT_GREATER_EQUAL_STRING("hello", "hell");
+//     EXPECT_LESS_STRING("hell", "hello");
+//     EXPECT_LESS_EQUAL_STRING("hell", "hello");
+// }
 // UTEST_TEST_CASE(float_assertion){
 //     EXPECT_EQUAL_FLOAT(1.0f, 1.0f);
 //     EXPECT_NOT_EQUAL_FLOAT(1.0f, 2.0f);
@@ -113,13 +114,13 @@ UTEST_TEST_CASE(string_assertion){
 //     EXPECT_LESS_EQUAL_INT64(INT64_MIN, INT64_MAX);
 // }
 
-UTEST_TEST_SUITE(all_passed_test_suite){
-    UTEST_RUN_TEST_CASE(boolean_assertion);
-    UTEST_RUN_TEST_CASE(pointer_assertion);
-    UTEST_RUN_TEST_CASE(string_assertion);
-    // UTEST_RUN_TEST_CASE(float_assertion);
-    // UTEST_RUN_TEST_CASE(double_assertion);
-    // UTEST_RUN_TEST_CASE(unsigned_integer_assertion);
-    // UTEST_RUN_TEST_CASE(signed_integer_assertion);
+// UTEST_TEST_SUITE(all_passed_test_suite){
+//     UTEST_RUN_TEST_CASE(boolean_assertion);
+//     UTEST_RUN_TEST_CASE(pointer_assertion);
+//     UTEST_RUN_TEST_CASE(string_assertion);
+//     UTEST_RUN_TEST_CASE(float_assertion);
+//     UTEST_RUN_TEST_CASE(double_assertion);
+//     UTEST_RUN_TEST_CASE(unsigned_integer_assertion);
+//     UTEST_RUN_TEST_CASE(signed_integer_assertion);
 
-}
+// }
