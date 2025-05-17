@@ -57,7 +57,7 @@ MODULES 		:= 		$(sort $(MODULES))
 ifdef $(V)
 VERBOSE         := 		$(V)
 endif
-
+HOST_OS       	:=      $(shell uname -s)
 # Flags for tools
 GCC     		:=  	gcc
 CXX     		:=  	g++
