@@ -20,19 +20,33 @@ LIB_NAME      	:=      $(UTIL_LIBRARY_NAME)
 
 SRCS 	  		:=      $(wildcard $(CASE_PATH)/*.c)
 OBJS 	  		:=      $(patsubst %.c, %.o, $(SRCS))
+# filter out the demo.o
+OBJS            :=      $(filter-out $(CASE_PATH)/demo.o, $(OBJS))
+
 TARGET          :=      test.out
+DEMO            :=      demo.out
 
 .DEFAULT_GOAL	:=      all
 .PHONY			:      	all clean
+
+ifeq ($(LIB_METHOD), static)
+LIB_DEPS        :=      $(LIB_PATH)/lib$(LIB_NAME).a
+else
+LIB_DEPS        :=      $(LIB_PATH)/lib$(LIB_NAME).so
+endif
 
 # clean the object file and the target file
 clean:
 	@rm -rf $(CASE_PATH)/*.o
 	@rm -rf $(CUR_PATH)/$(TARGET)
+	@rm -rf $(CUR_PATH)/$(DEMO)
 
 # generate the object file
-$(CASE_PATH)/%.o : $(CASE_PATH)/%.c 
+$(CASE_PATH)/%.o : $(CASE_PATH)/%.c $(LIB_DEPS)
 	@$(GCC) $(GCC_FLAGS) -c $< -o $@
 
-all: $(OBJS)
-	@$(LD) $(GCC_FLAGS) -o $(CUR_PATH)/$(TARGET) $^ -L$(LIB_PATH) -l$(LIB_NAME) && $(CUR_PATH)/$(TARGET)
+$(CUR_PATH)/$(DEMO) : $(CASE_PATH)/demo.o $(LIB_DEPS)
+	@$(LD) $(GCC_FLAGS) -L$(LIB_PATH) -l$(LIB_NAME) $< -o $@
+
+all: $(OBJS) $(DEMO)
+	@$(LD) $(GCC_FLAGS) -o $(CUR_PATH)/$(TARGET) $(OBJS) -L$(LIB_PATH) -l$(LIB_NAME) && $(CUR_PATH)/$(TARGET)

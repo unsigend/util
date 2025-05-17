@@ -151,6 +151,8 @@ $(eval \
 export UTIL_LIBRARY_PATH
 export UTIL_LIBRARY_NAME
 export UTEST_INCLUDE_PATH
+export LIB_METHOD
+
 # generate rules test-module for each module
 # test-$(module): 
 $(foreach module, $(MODULES), \
