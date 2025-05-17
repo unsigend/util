@@ -152,6 +152,7 @@ export UTIL_LIBRARY_PATH
 export UTIL_LIBRARY_NAME
 export UTEST_INCLUDE_PATH
 export LIB_METHOD
+export HOST_OS
 
 # generate rules test-module for each module
 # test-$(module): 
@@ -231,9 +232,15 @@ ifeq ($(LIB_METHOD), static)
 	@echo "  + AR\tlib$(LIB_NAME).a"
 	@echo "Building $(LIB_METHOD) library : $(LIB_PATH)/lib$(LIB_NAME).a"
 else ifeq ($(LIB_METHOD), shared)
+ifeq ($(HOST_OS), Darwin)
+	@$(LD) -shared -o $(LIB_PATH)/lib$(LIB_NAME).dylib $^
+	@echo "+ LD\tlib$(LIB_NAME).dylib"
+	@echo "Building $(LIB_METHOD) library : $(LIB_PATH)/lib$(LIB_NAME).dylib"
+else
 	@$(LD) -shared -o $(LIB_PATH)/lib$(LIB_NAME).so $^
 	@echo "+ LD\tlib$(LIB_NAME).so"
 	@echo "Building $(LIB_METHOD) library : $(LIB_PATH)/lib$(LIB_NAME).so"
+endif
 else
 	@echo "Error: Unknown library method: $(LIB_METHOD)"
 endif

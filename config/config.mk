@@ -35,6 +35,5 @@ DEBUG 		:= 		0
 LIB_NAME	:= 		util
 
 # Configure for library build method 
-# shared library is not supported on macOS currently
 LIB_METHOD	:= 		static
 # LIB_METHOD	:= 		shared

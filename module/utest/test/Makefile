@@ -17,8 +17,7 @@ GCC_FLAGS   	+=      -Wno-unused-function -Wno-unused-label
 GCC_FLAGS   	+=      -I$(INCLUDE_PATH)
 
 LIB_NAME      	:=      $(UTIL_LIBRARY_NAME)
-LIB_FLAGS     	:=      -L$(LIB_PATH) -l$(LIB_NAME)
-
+LIB_FLAGS     	:=      -L$(LIB_PATH)  -l$(LIB_NAME)
 
 ifeq ($(LIB_METHOD), shared)
 LIB_FLAGS     	+=      -Wl,-rpath,$(LIB_PATH)
@@ -32,7 +31,8 @@ TARGET          :=      test.out
 .PHONY			:      	all clean
 
 all: $(OBJS)
-	@$(LD) $(GCC_FLAGS) $(LIB_FLAGS) $^ -o $(CUR_PATH)/$(TARGET) && $(CUR_PATH)/$(TARGET)
+	@$(LD) $(GCC_FLAGS) $(LIB_FLAGS) $^ -o $(CUR_PATH)/$(TARGET) 
+	@echo "Run ./module/utest/test/$(TARGET) see the result"
 
 $(DEMO_PATH)/%.o : $(DEMO_PATH)/%.c 
 	@$(GCC) $(GCC_FLAGS) -c $< -o $@

@@ -32,7 +32,15 @@ DEMO            :=      demo.out
 ifeq ($(LIB_METHOD), static)
 LIB_DEPS        :=      $(LIB_PATH)/lib$(LIB_NAME).a
 else
+ifeq ($(HOST_OS), Darwin)
+LIB_DEPS        :=      $(LIB_PATH)/lib$(LIB_NAME).dylib
+else
 LIB_DEPS        :=      $(LIB_PATH)/lib$(LIB_NAME).so
+endif
+endif
+
+ifeq ($(LIB_METHOD), shared)
+LIB_FLAGS       +=      -Wl,-rpath,$(LIB_PATH)
 endif
 
 # clean the object file and the target file
@@ -49,4 +57,6 @@ $(CUR_PATH)/$(DEMO) : $(CASE_PATH)/demo.o $(LIB_DEPS)
 	@$(LD) $(GCC_FLAGS) -L$(LIB_PATH) -l$(LIB_NAME) $< -o $@
 
 all: $(OBJS) $(DEMO)
-	@$(LD) $(GCC_FLAGS) -o $(CUR_PATH)/$(TARGET) $(OBJS) -L$(LIB_PATH) -l$(LIB_NAME) && $(CUR_PATH)/$(TARGET)
+	@$(LD) $(GCC_FLAGS) -o $(CUR_PATH)/$(TARGET) $(OBJS) -L$(LIB_PATH) -l$(LIB_NAME)
+	@echo "Run ./module/argparse/test/$(TARGET) see the test result"
+	@echo "Run ./module/argparse/test/$(DEMO) see the demo"
