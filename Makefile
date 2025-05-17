@@ -42,6 +42,7 @@ INSTALL_PATH    :=  ./include
 
 UTIL_LIBRARY_PATH 	:=  $(CUR_PATH)/lib
 UTIL_LIBRARY_NAME   :=  util
+UTEST_INCLUDE_PATH  :=  $(CUR_PATH)/module/utest/include
 
 # Include the sub-makefile script
 include $(CONFIG_PATH)/config.mk
@@ -149,6 +150,7 @@ $(eval \
 
 export UTIL_LIBRARY_PATH
 export UTIL_LIBRARY_NAME
+export UTEST_INCLUDE_PATH
 # generate rules test-module for each module
 # test-$(module): 
 $(foreach module, $(MODULES), \
