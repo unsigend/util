@@ -16,9 +16,9 @@ You can configure the modules you need in the config/config.mk file. By default,
 
 # Modules
 The util library includes several modules that can be selected based on your requirements. Below is an overview of the available modules:
-- [Utest](https://github.com/unsigend/util/blob/main/module/utest/utest.md): A lightweight, modular unit testing framework for C.
-- [Argparse](https://github.com/unsigend/util/blob/main/module/argparse/argparse.md): A command-line argument parsing library that makes it easy to handle options, flags, and positional arguments in C programs.
-- [Configparse](https://github.com/unsigend/util/blob/main/module/configparse/configparse.md): A simple configuration file parser for reading and managing INI-style config files in C.
+- [Utest](https://github.com/unsigend/util/blob/main/module/utest/utest.md): A lightweight and modular unit testing framework.
+- [Argparse](https://github.com/unsigend/util/blob/main/module/argparse/argparse.md): A command-line argument parsing library.
+- [Configparse](https://github.com/unsigend/util/blob/main/module/configparse/configparse.md): A simple INI-style configuration file parser.
 
 # Contributing
 Welcome contributions! Feel free to open issues or submit pull requests to help improve this project.
