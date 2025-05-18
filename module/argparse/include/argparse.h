@@ -99,6 +99,7 @@ typedef struct{
     const char *            _program_name;
     const char *            _description;
     const char *            _epilog;
+    const char *            _usage;
     argparse_flag           _flags;
 }argparse;
 
@@ -156,14 +157,18 @@ extern void argparse_set_flags(argparse *this, argparse_flag flags);
  * @param this: the argparse struct
  * @param description: the description of the program
  * @param epilog: the epilog at the end of the description
+ * @param usage: the usage of the program
  */
-extern void argparse_add_description(argparse *this, const char *description, const char *epilog);
+extern void argparse_add_description(argparse *this, const char *description, const char *epilog, const char *usage);
 
 /**
  * @brief: parse the command line arguments
  * @param this: the argparse struct
  * @param argc: the number of command line arguments
  * @param argv: the command line arguments
+ * 
+ * @note: the core of the argparse will process the argc and argv, but the argv[] don't need to
+ *       start from argv[0], it can be any pointer to the command line arguments.
  */
 extern void argparse_parse(argparse *this, int argc, char *argv[]);
 
