@@ -38,6 +38,8 @@
 /**
  * @brief: Internal Macros
  */
+
+// ASCII Color Macros
 #define ASCII_COLOR_RED     "\033[31m"
 #define ASCII_COLOR_GREEN   "\033[32m"
 #define ASCII_COLOR_YELLOW  "\033[33m"
@@ -46,6 +48,14 @@
 #define ASCII_COLOR_CYAN    "\033[36m"
 #define ASCII_COLOR_RESET   "\033[0m"
 
+// Buffer Macros
+
+// Option Macros
+#define OPTION_LONG             0x01
+#define OPTION_SHORT            0x02
+#define OPTION_RESULT_UNKNOWN   -1
+#define OPTION_RESULT_SUCCESS   0
+
 /**
  * @brief: Private functions implementation
  */
@@ -53,22 +63,25 @@
 /**
  * @brief: help information display functions
  */
-static void argparse_show_option_list(argparse *this){
-
+static void argparse_show_option_list(const struct argparse *this){
+    (void)this;
 }
 
-static void argparse_show_all(argparse *this){
+static void argparse_show_all(const struct argparse *this){
+    if (!this->_description)
+        return;
+    
     // show the description
-    if (this->_description)
-        fprintf(stdout, "Overview : %s\n\n", this->_description);
+    if (this->_description->_description)
+        fprintf(stdout, "Overview : %s\n\n", this->_description->_description);
 
     // show the program name
-    if (this->_program_name)
-        fprintf(stdout, "USAGE: %s ", this->_program_name);
+    if (this->_description->_program_name)
+        fprintf(stdout, "USAGE: %s ", this->_description->_program_name);
     
     // show the usage
-    if (this->_usage)
-        fprintf(stdout, "%s", this->_usage);
+    if (this->_description->_usage)
+        fprintf(stdout, "%s", this->_description->_usage);
 
     fprintf(stdout, "\n\n");
 
@@ -77,49 +90,157 @@ static void argparse_show_all(argparse *this){
         argparse_show_option_list(this);
 
     // show the epilog
-    if (this->_epilog)
-        fprintf(stdout, "%s", this->_epilog);
+    if (this->_description->_epilog)
+        fprintf(stdout, "%s", this->_description->_epilog);
 }
 
 /**
  * @brief: error handling functions
+ */
+
+/**
+ * @brief: print the internal error message and exit the program
+ * @param message: the message to print
  */
 static void internal_error(const char *message){
     fprintf(stderr, ASCII_COLOR_RED "INTERNAL ERROR: " ASCII_COLOR_RESET "%s\n", message);
     exit(EXIT_FAILURE);
 }
 
-static void option_error(const char * message, int flag, const argparse_option * option){
-
+/**
+ * @brief: print the error message related to the option and exit the program
+ * @param this: the argparse struct
+ * @param message: the message to print
+ * @param option: the option that is related to the error
+ * @param flag: the flag of the option which specify the type of the option
+ */
+static void option_error(struct argparse* this, const char * message, const struct argparse_option * option, int flag){
+    if (flag & OPTION_SHORT){
+        if (this->_description && this->_description->_program_name){
+            fprintf(stderr, ASCII_COLOR_RED "%s" ASCII_COLOR_RESET, this->_description->_program_name);
+        }else{
+            fprintf(stderr, ASCII_COLOR_RED "ERROR" ASCII_COLOR_RESET);
+        }
+        fprintf(stderr, ": -%c %s\n", option->_short_name, message);
+    }else{
+        if (this->_description && this->_description->_program_name){
+            fprintf(stderr, ASCII_COLOR_RED "%s" ASCII_COLOR_RESET, this->_description->_program_name);
+        }else{
+            fprintf(stderr, ASCII_COLOR_RED "ERROR" ASCII_COLOR_RESET);
+        }
+        fprintf(stderr, ": --%s %s\n", option->_long_name, message);
+    }
+    exit(EXIT_FAILURE);
 }
 
+/**
+ * @brief: option process functions
+ */
 
+static void argparse_option_get_value(struct argparse *this, const struct argparse_option *option, int flag){
+    if (option->_callback){
+        option->_callback(this, option);
+    }else{
+        const char * success = NULL;
+        switch (option->_type){
+            case ARGPARSE_OPTION_TYPE_BOOL:
+                *(bool*)option->_value = true;
+                this->_argc--;
+                this->_argv++;
+                break;
+            case ARGPARSE_OPTION_TYPE_DOUBLE:
+                if (this->_argc > 1){
+                    if (this->_argv[1][0] == '-')
+                        option_error(this, "missing argument", option, flag);
+                    else{
+                        *(double*)option->_value = strtod(this->_argv[1], (char**)&success);
+                        this->_argc -= 2;
+                        this->_argv += 2;
+                        if (success == this->_argv[1])
+                            option_error(this, "requires a floating point number", option, flag);
+                    }
+
+                }else{
+                    option_error(this, "missing argument", option, flag);
+                }
+                break;
+            case ARGPARSE_OPTION_TYPE_INT:
+                if (this->_argc > 1){
+                    if (this->_argv[1][0] == '-')
+                        option_error(this, "missing argument", option, flag);
+                    else{
+                        *(int*)option->_value = strtol(this->_argv[1], (char**)&success, 10);
+                        this->_argc -= 2;
+                        this->_argv += 2;
+                        if (success == this->_argv[1])
+                            option_error(this, "requires a integer number", option, flag);
+                    }
+                }else{
+                    option_error(this, "missing argument", option, flag);
+                }
+                break;
+            case ARGPARSE_OPTION_TYPE_STRING:
+                if (this->_argc > 1){
+                    if (this->_argv[1][0] == '-')
+                        option_error(this, "missing argument", option, flag);
+                    else{
+                        *(char**)option->_value = this->_argv[1];
+                        this->_argc -= 2;
+                        this->_argv += 2;
+                    }
+                }else{
+                    option_error(this, "missing argument", option, flag);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+static int argparse_short_option(struct argparse *this, const char *short_option){
+    if (strlen(short_option) != 1)
+        return OPTION_RESULT_UNKNOWN;
+
+    for (const struct argparse_option * option = this->_option_list; 
+        option->_type != ARGPARSE_OPTION_TYPE_END; option++){
+        if (option->_short_name == short_option[0]){
+            argparse_option_get_value(this, option, OPTION_SHORT);
+            return OPTION_RESULT_SUCCESS;
+        }
+    }
+    return OPTION_RESULT_UNKNOWN;
+}
+static int argparse_long_option(struct argparse* this, const char *long_option){
+    size_t option_length = strlen(long_option);
+    if (option_length < 1)
+        return OPTION_RESULT_UNKNOWN;
+
+    for (const struct argparse_option * option = this->_option_list; 
+        option->_type != ARGPARSE_OPTION_TYPE_END; option++){
+        if (strcmp(option->_long_name, long_option) == 0){
+            argparse_option_get_value(this, option, OPTION_LONG);
+            return OPTION_RESULT_SUCCESS;
+        }
+    }
+    return OPTION_RESULT_UNKNOWN;
+}
 /**
  * @brief: Public API functions implementation
  */
-void argparse_init(argparse *this, argparse_option *option_list, const char *program_name){
+void argparse_init(struct argparse *this, const struct argparse_option *option_list, 
+    const struct argparse_description *description){
     this->_argc = 0;
     this->_argv = NULL;
     this->_option_list = option_list;
-    this->_program_name = program_name;
-    this->_description = NULL;
-    this->_epilog = NULL;
-    this->_usage = NULL;
+    this->_description = description;
     this->_flags = ARGPARSE_FLAG_STOP_UNKNOWN_OPTION;
 }
 
-void argparse_set_flags(argparse *this, argparse_flag flags){
+void argparse_set_flags(struct argparse *this, argparse_flag flags){
     this->_flags = flags;
 }
 
-void argparse_add_description(argparse *this, const char *description, const char *epilog, const char *usage){
-    this->_description = description;
-    this->_epilog = epilog;
-    this->_usage = usage;
-}
-
-
-void argparse_parse(argparse *this, int argc, char *argv[]){
+void argparse_parse(struct argparse *this, int argc, char *argv[]){
 
     if (argv == NULL || argv[0] == NULL)
         internal_error("argv is NULL");
@@ -138,22 +259,41 @@ void argparse_parse(argparse *this, int argc, char *argv[]){
     
     for ( ; this->_argc > 0; ){
         const char * current_option = this->_argv[0];
-        size_t current_option_length = strlen(current_option);
 
-        // for short option
-
-
-        // for long option
-
-
+        if (this->_argv && this->_argv[0][0] == '-'){
+            // for long option
+            if (this->_argv[0][1] == '-'){
+                switch (argparse_long_option(this, current_option + 2)){
+                    case OPTION_RESULT_SUCCESS:
+                        break;
+                    case OPTION_RESULT_UNKNOWN:
+                        goto unknown_option;
+                }
+                continue;
+            }
+            // for short option
+            else{
+                switch (argparse_short_option(this, current_option + 1)){
+                    case OPTION_RESULT_SUCCESS:
+                        break;
+                    case OPTION_RESULT_UNKNOWN:
+                        goto unknown_option;
+                }
+                continue;
+            }
+        }
         // for unknown option
         unknown_option:
             if (this->_flags & ARGPARSE_FLAG_IGNORE_UNKNOWN_OPTION){
                 this->_argc--;
                 this->_argv++;
             }else{
-                fprintf(stderr, ASCII_COLOR_RED "%s" ASCII_COLOR_RESET " : unknown option %s\n", 
-                this->_program_name, current_option);
+                if (this->_description && this->_description->_program_name){
+                    fprintf(stderr, ASCII_COLOR_RED "%s" ASCII_COLOR_RESET, this->_description->_program_name);
+                }else{
+                    fprintf(stderr, ASCII_COLOR_RED "ERROR" ASCII_COLOR_RESET);
+                }
+                fprintf(stderr, " : unknown option %s\n", current_option);
                 exit(EXIT_FAILURE);
             }
     }
@@ -164,12 +304,13 @@ void argparse_parse(argparse *this, int argc, char *argv[]){
  * @brief: build-in callback functions implementation
  */
 
-void argparse_callback_help(argparse* this, argparse_option *option){
+void argparse_callback_help(struct argparse* this, const struct argparse_option *option){
     (void)option;
     argparse_show_all(this);
     exit(EXIT_SUCCESS);
 }
 
-void argparse_callback_multiple_arguments(argparse* this, argparse_option *option){
-
+void argparse_callback_multiple_arguments(struct argparse* this, const struct argparse_option *option){
+    (void)this;
+    (void)option;
 }

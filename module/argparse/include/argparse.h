@@ -41,7 +41,7 @@ extern "C"{
 #include <stddef.h>
 
 struct argparse;
-struct argparse_opt;
+struct argparse_option;
 
 /**
  * @brief: the type of the option
@@ -71,6 +71,12 @@ typedef enum{
 }argparse_flag;
 
 /**
+ * @brief callback function for the argparse
+ *        specialize for the specific option
+ */
+typedef void (*argparse_callback)(struct argparse* this, const struct argparse_option *option);
+
+/**
  * @brief: the option struct for the argparse
  * @param _type: the type of the option
  * @param _short_name: the short name of the option
@@ -79,44 +85,49 @@ typedef enum{
  * @param _value: the _value is a pointer to the value to store the option
  * @param _callback: the callback function is called when the option is parsed
  */
-typedef struct{
+struct argparse_option{
     argparse_option_type    _type;
     const char              _short_name;
     const char *            _long_name;
     const char *            _description;
     void *                  _value;
     argparse_callback       _callback;
-}argparse_option;
+};
 
+/**
+ * @brief: the description struct for the argparse
+ * @param _description: the description of the program
+ * @param _epilog: the epilog at the end of the description
+ * @param _usage: the usage of the program
+ * @param _program_name: the program name
+ */
+
+struct argparse_description{
+    const char *            _description;
+    const char *            _epilog;
+    const char *            _usage;
+    const char *            _program_name;
+};
 /**
  * @brief: the argparse struct for the argparse
  * @note: this is the struct of the argparse
  */
-typedef struct{
-    int                     _argc;
-    char **                 _argv;
-    const argparse_option * _option_list;
-    const char *            _program_name;
-    const char *            _description;
-    const char *            _epilog;
-    const char *            _usage;
-    argparse_flag           _flags;
-}argparse;
-
-/**
- * @brief callback function for the argparse
- *        specialize for the specific option
- */
-typedef void (*argparse_callback)(argparse* this, argparse_option *option);
+struct argparse{
+    int                                 _argc;
+    char **                             _argv;
+    const struct argparse_option*       _option_list;
+    const struct argparse_description*  _description;
+    argparse_flag                       _flags;
+};
 
 /**
  * @brief: callback function for the argparse
  *         build-in callback functions
  */
 // help information callback function
-extern void argparse_callback_help(argparse* this, argparse_option *option);
+extern void argparse_callback_help(struct argparse* this, const struct argparse_option *option);
 // multiple arguments process callback function
-extern void argparse_callback_multiple_arguments(argparse* this, argparse_option *option);
+extern void argparse_callback_multiple_arguments(struct argparse* this, const struct argparse_option *option);
 
 // Macros for build the option element
 #define OPTION_END()                                                           \
@@ -141,25 +152,17 @@ extern void argparse_callback_multiple_arguments(argparse* this, argparse_option
  * @brief:  initialize the argparse
  * @param this: the argparse struct
  * @param option_list: the option list
- * @param program_name: the program name
+ * @param description: the description of the program
  */
-extern void argparse_init(argparse *this, argparse_option *option_list, const char *program_name);
+extern void argparse_init(struct argparse *this, const struct argparse_option *option_list, 
+    const struct argparse_description *description);
 
 /**
  * @brief: set the flags of the argparse
  * @param this: the argparse struct
  * @param flags: the flags
  */
-extern void argparse_set_flags(argparse *this, argparse_flag flags);
-
-/**
- * @brief: add the description of the argparse
- * @param this: the argparse struct
- * @param description: the description of the program
- * @param epilog: the epilog at the end of the description
- * @param usage: the usage of the program
- */
-extern void argparse_add_description(argparse *this, const char *description, const char *epilog, const char *usage);
+extern void argparse_set_flags(struct argparse *this, argparse_flag flags);
 
 /**
  * @brief: parse the command line arguments
@@ -170,7 +173,7 @@ extern void argparse_add_description(argparse *this, const char *description, co
  * @note: the core of the argparse will process the argc and argv, but the argv[] don't need to
  *       start from argv[0], it can be any pointer to the command line arguments.
  */
-extern void argparse_parse(argparse *this, int argc, char *argv[]);
+extern void argparse_parse(struct argparse *this, int argc, char *argv[]);
 
 #ifdef __cplusplus
 }

@@ -16,12 +16,17 @@ GCC_FLAGS   	+=      -Wno-unused-parameter -Wno-unused-variable
 GCC_FLAGS   	+=      -Wno-unused-function -Wno-unused-label
 GCC_FLAGS   	+=      -I$(INCLUDE_PATH) -I$(UTEST_INCLUDE_PATH)
 
+ifeq ($(DEBUG), 1)
+GCC_FLAGS   	+=      -g
+GCC_FLAGS   	+=      -O0
+else
+GCC_FLAGS   	+=      -O2
+endif
+
 LIB_NAME      	:=      $(UTIL_LIBRARY_NAME)
 
 SRCS 	  		:=      $(wildcard $(CASE_PATH)/*.c)
 OBJS 	  		:=      $(patsubst %.c, %.o, $(SRCS))
-# filter out the demo.o
-OBJS            :=      $(filter-out $(CASE_PATH)/demo.o, $(OBJS))
 
 TARGET          :=      test.out
 DEMO            :=      demo.out
@@ -45,18 +50,24 @@ endif
 
 # clean the object file and the target file
 clean:
-	@rm -rf $(CASE_PATH)/*.o
+	@rm -f $(CASE_PATH)/*.o
+	@rm -f $(CUR_PATH)/*.o
 	@rm -rf $(CUR_PATH)/$(TARGET)
 	@rm -rf $(CUR_PATH)/$(DEMO)
 
-# generate the object file
+# generate the object file in case/
 $(CASE_PATH)/%.o : $(CASE_PATH)/%.c $(LIB_DEPS)
 	@$(GCC) $(GCC_FLAGS) -c $< -o $@
 
-$(CUR_PATH)/$(DEMO) : $(CASE_PATH)/demo.o $(LIB_DEPS)
-	@$(LD) $(GCC_FLAGS) -L$(LIB_PATH) -l$(LIB_NAME) $< -o $@
+%.o: %.c $(LIB_DEPS)
+	@$(GCC) $(GCC_FLAGS) -c $< -o $@
 
-all: $(OBJS) $(DEMO)
-	@$(LD) $(GCC_FLAGS) -o $(CUR_PATH)/$(TARGET) $(OBJS) -L$(LIB_PATH) -l$(LIB_NAME)
+$(TARGET) : $(OBJS) main.o
+	@$(LD) $(GCC_FLAGS) $^ -L$(LIB_PATH) -l$(LIB_NAME) -o $@
 	@echo "Run ./module/argparse/test/$(TARGET) see the test result"
+
+$(DEMO) : demo.o
+	@$(LD) $(GCC_FLAGS) $^ -L$(LIB_PATH) -l$(LIB_NAME) -o $@
 	@echo "Run ./module/argparse/test/$(DEMO) see the demo"
+
+all: $(TARGET) $(DEMO)

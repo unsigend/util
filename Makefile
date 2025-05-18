@@ -153,6 +153,7 @@ export UTIL_LIBRARY_NAME
 export UTEST_INCLUDE_PATH
 export LIB_METHOD
 export HOST_OS
+export DEBUG
 
 # generate rules test-module for each module
 # test-$(module): 
