@@ -50,6 +50,8 @@
 #define ASCII_COLOR_RESET   "\033[0m"
 
 // Buffer Macros
+#define CHAR_BUFFER_ALIGN       25
+#define CHAR_BUFFER_SIZE        64
 
 // Option Macros
 #define OPTION_LONG             0x01
@@ -62,11 +64,56 @@
  * @brief: Private functions implementation
  */
 
+
 /**
  * @brief: help information display functions
  */
 static void argparse_show_option_list(const struct argparse *this){
-    (void)this;
+    for (const struct argparse_option * option = this->_option_list; 
+        option->_type != ARGPARSE_OPTION_TYPE_END; option++){
+        // the type of the option is group
+        if (option->_type == ARGPARSE_OPTION_TYPE_GROUP){
+            fprintf(stdout, "%s\n", option->_description);
+        }
+        // the type of the option is group end
+        else if (option->_type == ARGPARSE_OPTION_TYPE_GROUP_END){
+            fprintf(stdout, "\n");
+        }
+        // the type of the option is not group
+        else{
+            char string_buffer[CHAR_BUFFER_SIZE];
+            size_t string_buffer_index = 0;
+            memset(string_buffer, 0, CHAR_BUFFER_SIZE);
+
+            if (option->_short_name){
+                sprintf(string_buffer + string_buffer_index, "-%c", option->_short_name);
+                string_buffer_index += 2;
+            }
+            if (option->_short_name && option->_long_name){
+                sprintf(string_buffer + string_buffer_index, ", ");
+                string_buffer_index += 2;
+            }
+            if (option->_long_name){
+                sprintf(string_buffer + string_buffer_index, "--%s", option->_long_name);
+                string_buffer_index += 2 + strlen(option->_long_name);
+            }
+            if (option->_type != ARGPARSE_OPTION_TYPE_BOOL){
+                sprintf(string_buffer + string_buffer_index, " <value>");
+                string_buffer_index += 8;
+            }
+
+            // left align the string buffer with the CHAR_BUFFER_ALIGN
+            if (strlen(string_buffer) > CHAR_BUFFER_ALIGN){
+                fprintf(stdout, "  %s\n", string_buffer);
+                fprintf(stdout, "  %-*s", CHAR_BUFFER_ALIGN, "");
+            }else{
+                fprintf(stdout, "  %-*s", CHAR_BUFFER_ALIGN, string_buffer);
+            }
+            if (option->_description){
+                fprintf(stdout, "   %s\n", option->_description);
+            }
+        }
+    }
 }
 
 static void argparse_show_all(const struct argparse *this){
@@ -75,7 +122,7 @@ static void argparse_show_all(const struct argparse *this){
     
     // show the description
     if (this->_description->_description)
-        fprintf(stdout, "Overview : %s\n\n", this->_description->_description);
+        fprintf(stdout, "OVERVIEW : %s\n\n", this->_description->_description);
 
     // show the program name
     if (this->_description->_program_name)
@@ -105,7 +152,7 @@ static void argparse_show_all(const struct argparse *this){
  * @param message: the message to print
  */
 static void internal_error(const char *message){
-    fprintf(stderr, ASCII_COLOR_RED "INTERNAL ERROR: " ASCII_COLOR_RESET "%s\n", message);
+    fprintf(stderr, ASCII_COLOR_RED "INTERNAL ERROR" ASCII_COLOR_RESET ": %s\n", message);
     exit(EXIT_FAILURE);
 }
 
@@ -123,7 +170,7 @@ static void option_error(struct argparse* this, const char * message, const stru
         fprintf(stderr, ASCII_COLOR_RED "ERROR" ASCII_COLOR_RESET);
     }
 
-    fprintf(stderr, " : ");
+    fprintf(stderr, ": ");
     if (flag & OPTION_SHORT){
         fprintf(stderr, "-%c ", option->_short_name);
     }
@@ -217,7 +264,7 @@ static int argparse_long_option(struct argparse* this, const char *long_option){
 
     for (const struct argparse_option * option = this->_option_list; 
         option->_type != ARGPARSE_OPTION_TYPE_END; option++){
-        if (strcmp(option->_long_name, long_option) == 0){
+        if (option->_long_name && strcmp(option->_long_name, long_option) == 0){
             argparse_option_get_value(this, option, OPTION_LONG);
             return OPTION_RESULT_SUCCESS;
         }
@@ -241,6 +288,8 @@ void argparse_set_flags(struct argparse *this, argparse_flag flags){
 }
 
 void argparse_parse(struct argparse *this, int argc, char *argv[]){
+    if (argc < 1)
+        internal_error("argc is less than 1");
 
     if (argv == NULL || argv[0] == NULL)
         internal_error("argv is NULL");
@@ -293,7 +342,7 @@ void argparse_parse(struct argparse *this, int argc, char *argv[]){
                 }else{
                     fprintf(stderr, ASCII_COLOR_RED "ERROR" ASCII_COLOR_RESET);
                 }
-                fprintf(stderr, " : unknown option %s\n", current_option);
+                fprintf(stderr, ": unknown option %s\n", current_option);
                 exit(EXIT_FAILURE);
             }
     }

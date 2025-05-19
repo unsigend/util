@@ -46,8 +46,8 @@ struct argparse_option;
 
 /**
  * @brief: the type of the option
- * @note: this is the type of the option
  *      ARGPARSE_OPTION_TYPE_GROUP    : the option is a group
+ *      ARGPARSE_OPTION_TYPE_GROUP_END: the end of the group
  *      ARGPARSE_OPTION_TYPE_STRING   : the option is a string
  *      ARGPARSE_OPTION_TYPE_INT      : the option is an integer
  *      ARGPARSE_OPTION_TYPE_DOUBLE   : the option is a double
@@ -56,6 +56,7 @@ struct argparse_option;
  */
 typedef enum{
     ARGPARSE_OPTION_TYPE_GROUP,
+    ARGPARSE_OPTION_TYPE_GROUP_END,
     ARGPARSE_OPTION_TYPE_STRING,
     ARGPARSE_OPTION_TYPE_INT,
     ARGPARSE_OPTION_TYPE_DOUBLE,
@@ -73,7 +74,7 @@ typedef enum{
 
 /**
  * @brief callback function for the argparse
- *        specialize for the specific option
+ *        will be called when the option is parsed
  */
 typedef void (*argparse_callback)(struct argparse* this, const struct argparse_option *option);
 
@@ -85,6 +86,7 @@ typedef void (*argparse_callback)(struct argparse* this, const struct argparse_o
  * @param _description: the description of the option
  * @param _value: the _value is a pointer to the value to store the option
  * @param _callback: the callback function is called when the option is parsed
+ * @param _callback_data: the data that can be used by the callback function
  */
 struct argparse_option{
     argparse_option_type    _type;
@@ -103,16 +105,20 @@ struct argparse_option{
  * @param _usage: the usage of the program
  * @param _program_name: the program name
  */
-
 struct argparse_description{
     const char *            _description;
     const char *            _epilog;
     const char *            _usage;
     const char *            _program_name;
 };
+
 /**
  * @brief: the argparse struct for the argparse
- * @note: this is the struct of the argparse
+ * @param _argc: the number of command line arguments
+ * @param _argv: the command line arguments
+ * @param _option_list: the option list
+ * @param _description: the description struct of the program
+ * @param _flags: the flags of the argparse
  */
 struct argparse{
     int                                 _argc;
@@ -145,6 +151,8 @@ extern void argparse_callback_multiple_arguments(struct argparse* this, const st
     {ARGPARSE_OPTION_TYPE_END, 0, NULL, NULL, NULL, NULL, 0}
 #define OPTION_GROUP(DESCRIPTION)                                                               \
     {ARGPARSE_OPTION_TYPE_GROUP, 0, NULL, DESCRIPTION, NULL, NULL, 0}
+#define OPTION_GROUP_END()                                                                      \
+    {ARGPARSE_OPTION_TYPE_GROUP_END, 0, NULL, NULL, NULL, NULL, 0}
 #define OPTION_BOOLEAN(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA)      \
     {ARGPARSE_OPTION_TYPE_BOOL, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA}
 #define OPTION_STRING(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA)       \
@@ -181,8 +189,8 @@ extern void argparse_set_flags(struct argparse *this, argparse_flag flags);
  * @param argc: the number of command line arguments
  * @param argv: the command line arguments
  * 
- * @note: the core of the argparse will process the argc and argv, but the argv[] don't need to
- *       start from argv[0], it can be any pointer to the command line arguments.
+ * @note: the argv[0] from the main function is not accepted by the argparse
+ *        usually call : argparse_parse(this, argc - 1, argv + 1); to ignore the argv[0]
  */
 extern void argparse_parse(struct argparse *this, int argc, char *argv[]);
 
