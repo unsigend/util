@@ -1,5 +1,14 @@
-# util
-util is a C library that extends the standard C library by providing additional utility modules. 
+
+<p align="center">
+  <img src="assets/logo.png" alt="util logo" width="300"/>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/license-MIT-green" />
+  <img src="https://img.shields.io/badge/version-0.1-blue" />
+</p>
+
+Util is a C library that extends the standard C library by providing additional utility modules. 
 
 The library is designed to be lightweight and modular, making it easy to embed in C programs. The Makefile for this project is simple and customizable, allowing developers to add or remove modules as needed.
 
