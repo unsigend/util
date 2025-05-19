@@ -9,7 +9,7 @@ NAMESPACE_BEGIN
     bool force = false;
     struct argparse argparse;
     struct argparse_option option_list[] = {
-        OPTION_BOOLEAN('f', "force", NULL, &force, NULL),
+        OPTION_BOOLEAN('f', "force", NULL, &force, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse, option_list, NULL);
@@ -29,8 +29,8 @@ NAMESPACE_END
     bool quiet = false;
     struct argparse argparse_mixed;
     struct argparse_option mixed_options[] = {
-        OPTION_BOOLEAN('v', "verbose", NULL, &verbose, NULL),
-        OPTION_BOOLEAN('q', "quiet", NULL, &quiet, NULL), 
+        OPTION_BOOLEAN('v', "verbose", NULL, &verbose, NULL, 0),
+        OPTION_BOOLEAN('q', "quiet", NULL, &quiet, NULL, 0), 
         OPTION_END()
     };
 
@@ -56,7 +56,7 @@ NAMESPACE_BEGIN
     int number = 0;
     struct argparse argparse;
     struct argparse_option option_list[] = {
-        OPTION_INT('n', "number", NULL, &number, NULL),
+        OPTION_INT('n', "number", NULL, &number, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse, option_list, NULL);
@@ -70,7 +70,7 @@ NAMESPACE_BEGIN
     int number = 0;
     struct argparse argparse_mixed;
     struct argparse_option mixed_options[] = {
-        OPTION_INT('n', "number", NULL, &number, NULL),
+        OPTION_INT('n', "number", NULL, &number, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse_mixed, mixed_options, NULL);
@@ -84,7 +84,7 @@ NAMESPACE_BEGIN
     int number = 0;
     struct argparse argparse_fixed;
     struct argparse_option fixed_options[] = {
-        OPTION_INT('o', "one", NULL, &number, NULL), 
+        OPTION_INT('o', "one", NULL, &number, NULL, 0), 
         OPTION_END()
     };
     argparse_init(&argparse_fixed, fixed_options, NULL);
@@ -97,13 +97,40 @@ NAMESPACE_BEGIN
     argparse_parse(&argparse_fixed, 4, (char*[]){"-o", "30", "--one", "40"});
     EXPECT_EQUAL_INT(number, 40);
 NAMESPACE_END
+NAMESPACE_BEGIN
+    int number = 0;
+    struct argparse argparse_fixed;
+    struct argparse_option fixed_options[] = {
+        OPTION_INT('o', "one", NULL, &number, NULL, 0), 
+        OPTION_INT('t', "two", NULL, &number, NULL, 0), 
+        OPTION_END()
+    };
+    argparse_init(&argparse_fixed, fixed_options, NULL);
+    argparse_parse(&argparse_fixed, 2, (char*[]){"-o", "10"});
+    EXPECT_EQUAL_INT(number, 10);
+
+    argparse_parse(&argparse_fixed, 2, (char*[]){"--one", "20"});
+    EXPECT_EQUAL_INT(number, 20);
+
+    argparse_parse(&argparse_fixed, 6, (char*[]){"-o", "30", "--one", "40", "-t", "50"});
+    EXPECT_EQUAL_INT(number, 50);
+
+    argparse_parse(&argparse_fixed, 4, (char*[]){"-o", "30", "--one", "40", "-t", "50", "--two", "60"});
+    EXPECT_EQUAL_INT(number, 40);
+
+    argparse_parse(&argparse_fixed, 6, (char*[]){"-o", "30", "--one", "40", "-t", "50", "--two", "60"});
+    EXPECT_EQUAL_INT(number, 50);
+
+    argparse_parse(&argparse_fixed, 8, (char*[]){"-o", "30", "--one", "40", "-t", "50", "--two", "60"});
+    EXPECT_EQUAL_INT(number, 60);
+NAMESPACE_END
 }
 UTEST_TEST_CASE(parse_double){
 NAMESPACE_BEGIN
     double number = 0;
     struct argparse argparse;
     struct argparse_option option_list[] = {
-        OPTION_DOUBLE('n', "number", NULL, &number, NULL),
+        OPTION_DOUBLE('n', "number", NULL, &number, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse, option_list, NULL);
@@ -117,7 +144,7 @@ NAMESPACE_BEGIN
     double number = 0;
     struct argparse argparse_mixed;
     struct argparse_option mixed_options[] = {
-        OPTION_DOUBLE('n', "number", NULL, &number, NULL),
+        OPTION_DOUBLE('n', "number", NULL, &number, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse_mixed, mixed_options, NULL);
@@ -133,7 +160,7 @@ NAMESPACE_BEGIN
     char* string = NULL;
     struct argparse argparse;
     struct argparse_option option_list[] = {
-        OPTION_STRING('s', "string", NULL, &string, NULL),
+        OPTION_STRING('s', "string", NULL, &string, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse, option_list, NULL);
@@ -144,7 +171,7 @@ NAMESPACE_BEGIN
     char* string = NULL;
     struct argparse argparse_mixed;
     struct argparse_option mixed_options[] = {
-        OPTION_STRING('s', "string", NULL, &string, NULL),
+        OPTION_STRING('s', "string", NULL, &string, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse_mixed, mixed_options, NULL);
@@ -155,7 +182,7 @@ NAMESPACE_BEGIN
     char* string = NULL;
     struct argparse argparse_mixed;
     struct argparse_option mixed_options[] = {
-        OPTION_STRING('s', "string", NULL, &string, NULL),
+        OPTION_STRING('s', "string", NULL, &string, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse_mixed, mixed_options, NULL);

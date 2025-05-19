@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include <stdarg.h>
 
 /**
@@ -53,6 +54,7 @@
 // Option Macros
 #define OPTION_LONG             0x01
 #define OPTION_SHORT            0x02
+#define OPTION_BOTH             0x03
 #define OPTION_RESULT_UNKNOWN   -1
 #define OPTION_RESULT_SUCCESS   0
 
@@ -91,7 +93,7 @@ static void argparse_show_all(const struct argparse *this){
 
     // show the epilog
     if (this->_description->_epilog)
-        fprintf(stdout, "%s", this->_description->_epilog);
+        fprintf(stdout, "%s\n", this->_description->_epilog);
 }
 
 /**
@@ -115,21 +117,20 @@ static void internal_error(const char *message){
  * @param flag: the flag of the option which specify the type of the option
  */
 static void option_error(struct argparse* this, const char * message, const struct argparse_option * option, int flag){
-    if (flag & OPTION_SHORT){
-        if (this->_description && this->_description->_program_name){
-            fprintf(stderr, ASCII_COLOR_RED "%s" ASCII_COLOR_RESET, this->_description->_program_name);
-        }else{
-            fprintf(stderr, ASCII_COLOR_RED "ERROR" ASCII_COLOR_RESET);
-        }
-        fprintf(stderr, ": -%c %s\n", option->_short_name, message);
+    if (this->_description && this->_description->_program_name){
+        fprintf(stderr, ASCII_COLOR_RED "%s" ASCII_COLOR_RESET, this->_description->_program_name);
     }else{
-        if (this->_description && this->_description->_program_name){
-            fprintf(stderr, ASCII_COLOR_RED "%s" ASCII_COLOR_RESET, this->_description->_program_name);
-        }else{
-            fprintf(stderr, ASCII_COLOR_RED "ERROR" ASCII_COLOR_RESET);
-        }
-        fprintf(stderr, ": --%s %s\n", option->_long_name, message);
+        fprintf(stderr, ASCII_COLOR_RED "ERROR" ASCII_COLOR_RESET);
     }
+
+    fprintf(stderr, " : ");
+    if (flag & OPTION_SHORT){
+        fprintf(stderr, "-%c ", option->_short_name);
+    }
+    if (flag & OPTION_LONG){
+        fprintf(stderr, "--%s ", option->_long_name);
+    }
+    fprintf(stderr, "%s\n", message);
     exit(EXIT_FAILURE);
 }
 
@@ -150,31 +151,30 @@ static void argparse_option_get_value(struct argparse *this, const struct argpar
                 break;
             case ARGPARSE_OPTION_TYPE_DOUBLE:
                 if (this->_argc > 1){
-                    if (this->_argv[1][0] == '-')
-                        option_error(this, "missing argument", option, flag);
-                    else{
-                        *(double*)option->_value = strtod(this->_argv[1], (char**)&success);
-                        this->_argc -= 2;
-                        this->_argv += 2;
-                        if (success == this->_argv[1])
-                            option_error(this, "requires a floating point number", option, flag);
+                    if (this->_argv[1][0] == '-' && !isdigit(this->_argv[1][1])){
+                        option_error(this, "requires a floating point number", option, flag);
                     }
-
+                    *(double*)option->_value = strtod(this->_argv[1], (char**)&success);
+                    if (success == this->_argv[1]){
+                        option_error(this, "requires a floating point number", option, flag);
+                    }
+                    this->_argc -= 2;
+                    this->_argv += 2;
                 }else{
                     option_error(this, "missing argument", option, flag);
                 }
                 break;
             case ARGPARSE_OPTION_TYPE_INT:
                 if (this->_argc > 1){
-                    if (this->_argv[1][0] == '-')
-                        option_error(this, "missing argument", option, flag);
-                    else{
-                        *(int*)option->_value = strtol(this->_argv[1], (char**)&success, 10);
-                        this->_argc -= 2;
-                        this->_argv += 2;
-                        if (success == this->_argv[1])
-                            option_error(this, "requires a integer number", option, flag);
+                    if (this->_argv[1][0] == '-' && !isdigit(this->_argv[1][1])){
+                        option_error(this, "requires a integer number", option, flag);
                     }
+                    *(int*)option->_value = strtol(this->_argv[1], (char**)&success, 10);
+                    if (success == this->_argv[1]) {
+                        option_error(this, "requires a integer number", option, flag);
+                    }
+                    this->_argc -= 2;
+                    this->_argv += 2;
                 }else{
                     option_error(this, "missing argument", option, flag);
                 }
@@ -260,9 +260,9 @@ void argparse_parse(struct argparse *this, int argc, char *argv[]){
     for ( ; this->_argc > 0; ){
         const char * current_option = this->_argv[0];
 
-        if (this->_argv && this->_argv[0][0] == '-'){
+        if (current_option && current_option[0] == '-'){
             // for long option
-            if (this->_argv[0][1] == '-'){
+            if (current_option[1] == '-'){
                 switch (argparse_long_option(this, current_option + 2)){
                     case OPTION_RESULT_SUCCESS:
                         break;
@@ -310,7 +310,40 @@ void argparse_callback_help(struct argparse* this, const struct argparse_option 
     exit(EXIT_SUCCESS);
 }
 
+/**
+ * @brief: callback function for multiple arguments
+ * @note: this callback function consider every multiple arguments pack as a string array
+ */
 void argparse_callback_multiple_arguments(struct argparse* this, const struct argparse_option *option){
-    (void)this;
-    (void)option;
+    switch (option->_type){
+        case ARGPARSE_OPTION_TYPE_STRING:
+            if (option->_callback_data == 0){
+                internal_error("the callback data is not set");
+            }
+            if (this->_argc < 2){
+                option_error(this, "missing argument", option, OPTION_BOTH);
+            }
+            // skip the option
+            this->_argc--;
+            this->_argv++;
+
+            if (this->_argc < 1 || this->_argv[0][0] == '-'){
+                option_error(this, "missing argument", option, OPTION_BOTH);
+            }
+            // set the callback data to the address of the data array
+            *(const char***)option->_value = (const char**)this->_argv;
+
+            // count the number of arguments
+            int array_size = 0;
+            for (; this->_argc > 0; this->_argc--, this->_argv++){
+                if (this->_argv[0][0] == '-'){
+                    break;
+                }
+                array_size++;
+            }
+            *(int *)option->_callback_data = array_size;
+            break;
+        default:
+            internal_error("the option type is not required to be a multiple arguments");
+    }
 }

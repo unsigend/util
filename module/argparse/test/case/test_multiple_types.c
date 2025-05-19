@@ -9,9 +9,9 @@ NAMESPACE_BEGIN
     bool flag1 = false, flag2 = false, flag3 = false;
     struct argparse argparse;
     struct argparse_option options[] = {
-        OPTION_BOOLEAN('x', "flag1", NULL, &flag1, NULL),
-        OPTION_BOOLEAN('y', "flag2", NULL, &flag2, NULL),
-        OPTION_BOOLEAN('z', "flag3", NULL, &flag3, NULL),
+        OPTION_BOOLEAN('x', "flag1", NULL, &flag1, NULL, 0),
+        OPTION_BOOLEAN('y', "flag2", NULL, &flag2, NULL, 0),
+        OPTION_BOOLEAN('z', "flag3", NULL, &flag3, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse, options, NULL);
@@ -33,9 +33,9 @@ NAMESPACE_BEGIN
     int num1 = 0, num2 = 0, num3 = 0;
     struct argparse argparse;
     struct argparse_option options[] = {
-        OPTION_INT('a', "first", NULL, &num1, NULL),
-        OPTION_INT('b', "second", NULL, &num2, NULL),
-        OPTION_INT('c', "third", NULL, &num3, NULL),
+        OPTION_INT('a', "first", NULL, &num1, NULL, 0),
+        OPTION_INT('b', "second", NULL, &num2, NULL, 0),
+        OPTION_INT('c', "third", NULL, &num3, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse, options, NULL);
@@ -57,9 +57,9 @@ NAMESPACE_BEGIN
     double val1 = 0.0, val2 = 0.0, val3 = 0.0;
     struct argparse argparse;
     struct argparse_option options[] = {
-        OPTION_DOUBLE('d', "double1", NULL, &val1, NULL),
-        OPTION_DOUBLE('e', "double2", NULL, &val2, NULL),
-        OPTION_DOUBLE('f', "double3", NULL, &val3, NULL),
+        OPTION_DOUBLE('d', "double1", NULL, &val1, NULL, 0),
+        OPTION_DOUBLE('e', "double2", NULL, &val2, NULL, 0),
+        OPTION_DOUBLE('f', "double3", NULL, &val3, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse, options, NULL);
@@ -81,9 +81,9 @@ NAMESPACE_BEGIN
     char *str1 = NULL, *str2 = NULL, *str3 = NULL;
     struct argparse argparse;
     struct argparse_option options[] = {
-        OPTION_STRING('p', "path", NULL, &str1, NULL),
-        OPTION_STRING('n', "name", NULL, &str2, NULL),
-        OPTION_STRING('v', "value", NULL, &str3, NULL),
+        OPTION_STRING('p', "path", NULL, &str1, NULL, 0),
+        OPTION_STRING('n', "name", NULL, &str2, NULL, 0),
+        OPTION_STRING('v', "value", NULL, &str3, NULL, 0),
         OPTION_END()
     };
     argparse_init(&argparse, options, NULL);

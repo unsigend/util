@@ -39,6 +39,7 @@ extern "C"{
 #endif
 
 #include <stddef.h>
+#include <stdint.h>
 
 struct argparse;
 struct argparse_option;
@@ -92,6 +93,7 @@ struct argparse_option{
     const char *            _description;
     void *                  _value;
     argparse_callback       _callback;
+    intptr_t                _callback_data;
 };
 
 /**
@@ -124,26 +126,35 @@ struct argparse{
  * @brief: callback function for the argparse
  *         build-in callback functions
  */
-// help information callback function
+
+/**
+ * @brief: build-in callback function for the help option
+ * @note : no side effect, just print the help message
+ */
 extern void argparse_callback_help(struct argparse* this, const struct argparse_option *option);
-// multiple arguments process callback function
+
+/**
+ * @brief: deal with multiple arguments
+ * @note: set the _value pointer in the option struct to the data array
+ *        set the _callback_data to the size of the array
+ */
 extern void argparse_callback_multiple_arguments(struct argparse* this, const struct argparse_option *option);
 
 // Macros for build the option element
-#define OPTION_END()                                                           \
-    {ARGPARSE_OPTION_TYPE_END, 0, NULL, NULL, NULL, NULL}
-#define OPTION_GROUP(DESCRIPTION)                                              \
-    {ARGPARSE_OPTION_TYPE_GROUP, 0, NULL, DESCRIPTION, NULL, NULL}
-#define OPTION_BOOLEAN(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK)    \
-    {ARGPARSE_OPTION_TYPE_BOOL, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK}
-#define OPTION_STRING(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK)     \
-    {ARGPARSE_OPTION_TYPE_STRING, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK}
-#define OPTION_INT(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK)        \
-    {ARGPARSE_OPTION_TYPE_INT, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK}
-#define OPTION_DOUBLE(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK)     \
-    {ARGPARSE_OPTION_TYPE_DOUBLE, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK}
-#define OPTION_HELP()                                                          \
-    OPTION_BOOLEAN('h', "help", "show this help message and exit", NULL, argparse_callback_help)
+#define OPTION_END()                                                                            \
+    {ARGPARSE_OPTION_TYPE_END, 0, NULL, NULL, NULL, NULL, 0}
+#define OPTION_GROUP(DESCRIPTION)                                                               \
+    {ARGPARSE_OPTION_TYPE_GROUP, 0, NULL, DESCRIPTION, NULL, NULL, 0}
+#define OPTION_BOOLEAN(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA)      \
+    {ARGPARSE_OPTION_TYPE_BOOL, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA}
+#define OPTION_STRING(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA)       \
+    {ARGPARSE_OPTION_TYPE_STRING, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA}
+#define OPTION_INT(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA)          \
+    {ARGPARSE_OPTION_TYPE_INT, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA}
+#define OPTION_DOUBLE(SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA)       \
+    {ARGPARSE_OPTION_TYPE_DOUBLE, SHORT_NAME, LONG_NAME, DESCRIPTION, VALUE, CALLBACK, CALLBACK_DATA}
+#define OPTION_HELP()                                                                           \
+    OPTION_BOOLEAN('h', "help", "show this help message and exit", NULL, argparse_callback_help, 0)
 
 
 // function declaration
