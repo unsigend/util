@@ -28,9 +28,11 @@
 /**
  * @brief: argparse library is part of the util library project
  *         This library is used to parse command line arguments
+ * @author:    QIU YIXIANG
+ * @copyright: MIT License
+ * @version:   1.0
  * 
  * @ref:    https://github.com/cofyc/argparse.git
- * @author: QIU YIXIANG
  */
 
 // compatible with C++
