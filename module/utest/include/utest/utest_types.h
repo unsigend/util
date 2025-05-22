@@ -24,21 +24,20 @@
 #ifndef UTEST_TYPES_H
 #define UTEST_TYPES_H
 
-#include <stdint.h>
 #include <stdbool.h>
 
-typedef int8_t              UTEST_INT8_TYPE;
-typedef int16_t             UTEST_INT16_TYPE;
-typedef int32_t             UTEST_INT32_TYPE;
-typedef int64_t             UTEST_INT64_TYPE;
+typedef signed char         UTEST_INT8_TYPE;
+typedef signed short        UTEST_INT16_TYPE;
+typedef signed int          UTEST_INT32_TYPE;
+typedef long long           UTEST_INT64_TYPE;
 
-typedef uint8_t             UTEST_UINT8_TYPE;
-typedef uint16_t            UTEST_UINT16_TYPE;
-typedef uint32_t            UTEST_UINT32_TYPE;
-typedef uint64_t            UTEST_UINT64_TYPE;
+typedef unsigned char       UTEST_UINT8_TYPE;
+typedef unsigned short      UTEST_UINT16_TYPE;
+typedef unsigned int        UTEST_UINT32_TYPE;
+typedef unsigned long long  UTEST_UINT64_TYPE;
 
-typedef int64_t             UTEST_INT_TYPE;
-typedef uint64_t            UTEST_UINT_TYPE;
+typedef UTEST_INT64_TYPE    UTEST_INT_TYPE;
+typedef UTEST_UINT64_TYPE   UTEST_UINT_TYPE;
 typedef float               UTEST_FLOAT_TYPE;
 typedef double              UTEST_DOUBLE_TYPE;
 typedef bool                UTEST_BOOLEAN_TYPE;
