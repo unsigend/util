@@ -69,6 +69,10 @@ GCC_FLAGS		:=
 GCC_FLAGS		+= 	    -std=c11
 GCC_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
 
+ifeq ($(HOST_OS), Linux)
+GCC_FLAGS		+= 	    -fPIC
+endif
+
 ifeq ($(DEBUG), 1)
 GCC_FLAGS		+= 	    -g
 GCC_FLAGS		+= 	    -O0
@@ -88,6 +92,10 @@ AR_FLAGS		+= 	    -rcs
 CXX_FLAGS		:=
 CXX_FLAGS		+= 	    -std=c++17
 CXX_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
+
+ifeq ($(HOST_OS), Linux)
+CXX_FLAGS		+= 	    -fPIC
+endif
 
 # Cancel implicit rules
 %.o : %.c
