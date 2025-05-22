@@ -1,5 +1,6 @@
 #include <utest.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 // all of the assertions in this file are expected to fail
 
