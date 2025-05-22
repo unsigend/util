@@ -228,7 +228,7 @@ NAMESPACE_BEGIN
     EXPECT_EQUAL_STRING(name, "");
 
     // Test with minimum values and special characters
-    argparse_parse(&argparse, 9, (char*[]){
+    argparse_parse(&argparse, 8, (char*[]){
         "--flag1",
         "--flag2", 
         "--count", "-2147483648",

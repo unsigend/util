@@ -35,5 +35,5 @@ DEBUG 		:= 		1
 LIB_NAME	:= 		util
 
 # Configure for library build method 
-# LIB_METHOD	:= 		static
-LIB_METHOD	:= 		shared
+LIB_METHOD	:= 		static
+# LIB_METHOD	:= 		shared
