@@ -111,12 +111,12 @@ void UtestBegin(){
 void UtestEnd(){
     if (_GlobalTestState.Flags & UTEST_FLAG_STYLE_FULL){
         fprintf(stdout, "====================\n");
-        fprintf(stdout, "TOTAL  : %llu\n", _GlobalTestState.TotalTestCases);
-        fprintf(stdout, "PASSED : %llu\n", _GlobalTestState.PassedTestCases);
-        fprintf(stdout, "FAILED : %llu\n", _GlobalTestState.FailedTestCases);
+        fprintf(stdout, "TOTAL  : %lu\n", _GlobalTestState.TotalTestCases);
+        fprintf(stdout, "PASSED : %lu\n", _GlobalTestState.PassedTestCases);
+        fprintf(stdout, "FAILED : %lu\n", _GlobalTestState.FailedTestCases);
         fprintf(stdout, "====================\n");
     }else{
-        fprintf(stdout, "PASSED : %llu/%llu\n", _GlobalTestState.PassedTestCases, 
+        fprintf(stdout, "PASSED : %lu/%lu\n", _GlobalTestState.PassedTestCases, 
                 _GlobalTestState.TotalTestCases);
     }
 }
@@ -157,7 +157,7 @@ void UtestAssertionError(UTEST_STRING_TYPE file, UTEST_INT_TYPE line, const char
         _CurrentTestCase.IsFailed = true;
 
         PrintAssertErrorPrefix();
-        fprintf(stdout, "%s:%lld failure", file, line);
+        fprintf(stdout, "%s:%ld failure", file, line);
         PrintNextLine();
 
         PrintAssertErrorPrefix();
