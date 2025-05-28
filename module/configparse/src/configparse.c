@@ -24,10 +24,23 @@
 
 #include <configparse.h>
 
+#include <ctype.h>
+#include <string.h>
 
 
+bool init_configparse(struct configparse * this, const char * filename){
+    if (this == NULL || filename == NULL){
+        return false;
+    }
 
+    this->filename = filename;
+    this->ini_file = fopen(filename, "r+");
 
+    if (this->ini_file == NULL){
+        return false;
+    }
+    return true;
+}
 
 
 

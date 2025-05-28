@@ -31,5 +31,56 @@
  *         This library is used to parse INI configuration file
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <stdbool.h>
+#include <stdio.h>
+
+/**
+ * @brief: the callback function type
+ * When the section, key, value is parsed, the callback function will be called
+ */
+typedef void (*configparse_callback_t)(void * data, const char * section, const char * key, const char * value);
+
+/**
+ * @brief: the configparse object
+ * @param filename: the filename of the INI file
+ * @param ini_file: the file pointer of the INI file
+ * @param callback: the callback function
+ */
+struct configparse{
+    const char * filename;
+    FILE * ini_file;
+    configparse_callback_t callback;
+};
+
+/**
+ * @brief: initialize the configparse object
+ * @param this: the configparse object
+ * @param filename: the filename of the INI file
+ * @return: true if successful, false otherwise
+ */
+extern bool init_configparse(struct configparse * this, const char * filename);
+
+/**
+ * @brief: get the value of the key in the section
+ * @param this: the configparse object
+ * @param section: the section of the key
+ * @param key: the key of the value
+ * @return: the value of the key in the section
+ * 
+ * @note: Low performance, only for read specific keys in small file
+ *       when read multiple keys use configparse_parse_all function
+ */
+extern char * configparse_get_value(struct configparse * this, const char * section, const char * key);
+
+
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif
