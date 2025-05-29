@@ -8,3 +8,7 @@ build/
 __pycache__/
 # Ignore lib directory in current directory
 lib/
+# Ignore all .o files
+*.o
+# Ignore all .out files
+*.out

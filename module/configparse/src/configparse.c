@@ -27,6 +27,14 @@
 #include <ctype.h>
 #include <string.h>
 
+#define BUFFER_SIZE 512
+
+static bool is_comment(const char * line){
+    return line[0] == '#' || line[0] == ';';
+}
+static bool is_section(const char * line){
+    return line[0] == '[' && line[strlen(line) - 2] == ']';
+}
 
 bool init_configparse(struct configparse * this, const char * filename){
     if (this == NULL || filename == NULL){
@@ -34,7 +42,7 @@ bool init_configparse(struct configparse * this, const char * filename){
     }
 
     this->filename = filename;
-    this->ini_file = fopen(filename, "r+");
+    this->ini_file = fopen(filename, "r");
 
     if (this->ini_file == NULL){
         return false;
@@ -42,7 +50,64 @@ bool init_configparse(struct configparse * this, const char * filename){
     return true;
 }
 
+char * configparse_get_value(struct configparse * this, const char * section, const char * key){
+    if (this == NULL || section == NULL || key == NULL){
+        return NULL;
+    }
 
+    char line_buffer[BUFFER_SIZE];
+    memset(line_buffer, 0, BUFFER_SIZE);
 
-
+    // read the file line by line
+    while (fgets(line_buffer, BUFFER_SIZE, this->ini_file) != NULL){
+        if (is_comment(line_buffer)){
+            continue;
+        }
+        if (is_section(line_buffer)){
+            // if the section is the same as the section we are looking for
+            if (strncmp(line_buffer + 1, section, strlen(section)) == 0){
+                while (fgets(line_buffer, BUFFER_SIZE, this->ini_file) != NULL){
+                    if (is_comment(line_buffer)){
+                        continue;
+                    }
+                    if (is_section(line_buffer)){
+                        goto fail;
+                    }
+                    char * skip_space = line_buffer;
+                    while (isspace(*skip_space)){
+                        skip_space++;
+                    }
+                    // if the key is the same as the key we are looking for
+                    if (strncmp(skip_space, key, strlen(key)) == 0 &&
+                    (skip_space[strlen(key)] == '=' || skip_space[strlen(key)] == ' ')){
+                        // find the value
+                        char * value = strchr(skip_space, '=');
+                        if (value == NULL){
+                            goto fail;
+                        }
+                        value++;
+                        while (isspace(*value)){
+                            value++;
+                        }
+                        if (*value == '\0'){
+                            goto fail;
+                        }
+                        // remove the trailing newline
+                        if (*(value + strlen(value) - 1) == '\n'){
+                            *(value + strlen(value) - 1) = '\0';
+                        }
+                        fseek(this->ini_file, 0, SEEK_SET);
+                        return value;
+                    }
+                }
+                goto fail;
+            }
+            continue;
+        } 
+    }
+fail:
+    // set the lseek to the beginning of the file
+    fseek(this->ini_file, 0, SEEK_SET);
+    return NULL;
+}
 

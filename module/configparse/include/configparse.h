@@ -48,12 +48,10 @@ typedef void (*configparse_callback_t)(void * data, const char * section, const 
  * @brief: the configparse object
  * @param filename: the filename of the INI file
  * @param ini_file: the file pointer of the INI file
- * @param callback: the callback function
  */
 struct configparse{
     const char * filename;
     FILE * ini_file;
-    configparse_callback_t callback;
 };
 
 /**

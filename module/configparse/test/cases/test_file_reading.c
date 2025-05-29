@@ -3,7 +3,7 @@
 
 #include <configparse.h>
 
-extern const char * filename;
+extern const char * simple_filename;
 
 // test the std IO file reading
 
@@ -12,7 +12,7 @@ UTEST_TEST_CASE(std_IO_file){
     char buffer[BUFFER_SIZE];
     memset(buffer, 0, BUFFER_SIZE);
 
-    FILE * file = fopen(filename, "r");
+    FILE * file = fopen(simple_filename, "r");
     EXPECT_NOT_NULL(file);
     EXPECT_NOT_NULL(fgets(buffer, BUFFER_SIZE, file));
     EXPECT_EQUAL_UINT8(buffer[0], '#');
@@ -35,7 +35,7 @@ UTEST_TEST_CASE(std_IO_file){
 // test the configparse read file
 UTEST_TEST_CASE(configparse_read_file){
     struct configparse configparse;
-    EXPECT_TRUE(init_configparse(&configparse, filename));
+    EXPECT_TRUE(init_configparse(&configparse, simple_filename));
 }
 
 UTEST_TEST_SUITE(file_reading){
