@@ -28,7 +28,12 @@
 
 /**
  * @brief: configparse library is part of the util library project
- *         This library is used to parse INI configuration file
+ *         This library is used to parse INI configuration file, and is designed for
+ *         easy and simple usage.
+ * 
+ * @note: the purpose of this library is to parse the INI file, and read the key-value pair,
+ *        so the functions provided which not include writing operation.
+ * 
  */
 
 #ifdef __cplusplus
