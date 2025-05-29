@@ -60,7 +60,7 @@ char * configparse_get_value(struct configparse * this, const char * section, co
 
     // read the file line by line
     while (fgets(line_buffer, BUFFER_SIZE, this->ini_file) != NULL){
-        if (is_comment(line_buffer)){
+        if (is_comment(line_buffer) || line_buffer[0] == '\n'){
             continue;
         }
         if (is_section(line_buffer)){
@@ -111,3 +111,46 @@ fail:
     return NULL;
 }
 
+void configparse_parse_all(struct configparse * this, configparse_callback_t callback, void * data){
+    if (this == NULL || callback == NULL){
+        return;
+    }
+
+    char section_buffer[BUFFER_SIZE];
+    char line_buffer[BUFFER_SIZE];
+    memset(line_buffer, 0, BUFFER_SIZE);
+    memset(section_buffer, 0, BUFFER_SIZE);
+
+    while (fgets(line_buffer, BUFFER_SIZE, this->ini_file) != NULL){
+        if (is_comment(line_buffer) || line_buffer[0] == '\n'){
+            continue;
+        }
+        if (is_section(line_buffer)){
+            strncpy(section_buffer, line_buffer + 1, strlen(line_buffer) - 3);
+            section_buffer[strlen(line_buffer) - 3] = '\0';
+            continue;
+        }
+        char * key = line_buffer;
+        while (isspace(*key)){ key++; }
+
+        char * value = strchr(key, '=');
+        
+        if (value == NULL){
+            continue;
+        }
+        if (*(value - 1) == ' '){
+            *(value - 1) = '\0';
+        }
+        
+        do { value++; } while (isspace(*value));
+        // remove the trailing newline
+        if (*(value + strlen(value) - 1) == '\n'){
+            *(value + strlen(value) - 1) = '\0';
+        }
+
+        // call the callback function
+        callback(data, section_buffer, key, value);
+    }
+
+    fseek(this->ini_file, 0, SEEK_SET);
+}

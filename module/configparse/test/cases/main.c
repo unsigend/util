@@ -1,7 +1,8 @@
 #include <utest.h>
 
 extern UTEST_TEST_SUITE(file_reading);
-extern UTEST_TEST_SUITE(get_value);
+extern UTEST_TEST_SUITE(configparse_get_value);
+extern UTEST_TEST_SUITE(configparse_parse_all);
 
 // relative path to the util project
 const char * simple_filename = "module/configparse/test/cases/INI/simple.ini";
@@ -15,7 +16,8 @@ int main(int argc, char * argv[]){
     UTEST_CLEAR_FLAG(UTEST_FLAG_STYLE_FULL);
 
     UTEST_RUN_TEST_SUITE(file_reading);
-    UTEST_RUN_TEST_SUITE(get_value);
+    UTEST_RUN_TEST_SUITE(configparse_get_value);
+    UTEST_RUN_TEST_SUITE(configparse_parse_all);
 
     UTEST_END();
     return 0;

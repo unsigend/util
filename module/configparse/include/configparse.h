@@ -74,7 +74,16 @@ extern bool init_configparse(struct configparse * this, const char * filename);
  */
 extern char * configparse_get_value(struct configparse * this, const char * section, const char * key);
 
-
+/**
+ * @brief: parse the whole file
+ * @param this: the configparse object
+ * @param callback: the callback function
+ * @param data: the data to be passed to the callback function
+ * 
+ * @note: the result will be saved in the callback function, and 'value' is a temporary pointer
+ *        so the user should copy the value to a new string using strdup if needed
+ */
+extern void configparse_parse_all(struct configparse * this, configparse_callback_t callback, void * data);
 
 #ifdef __cplusplus
 }

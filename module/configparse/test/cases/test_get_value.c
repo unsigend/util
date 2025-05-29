@@ -67,9 +67,31 @@ UTEST_TEST_CASE(configparse_get_value_complex){
     EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "branch \"main\"", "remote"), "origin");
     EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "branch \"main\"", "merge"), "refs/heads/main");
 
-    
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "merge \"custom-merge\"", "name"), "Custom Merge Driver");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "merge \"custom-merge\"", "driver"), "custom-merge-driver %O %A %B");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "merge \"custom-merge\"", "recursive"), "binary");
+
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "filter \"lfs\"", "clean"), "git-lfs clean -- %f");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "filter \"lfs\"", "smudge"), "git-lfs smudge -- %f");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "filter \"lfs\"", "process"), "git-lfs filter-process");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "filter \"lfs\"", "required"), "true");
+
+    EXPECT_NULL(configparse_get_value(&configparse, "diff", "algorithm"));
+    EXPECT_NULL(configparse_get_value(&configparse, "diff", "tool"));
+    EXPECT_NULL(configparse_get_value(&configparse, "diff", "wordRegex"));
+    EXPECT_NULL(configparse_get_value(&configparse, "diff", "context"));
+    EXPECT_NULL(configparse_get_value(&configparse, "diff", "lineLength"));
+
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "url \"git@github.com:\"", "insteadOf"), "https://github.com/");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "url \"git@github.com:\"", "pushInsteadOf"), "git://github.com/");
+
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "status", "showStash"), "true");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "status", "showUntrackedFiles"), "all");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "status", "showIgnoredFiles"), "true");
+    EXPECT_EQUAL_STRING(configparse_get_value(&configparse, "status", "submoduleSummary"), "true");
+
 }
-UTEST_TEST_SUITE(get_value){
+UTEST_TEST_SUITE(configparse_get_value){
     UTEST_RUN_TEST_CASE(configparse_get_value_simple);
     UTEST_RUN_TEST_CASE(configparse_get_value_complex);
 }
