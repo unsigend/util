@@ -20,14 +20,30 @@ GCC_FLAGS   	:=      -std=gnu11
 GCC_FLAGS 		+= 		-Wall -Werror -Wextra -O0
 GCC_FLAGS   	+=      -Wno-unused-parameter -Wno-unused-variable
 GCC_FLAGS   	+=      -Wno-unused-function -Wno-unused-label
-
 ifeq ($(DEBUG), 1)
 GCC_FLAGS   	+=      -g -O0
 endif
-
 GCC_FLAGS   	+=      -I$(INCLUDE_PATH) -I$(UTEST_INCLUDE_PATH)
 
-LD_FLAGS        :=      -L$(LIB_PATH) -l$(LIB_NAME)
+ifeq ($(LIB_METHOD), static)
+LIB_POSTFIX   	:=      .a
+else
+ifeq ($(HOST_OS), Darwin)
+LIB_POSTFIX   	:=      .dylib
+else
+LIB_POSTFIX   	:=      .so
+endif
+endif
+
+ifeq ($(HOST_OS), Darwin)
+LIB_FLAGS       :=      -L$(LIB_PATH)  -l$(LIB_NAME)
+else
+LIB_FLAGS       :=      $(LIB_PATH)/lib$(LIB_NAME)$(LIB_POSTFIX)
+endif
+
+ifeq ($(LIB_METHOD), shared)
+LIB_FLAGS       +=      -Wl,-rpath,$(LIB_PATH)
+endif
 
 SRCS            :=      $(wildcard $(CASES_PATH)/*.c)
 OBJS            :=      $(patsubst %.c, %.o, $(SRCS))
@@ -42,7 +58,7 @@ $(CASES_PATH)/%.o: $(CASES_PATH)/%.c
 	@$(GCC) $(GCC_FLAGS) -c $< -o $@
 
 all: $(OBJS)
-	@$(LD) $(GCC_FLAGS) $(LD_FLAGS) $(OBJS) -o $(TARGET)
+	@$(LD) $(GCC_FLAGS) $(OBJS) $(LIB_FLAGS) -o $(TARGET)
 	@echo "Run ./module/configparse/test/$(TARGET) see the test result"
 
 clean:

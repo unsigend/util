@@ -63,11 +63,11 @@ $(CASE_PATH)/%.o : $(CASE_PATH)/%.c $(LIB_DEPS)
 	@$(GCC) $(GCC_FLAGS) -c $< -o $@
 
 $(TARGET) : $(OBJS) main.o
-	@$(LD) $(GCC_FLAGS) $^ -L$(LIB_PATH) -l$(LIB_NAME) -o $@
+	@$(LD) $(GCC_FLAGS) $^ $(LIB_FLAGS) -L$(LIB_PATH) -l$(LIB_NAME) -o $@
 	@echo "Run ./module/argparse/test/$(TARGET) see the test result"
 
 $(DEMO) : demo.o
-	@$(LD) $(GCC_FLAGS) $^ -L$(LIB_PATH) -l$(LIB_NAME) -o $@
+	@$(LD) $(GCC_FLAGS) $^ $(LIB_FLAGS) -L$(LIB_PATH) -l$(LIB_NAME) -o $@
 	@echo "Run ./module/argparse/test/$(DEMO) see the demo"
 
 all: $(TARGET) $(DEMO)
