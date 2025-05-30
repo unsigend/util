@@ -239,37 +239,37 @@ extern void UtestAssertionError(UTEST_STRING_TYPE FILE, UTEST_INT_TYPE LINE, con
     if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) != (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){      \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " == %llu,"                               \
-        " actual was %llu", EXPECTED, ACTUAL);                                      \
+        " actual was %llu", (UTEST_UINT_TYPE)EXPECTED, (UTEST_UINT_TYPE)ACTUAL);    \
     }
 #define _EXPECT_NOT_EQUAL_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                         \
     if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) == (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){      \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " != %llu,"                               \
-        " actual was %llu", EXPECTED, ACTUAL);                                      \
+        " actual was %llu", (UTEST_UINT_TYPE)EXPECTED, (UTEST_UINT_TYPE)ACTUAL);    \
     }
 #define _EXPECT_GREATER_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                           \
     if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) <= (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){      \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " > %llu,"                                \
-        " actual was %llu", EXPECTED, ACTUAL);                                      \
+        " actual was %llu", (UTEST_UINT_TYPE)EXPECTED, (UTEST_UINT_TYPE)ACTUAL);    \
     }
 #define _EXPECT_GREATER_EQUAL_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                     \
     if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) < (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){       \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " >= %llu,"                               \
-        " actual was %llu", EXPECTED, ACTUAL);                                      \
+        " actual was %llu", (UTEST_UINT_TYPE)EXPECTED, (UTEST_UINT_TYPE)ACTUAL);    \
     }
 #define _EXPECT_LESS_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                              \
     if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) >= (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){      \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " < %llu,"                                \
-        " actual was %llu", EXPECTED, ACTUAL);                                      \
+        " actual was %llu", (UTEST_UINT_TYPE)EXPECTED, (UTEST_UINT_TYPE)ACTUAL);    \
     }
 #define _EXPECT_LESS_EQUAL_UINT_TYPE(TYPE, ACTUAL, EXPECTED)                        \
     if ((UTEST_UINT_TYPE)(TYPE)(ACTUAL) > (UTEST_UINT_TYPE)(TYPE)(EXPECTED)){       \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " <= %llu,"                               \
-        " actual was %llu", EXPECTED, ACTUAL);                                      \
+        " actual was %llu", (UTEST_UINT_TYPE)EXPECTED, (UTEST_UINT_TYPE)ACTUAL);    \
     }
 
 /* signed integer assertion */
@@ -277,37 +277,37 @@ extern void UtestAssertionError(UTEST_STRING_TYPE FILE, UTEST_INT_TYPE LINE, con
     if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) != (UTEST_INT_TYPE)(TYPE)(EXPECTED)){        \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " == %lld,"                               \
-        " actual was %lld", EXPECTED, ACTUAL);                                      \
+        " actual was %lld", (UTEST_INT_TYPE)EXPECTED, (UTEST_INT_TYPE)ACTUAL);      \
     }
 #define _EXPECT_NOT_EQUAL_INT_TYPE(TYPE, ACTUAL, EXPECTED)                          \
     if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) == (UTEST_INT_TYPE)(TYPE)(EXPECTED)){        \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " != %lld,"                               \
-        " actual was %lld", EXPECTED, ACTUAL);                                      \
+        " actual was %lld", (UTEST_INT_TYPE)EXPECTED, (UTEST_INT_TYPE)ACTUAL);      \
     }
 #define _EXPECT_GREATER_INT_TYPE(TYPE, ACTUAL, EXPECTED)                            \
     if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) <= (UTEST_INT_TYPE)(TYPE)(EXPECTED)){        \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " > %lld,"                                \
-        " actual was %lld", EXPECTED, ACTUAL);                                      \
+        " actual was %lld", (UTEST_INT_TYPE)EXPECTED, (UTEST_INT_TYPE)ACTUAL);      \
     }
 #define _EXPECT_GREATER_EQUAL_INT_TYPE(TYPE, ACTUAL, EXPECTED)                      \
     if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) < (UTEST_INT_TYPE)(TYPE)(EXPECTED)){         \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " >= %lld,"                               \
-        " actual was %lld", EXPECTED, ACTUAL);                                      \
+        " actual was %lld", (UTEST_INT_TYPE)EXPECTED, (UTEST_INT_TYPE)ACTUAL);      \
     }
 #define _EXPECT_LESS_INT_TYPE(TYPE, ACTUAL, EXPECTED)                               \
     if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) >= (UTEST_INT_TYPE)(TYPE)(EXPECTED)){        \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " < %lld,"                                \
-        " actual was %lld", EXPECTED, ACTUAL);                                      \
+        " actual was %lld", (UTEST_INT_TYPE)EXPECTED, (UTEST_INT_TYPE)ACTUAL);      \
     }
 #define _EXPECT_LESS_EQUAL_INT_TYPE(TYPE, ACTUAL, EXPECTED)                         \
     if ((UTEST_INT_TYPE)(TYPE)(ACTUAL) > (UTEST_INT_TYPE)(TYPE)(EXPECTED)){         \
         UtestAssertionError(__FILE__, __LINE__,                                     \
         "expect " UTEST_STRINGIFY(ACTUAL) " <= %lld,"                               \
-        " actual was %lld", EXPECTED, ACTUAL);                                      \
+        " actual was %lld", (UTEST_INT_TYPE)EXPECTED, (UTEST_INT_TYPE)ACTUAL);      \
     }
 
 
