@@ -26,16 +26,16 @@ Util is a modern, lightweight C utility library that extends the standard C libr
 
 Everything is managed through Makefile. Use `make help` to see detailed commands:
 
-```Makefile
+```
 USAGE:
-	make all	    build all modules
-	make clean	    clean builds
-	make list	    list all modules
-	make help	    show this help message
-	make test-[module]  build test for [module]
-        make clean-[module] clean test for [module]
-	make clean-all      completely clean all builds
-	make install	    install headers to install path
+	make all	    		build all modules
+	make clean	    		clean builds
+	make list	    		list all modules
+	make help	    		show this help message
+	make test-[module]  	build test for [module]
+	make clean-[module] 	clean test for [module]
+	make clean-all      	completely clean all builds
+	make install	    	install headers to install path
 ```
 
 ### Installation
