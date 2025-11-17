@@ -183,7 +183,7 @@ clean-$(module):; \
 
 # Default Goal will be help
 .DEFAULT_GOAL	:= 	help
-.PHONY:				all clean help always list info lib clean-all install
+.PHONY:				all clean help always list info lib clean-all install docs
 
 # help target
 help:
@@ -198,6 +198,7 @@ help:
 	@echo "\tmake clean-[module]\tclean test for [module]"
 	@echo "\tmake clean-all\t\tcompletely clean all builds"
 	@echo "\tmake install\t\tinstall all headers to $(INSTALL_PATH)"
+	@echo "\tmake docs\t\tbuild and serve documentation"
 	@echo ""
 	@echo "You can change the configuration in config/config.mk"
 
@@ -270,3 +271,14 @@ install:
 		cp -r $(MODULE_PATH)/$$module/include/* $(INSTALL_PATH)/; \
 	done
 	@echo "Install all headers to $(INSTALL_PATH)"
+
+# docs target
+docs:
+	@if [ ! -d "docs/venv" ]; then \
+		cd docs && python3 -m venv venv; \
+	fi
+	@if ! docs/venv/bin/python3 -m pip show mkdocs-material > /dev/null 2>&1; then \
+		docs/venv/bin/pip install mkdocs-material; \
+	fi
+	@cd docs && venv/bin/mkdocs build
+	@cd docs && venv/bin/mkdocs serve
