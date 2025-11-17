@@ -67,9 +67,8 @@ make install
 Include the library in your project:
 
 ```c
-#include <utest.h>      // For unit testing
-#include <argparse.h>   // For command line parsing
-#include <configparse.h> // For config file parsing
+#include <utest.h>
+#include <argparse.h>
 ```
 
 Link against the library:
