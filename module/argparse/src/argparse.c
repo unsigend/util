@@ -315,6 +315,12 @@ void argparse_parse(struct argparse *this, int argc, char *argv[]){
         const char * current_option = this->_argv[0];
 
         if (current_option && current_option[0] == '-'){
+            // Handle '--' as end of options
+            if (current_option[1] == '-' && current_option[2] == '\0'){
+                this->_argc--;
+                this->_argv++;
+                break;
+            }
             // for long option
             if (current_option[1] == '-'){
                 switch (argparse_long_option(this, current_option + 2)){
@@ -336,7 +342,10 @@ void argparse_parse(struct argparse *this, int argc, char *argv[]){
                 continue;
             }
         }
-        // for unknown option
+        // Not an option
+        break;
+        
+        // unknown option
         unknown_option:
             if (this->_flags & ARGPARSE_FLAG_IGNORE_UNKNOWN_OPTION){
                 this->_argc--;

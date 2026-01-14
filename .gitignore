@@ -17,3 +17,5 @@ lib/
 *.dylib
 # Ignore include directory
 include/
+compile_commands.json
+.cache/
