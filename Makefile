@@ -272,6 +272,9 @@ install:
 	done
 	@echo "Install all headers to $(INSTALL_PATH)"
 
+clang:
+	@bear -- make all
+
 # docs target
 docs:
 	@if [ ! -d "docs/venv" ]; then \
