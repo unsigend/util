@@ -25,12 +25,19 @@
 #ifndef UTEST_H
 #define UTEST_H
 
+/* Flags for the utest library. */
 #define UTEST_FLAG_NONE
 #define UTEST_FLAG_SHOW_CASE
 #define UTEST_FLAG_SHOW_SUITE
 #define UTEST_FLAG_STYLE_FULL
 #define UTEST_FLAG_STOP_ON_FAILURE
 #define UTEST_FLAG_DEFAULT
+
+/* These macros are used for specific usage only, often combined with
+   UTEST_STRINGIFY and UTEST_CONCATENATE to get the function name for the
+   function pointer. */
+#define UTEST_CASENAME_PREFIX
+#define UTEST_SUITENAME_PREFIX
 
 /* Declare a test case and run it. */
 #define UTEST_TEST_CASE(CASE_NAME)

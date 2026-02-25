@@ -102,21 +102,28 @@ extern void UtestAssertionError(utest_string file, utest_int line,
 #undef UTEST_RUN_TEST_CASE
 #undef UTEST_RUN_TEST_SUITE
 
+#undef UTEST_CASENAME_PREFIX
+#undef UTEST_SUITENAME_PREFIX
+
+#define UTEST_CASENAME_PREFIX utest_case_
+#define UTEST_SUITENAME_PREFIX utest_suite_
+
 #define UTEST_BEGIN() UtestBegin()
 #define UTEST_END() UtestEnd()
 #define UTEST_SET_FLAG(UTEST_FLAG) gstate.flag |= (UTEST_FLAG)
 #define UTEST_CLEAR_FLAG(UTEST_FLAG) gstate.flag &= ~(UTEST_FLAG)
 #define UTEST_FLAG_RESET() gstate.flag = UTEST_FLAG_DEFAULT
 #define UTEST_TEST_CASE(TEST_CASE_NAME)                                        \
-  static void UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME)(void)
+  static void UTEST_CONCATENATE(UTEST_CASENAME_PREFIX, TEST_CASE_NAME)(void)
 #define UTEST_TEST_SUITE(TEST_SUITE_NAME)                                      \
-  void UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME)(void)
+  void UTEST_CONCATENATE(UTEST_SUITENAME_PREFIX, TEST_SUITE_NAME)(void)
 #define UTEST_RUN_TEST_CASE(TEST_CASE_NAME)                                    \
-  UtestRunTestCase(UTEST_CONCATENATE(utest_case_, TEST_CASE_NAME),             \
+  UtestRunTestCase(UTEST_CONCATENATE(UTEST_CASENAME_PREFIX, TEST_CASE_NAME),   \
                    UTEST_STRINGIFY(TEST_CASE_NAME))
 #define UTEST_RUN_TEST_SUITE(TEST_SUITE_NAME)                                  \
-  UtestRunTestSuite(UTEST_CONCATENATE(utest_suite_, TEST_SUITE_NAME),          \
-                    UTEST_STRINGIFY(TEST_SUITE_NAME))
+  UtestRunTestSuite(                                                           \
+      UTEST_CONCATENATE(UTEST_SUITENAME_PREFIX, TEST_SUITE_NAME),              \
+      UTEST_STRINGIFY(TEST_SUITE_NAME))
 
 #undef EXPECT_TRUE
 #define EXPECT_TRUE(EXPRESSION)                                                \

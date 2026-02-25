@@ -5,6 +5,12 @@ description: Lightweight unit testing framework for C
 
 The `Utest` module provides a lightweight, modular unit testing framework for C, designed to make writing and running tests simple and expressive. It provides a rich set of macros for defining test cases, test suites, and a variety of assertions for different data types.
 
+**Version:** utest v1.1
+
+### Release (v1.1)
+
+Remove `_`-prefixed macro family, simplify the `<utest.h>` public header structure. Add support for character assertion, testing. Add `UTEST_CASENAME_PREFIX` and `UTEST_SUITENAME_PREFIX` for extract function pointer.
+
 ## Header Files
 
 To use the utest module in your code, include the header file:
@@ -219,14 +225,14 @@ UTEST_FLAG_RESET();
 
 Utest supports runtime flags to control output and behavior:
 
-| Flag | Description |
-|------|-------------|
-| `UTEST_FLAG_NONE` | No special behavior |
-| `UTEST_FLAG_SHOW_CASE` | Show each test case result |
-| `UTEST_FLAG_SHOW_SUITE` | Show each test suite result |
-| `UTEST_FLAG_STYLE_FULL` | Use full output style |
-| `UTEST_FLAG_STOP_ON_FAILURE` | Stop on first failure |
-| `UTEST_FLAG_DEFAULT` | Default flag set |
+| Flag                         | Description                 |
+| ---------------------------- | --------------------------- |
+| `UTEST_FLAG_NONE`            | No special behavior         |
+| `UTEST_FLAG_SHOW_CASE`       | Show each test case result  |
+| `UTEST_FLAG_SHOW_SUITE`      | Show each test suite result |
+| `UTEST_FLAG_STYLE_FULL`      | Use full output style       |
+| `UTEST_FLAG_STOP_ON_FAILURE` | Stop on first failure       |
+| `UTEST_FLAG_DEFAULT`         | Default flag set            |
 
 ---
 
@@ -438,7 +444,7 @@ UTEST_TEST_CASE(TestString) {
 UTEST_TEST_CASE(TestPointer) {
     void *ptr = NULL;
     EXPECT_NULL(ptr);
-    
+
     int value = 42;
     void *ptr2 = &value;
     EXPECT_NOT_NULL(ptr2);
@@ -460,6 +466,45 @@ UTEST_TEST_CASE(TestBoolean) {
     EXPECT_FALSE(3 > 5);
     EXPECT_TRUE(1);
     EXPECT_FALSE(0);
+}
+```
+
+---
+
+### Character Assertions (v1.1)
+
+Assertions for signed and unsigned character types:
+
+#### Signed character (`char`)
+
+- `EXPECT_EQUAL_CHAR(ACTUAL, EXPECTED)` - Expects two characters to be equal
+- `EXPECT_NOT_EQUAL_CHAR(ACTUAL, EXPECTED)` - Expects two characters to be not equal
+- `EXPECT_GREATER_CHAR(ACTUAL, EXPECTED)` - Expects actual character to be greater than expected
+- `EXPECT_GREATER_EQUAL_CHAR(ACTUAL, EXPECTED)` - Expects actual to be greater than or equal to expected
+- `EXPECT_LESS_CHAR(ACTUAL, EXPECTED)` - Expects actual character to be less than expected
+- `EXPECT_LESS_EQUAL_CHAR(ACTUAL, EXPECTED)` - Expects actual to be less than or equal to expected
+
+#### Unsigned character (`unsigned char`)
+
+- `EXPECT_EQUAL_UCHAR(ACTUAL, EXPECTED)` - Expects two unsigned characters to be equal
+- `EXPECT_NOT_EQUAL_UCHAR(ACTUAL, EXPECTED)` - Expects two unsigned characters to be not equal
+- `EXPECT_GREATER_UCHAR(ACTUAL, EXPECTED)` - Expects actual unsigned char to be greater than expected
+- `EXPECT_GREATER_EQUAL_UCHAR(ACTUAL, EXPECTED)` - Expects actual to be greater than or equal to expected
+- `EXPECT_LESS_UCHAR(ACTUAL, EXPECTED)` - Expects actual unsigned char to be less than expected
+- `EXPECT_LESS_EQUAL_UCHAR(ACTUAL, EXPECTED)` - Expects actual to be less than or equal to expected
+
+**Example:**
+
+```c
+UTEST_TEST_CASE(TestChar) {
+    EXPECT_EQUAL_CHAR('a', 'a');
+    EXPECT_NOT_EQUAL_CHAR('a', 'b');
+    EXPECT_LESS_CHAR('A', 'a');
+}
+
+UTEST_TEST_CASE(TestUchar) {
+    EXPECT_EQUAL_UCHAR((unsigned char)255, (unsigned char)255);
+    EXPECT_GREATER_UCHAR((unsigned char)200, (unsigned char)100);
 }
 ```
 
@@ -623,4 +668,3 @@ Avoid the following:
 - Not calling `UTEST_BEGIN()` before running tests
 - Not calling `UTEST_END()` after running tests
 - Using test case names that conflict with C keywords or other identifiers
-
