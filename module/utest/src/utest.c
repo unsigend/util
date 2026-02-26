@@ -24,6 +24,7 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 #include <utest/core.h>
 
 #define _ASCII_COLOR_RED "\033[31m"
