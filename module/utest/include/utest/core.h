@@ -32,7 +32,6 @@ extern "C" {
 #endif
 
 #include <stddef.h>
-#include <string.h>
 #include <utest/types.h>
 
 extern UtestStateType gstate;
@@ -71,7 +70,8 @@ extern void UtestAssertionError(utest_string file, utest_int line,
 /* utility macros */
 #define _UTEST_STRINGIFY(X) #X
 #define UTEST_STRINGIFY(X) _UTEST_STRINGIFY(X)
-#define UTEST_CONCATENATE(A, B) A##B
+#define UTEST_CONCATENATE_IMPL(A, B) A##B
+#define UTEST_CONCATENATE(A, B) UTEST_CONCATENATE_IMPL(A, B)
 #define UTEST_CONCATENATE3(A, B, C)                                            \
   UTEST_CONCATENATE(A, UTEST_CONCATENATE(B, C))
 
