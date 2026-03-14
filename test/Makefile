@@ -74,7 +74,7 @@ LD_FLAGS      := -L$(UTIL_LIB_PATH) -l$(LIB_NAME)
 # .C
 $(OBJ_PATH)/%.o: $(CASES_PATH)/%.c
 	@mkdir -p $(dir $@)
-	@mkdir -p $(dir $(DEP_PATH)/$*)
+	@mkdir -p $(dir $(DEP_PATH)/$*.d)
 	@$(CC) $(CC_FLAGS) $(CC_DEPS_FLAGS) $(DEP_PATH)/$*.d -MT $@ -c $< -o $@
 	@echo "  + CC	$<"
 

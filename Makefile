@@ -47,8 +47,7 @@ AR      := ar
 
 # compiler flags
 GCC_FLAGS := -std=c11 -Wall -Wextra -Werror -Wshadow
-GCC_FLAGS += -Wno-unused-function
-GCC_FLAGS += -I $(INCLUDE_PATH)
+GCC_FLAGS += -I$(INCLUDE_PATH)
 ifeq ($(HOST_OS), Linux)
 GCC_FLAGS += -fPIC
 endif
@@ -71,8 +70,8 @@ AR_FLAGS       := -rcs
 # .C
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(dir $@)
-	@mkdir -p $(dir $(patsubst $(OBJ_PATH)/%.o,$(DEP_PATH)/%.d,$@))
-	@$(GCC) $(GCC_FLAGS) $(GCC_DEPS_FLAGS) $(patsubst $(OBJ_PATH)/%.o,$(DEP_PATH)/%.d,$@) -c $< -o $@
+	@mkdir -p $(dir $(DEP_PATH)/$*.d)
+	@$(GCC) $(GCC_FLAGS) $(GCC_DEPS_FLAGS) $(DEP_PATH)/$*.d -MT $@ -c $< -o $@
 	@echo "  + CC	$<"
 
 -include $(DEPS)
@@ -153,7 +152,8 @@ help:
 
 # generate compile_commands.json
 clang:
-	@bear -- make test -j5
+	@$(MAKE) clean
+	@bear -- $(MAKE) test
 
 # format .c and .h in include, src, test
 format:
