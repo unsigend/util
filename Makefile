@@ -20,46 +20,55 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-CUR_DIR     := .
-SRC_PATH    := $(CUR_DIR)/src
+# paths
+CUR_DIR       := .
+SRC_PATH     := $(CUR_DIR)/src
 INCLUDE_PATH := $(CUR_DIR)/include
-CONFIG_PATH := $(CUR_DIR)/config
-BUILD_PATH  := $(CUR_DIR)/build
-OBJ_PATH    := $(BUILD_PATH)/obj
-DEP_PATH    := $(BUILD_PATH)/dep
-LIB_PATH    := $(CUR_DIR)/lib
+CONFIG_PATH  := $(CUR_DIR)/config
+BUILD_PATH   := $(CUR_DIR)/build
+OBJ_PATH     := $(BUILD_PATH)/obj
+DEP_PATH     := $(BUILD_PATH)/dep
+LIB_PATH     := $(CUR_DIR)/lib
 INSTALL_PATH := $(CUR_DIR)/include
+TEST_PATH    := $(CUR_DIR)/test
 
 include $(CONFIG_PATH)/config.mk
 
-SRCS        := $(shell find $(SRC_PATH) -name "*.c")
-OBJS        := $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
-DEPS        := $(patsubst $(SRC_PATH)/%.c, $(DEP_PATH)/%.d, $(SRCS))
+# source and object files
+SRCS := $(shell find $(SRC_PATH) -name "*.c")
+OBJS := $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
+DEPS := $(patsubst $(SRC_PATH)/%.c, $(DEP_PATH)/%.d, $(SRCS))
 
-HOST_OS     := $(shell uname -s)
-GCC         := gcc
-LD          := $(GCC)
-AR          := ar
+# host and tools
+HOST_OS := $(shell uname -s)
+GCC     := gcc
+LD      := $(GCC)
+AR      := ar
 
-GCC_FLAGS   := -std=c11 -Wall -Wextra -Werror -Wshadow -I $(INCLUDE_PATH)
+# compiler flags
+GCC_FLAGS := -std=c11 -Wall -Wextra -Werror -Wshadow
+GCC_FLAGS += -Wno-unused-function
+GCC_FLAGS += -I $(INCLUDE_PATH)
 ifeq ($(HOST_OS), Linux)
-GCC_FLAGS   += -fPIC
+GCC_FLAGS += -fPIC
 endif
 ifeq ($(DEBUG), 1)
-GCC_FLAGS   += -g -O0
+GCC_FLAGS += -g -O0
 else
-GCC_FLAGS   += -O2
+GCC_FLAGS += -O2
 endif
 
 GCC_DEPS_FLAGS := -MMD -MP -MF
-AR_FLAGS    := -rcs
+AR_FLAGS       := -rcs
 
+# cancel implicit rules
 %.o : %.c
 %.o: %.cpp
 %.o: %.s
 %: %.o
 %.out: %.o
 
+# .C
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(patsubst $(OBJ_PATH)/%.o,$(DEP_PATH)/%.d,$@))
@@ -69,7 +78,7 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 -include $(DEPS)
 
 .DEFAULT_GOAL := help
-.PHONY: all clean help create_build_dir lib install list info docs clang test test-%
+.PHONY: all clean help create_build_dir lib install list info docs clang format test test-%
 
 create_build_dir:
 	@mkdir -p $(OBJ_PATH)
@@ -99,14 +108,15 @@ endif
 all: lib
 
 test: lib
-	@$(MAKE) -C test test
+	@$(MAKE) -C $(TEST_PATH) test
 
 test-%: lib
-	@$(MAKE) -C test test-$*
+	@$(MAKE) -C $(TEST_PATH) test-$*
 
 clean:
 	@rm -rf $(BUILD_PATH)
 	@rm -rf $(LIB_PATH)
+	@$(MAKE) -C $(TEST_PATH) clean
 
 install:
 	@mkdir -p $(INSTALL_PATH)
@@ -134,14 +144,22 @@ help:
 	@echo "  make test-NAME - build and run tests for module NAME"
 	@echo "  make clean     - remove build and lib"
 	@echo "  make list      - list source files"
-	@echo "  make info    - show build configuration"
-	@echo "  make install - install headers to $(INSTALL_PATH)"
-	@echo "  make docs    - build and serve documentation"
-	@echo "  make help    - this message"
-	@echo "Options: config/config.mk (LIB_NAME, LIB_METHOD, DEBUG)\n"
+	@echo "  make info      - show build configuration"
+	@echo "  make install   - install headers to $(INSTALL_PATH)"
+	@echo "  make docs      - build and serve documentation"
+	@echo "  make clang     - generate compile_commands.json (src + test)"
+	@echo "  make format   - format .c and .h in include, src, test"
+	@echo "  make help      - this message"
 
+# generate compile_commands.json
 clang:
-	@bear -- make all
+	@bear -- make test -j5
+
+# format .c and .h in include, src, test
+format:
+	@find $(INCLUDE_PATH) $(SRC_PATH) $(TEST_PATH) \
+		\( -name "*.c" -o -name "*.h" \) -exec clang-format -i {} +
+	@echo "Format done."
 
 docs:
 	@if [ ! -d "docs/venv" ]; then cd docs && python3 -m venv venv; fi

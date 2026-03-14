@@ -42,11 +42,13 @@ UtestStateType gstate;
 static UtestCaseType currcase;
 static UtestSuiteType currsuite;
 
-static void PrintUtestVersion() {
+static void PrintUtestVersion()
+{
   fprintf(stdout, "Utest version: %d.%d\n", _UTEST_VERSION_MAJOR,
           _UTEST_VERSION_MINOR);
 }
-static void TestCasePrintResult(UtestResultType result) {
+static void TestCasePrintResult(UtestResultType result)
+{
   if (gstate.flag & UTEST_FLAG_SHOW_CASE) {
     if (gstate.flag & UTEST_FLAG_SHOW_SUITE) {
       fprintf(stdout, " |- ");
@@ -61,7 +63,8 @@ static void TestCasePrintResult(UtestResultType result) {
     fprintf(stdout, "  TEST CASE: %s\n", currcase.name);
   }
 }
-static void TestSuitePrintResult(UtestResultType result) {
+static void TestSuitePrintResult(UtestResultType result)
+{
   if (gstate.flag & UTEST_FLAG_SHOW_SUITE) {
     if (result == UTEST_RESULT_SUCCESS) {
       fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED " _ASCII_COLOR_RESET "]");
@@ -73,13 +76,15 @@ static void TestSuitePrintResult(UtestResultType result) {
     fprintf(stdout, "  TEST SUITE: %s\n", currsuite.name);
   }
 }
-static void PrintNextLine() {
+static void PrintNextLine()
+{
   if ((gstate.flag & UTEST_FLAG_SHOW_SUITE) &&
       (gstate.flag & UTEST_FLAG_SHOW_CASE)) {
     fputc('\n', stdout);
   }
 }
-static void PrintAssertErrorPrefix() {
+static void PrintAssertErrorPrefix()
+{
   fprintf(stdout, "   ");
   if (gstate.flag & UTEST_FLAG_SHOW_CASE) {
     if (gstate.flag & UTEST_FLAG_SHOW_SUITE) {
@@ -88,7 +93,8 @@ static void PrintAssertErrorPrefix() {
   }
 }
 
-void UtestBegin() {
+void UtestBegin()
+{
   memset(&gstate, 0, sizeof(gstate));
   gstate.flag = UTEST_FLAG_DEFAULT;
 
@@ -96,7 +102,8 @@ void UtestBegin() {
   PrintUtestVersion();
 }
 
-void UtestEnd() {
+void UtestEnd()
+{
   if (gstate.flag & UTEST_FLAG_STYLE_FULL) {
     fprintf(stdout, "====================\n");
     fprintf(stdout, "TOTAL  : %llu\n", gstate.ntotal);
@@ -108,7 +115,8 @@ void UtestEnd() {
   }
 }
 
-void UtestRunTestCase(utest_func_ptr caseptr, utest_string name) {
+void UtestRunTestCase(utest_func_ptr caseptr, utest_string name)
+{
   currcase.name = name;
   currcase.failed = false;
   caseptr();
@@ -123,7 +131,8 @@ void UtestRunTestCase(utest_func_ptr caseptr, utest_string name) {
   gstate.ntotal++;
 }
 
-void UtestRunTestSuite(utest_func_ptr suiteptr, utest_string name) {
+void UtestRunTestSuite(utest_func_ptr suiteptr, utest_string name)
+{
   currsuite.name = name;
   currsuite.failed = false;
 
@@ -137,7 +146,8 @@ void UtestRunTestSuite(utest_func_ptr suiteptr, utest_string name) {
   PrintNextLine();
 }
 void UtestAssertionError(utest_string file, utest_int line, const char *fmt,
-                         ...) {
+                         ...)
+{
   if ((!(gstate.flag & UTEST_FLAG_STOP_ON_FAILURE)) || (!(currcase.failed))) {
 
     TestCasePrintResult(UTEST_RESULT_FAILURE);
