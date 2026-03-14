@@ -19,269 +19,134 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-#
-# Makefile for building and running test in util
 
-# The project is structured by modules
-# Module Hierarchy:
-# module:
-# ├── src/
-# ├── include/
-# ├── test/
-#      └── Makefile
+CUR_DIR     := .
+SRC_PATH    := $(CUR_DIR)/src
+INCLUDE_PATH := $(CUR_DIR)/include
+CONFIG_PATH := $(CUR_DIR)/config
+BUILD_PATH  := $(CUR_DIR)/build
+OBJ_PATH    := $(BUILD_PATH)/obj
+DEP_PATH    := $(BUILD_PATH)/dep
+LIB_PATH    := $(CUR_DIR)/lib
+INSTALL_PATH := $(CUR_DIR)/include
 
-# Declare the path variables
-CUR_PATH        :=  $(CURDIR)
-CONFIG_PATH     :=  ./config
-BUILD_PATH		:= 	./build
-SCRIPT_PATH		:= 	./script
-INSTALL_PATH    :=  ./include
-MODULE_PATH		:= 	./module
-LIB_PATH		:= 	./lib
-INSTALL_PATH    :=  ./include
-
-UTIL_LIBRARY_PATH 	:=  $(CUR_PATH)/lib
-UTIL_LIBRARY_NAME   :=  util
-UTEST_INCLUDE_PATH  :=  $(CUR_PATH)/module/utest/include
-
-# Include the sub-makefile script
 include $(CONFIG_PATH)/config.mk
 
-# Automatically detect all modules in the module path
-ifndef $(MODULES)
-MODULES			:= 		$(wildcard $(MODULE_PATH)/*)
-MODULES   		:= 		$(notdir $(MODULES))
-endif
-MODULES 		:= 		$(sort $(MODULES))
+SRCS        := $(shell find $(SRC_PATH) -name "*.c")
+OBJS        := $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
+DEPS        := $(patsubst $(SRC_PATH)/%.c, $(DEP_PATH)/%.d, $(SRCS))
 
-ifdef $(V)
-VERBOSE         := 		$(V)
-endif
-HOST_OS       	:=      $(shell uname -s)
-# Flags for tools
-GCC     		:=  	gcc
-CXX     		:=  	g++
-LD 				:=  	$(GCC)
-AR 				:=  	ar
+HOST_OS     := $(shell uname -s)
+GCC         := gcc
+LD          := $(GCC)
+AR          := ar
 
-# Flags for GCC flags
-GCC_FLAGS		:=  	
-GCC_FLAGS		+= 	    -std=c11
-GCC_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
-
+GCC_FLAGS   := -std=c11 -Wall -Wextra -Werror -Wshadow -I $(INCLUDE_PATH)
 ifeq ($(HOST_OS), Linux)
-GCC_FLAGS		+= 	    -fPIC
+GCC_FLAGS   += -fPIC
 endif
-
 ifeq ($(DEBUG), 1)
-GCC_FLAGS		+= 	    -g
-GCC_FLAGS		+= 	    -O0
+GCC_FLAGS   += -g -O0
 else
-GCC_FLAGS		+= 	    -O2
+GCC_FLAGS   += -O2
 endif
 
-GCC_DEPS_FLAGS	:=
-GCC_DEPS_FLAGS	+= 	    -MMD -MP -MF
+GCC_DEPS_FLAGS := -MMD -MP -MF
+AR_FLAGS    := -rcs
 
-# Flags for Archive
-AR_FLAGS		:=
-AR_FLAGS		+= 	    -rcs
-
-# Flags for CXX flags
-# Compatible with C++ program
-CXX_FLAGS		:=
-CXX_FLAGS		+= 	    -std=c++17
-CXX_FLAGS		+= 	    -Wall -Wextra -Werror -Wshadow
-
-ifeq ($(HOST_OS), Linux)
-CXX_FLAGS		+= 	    -fPIC
-endif
-
-# Cancel implicit rules
 %.o : %.c
 %.o: %.cpp
 %.o: %.s
 %: %.o
 %.out: %.o
 
-# Variables for each module
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
+	@mkdir -p $(dir $@)
+	@mkdir -p $(dir $(patsubst $(OBJ_PATH)/%.o,$(DEP_PATH)/%.d,$@))
+	@$(GCC) $(GCC_FLAGS) $(GCC_DEPS_FLAGS) $(patsubst $(OBJ_PATH)/%.o,$(DEP_PATH)/%.d,$@) -c $< -o $@
+	@echo "  + CC	$<"
 
-# Variable $(module)_SRC : Module source files
-$(foreach module, $(MODULES),$(eval $(module)_SRC := $(wildcard $(MODULE_PATH)/$(module)/src/*.c)))
-# Variable $(module)_OBJ : Module object files
-$(foreach module, $(MODULES),$(eval $(module)_OBJ := $(patsubst $(MODULE_PATH)/$(module)/src/%.c, \
-	$(BUILD_PATH)/$(module)/obj/%.o, $($(module)_SRC))))
-# Variable $(module)_INC : Module include files
-$(foreach module, $(MODULES),$(eval $(module)_INC := $(wildcard $(MODULE_PATH)/$(module)/include)))
-# Variable $(module)_DEP : Module dependency files
-$(foreach module, $(MODULES),$(eval $(module)_DEP := $(wildcard $(BUILD_PATH)/$(module)/dep/*.d)))
-# Variable ALL_OBJ : All object files
-ALL_OBJ			:= $(foreach module, $(MODULES), $($(module)_OBJ))
+-include $(DEPS)
 
-# Automatically generate targets for each module
+.DEFAULT_GOAL := help
+.PHONY: all clean help create_build_dir lib install list info docs clang test test-%
 
-# generate rules for directory check 
-# $(module)_check_dir:
-$(foreach module, $(MODULES), \
-$(eval \
-$(module)_check_dir:;\
-	$(shell mkdir -p $(BUILD_PATH)/$(module)/obj) \
-	$(shell mkdir -p $(BUILD_PATH)/$(module)/dep) \
-	@echo "Start building module: $(module)"; \
-))
+create_build_dir:
+	@mkdir -p $(OBJ_PATH)
+	@mkdir -p $(DEP_PATH)
+	@mkdir -p $(LIB_PATH)
 
-# generate rule for module
-# $(module): $(module)_OBJ
-$(foreach module, $(MODULES), \
-$(eval \
-$(module): $(module)_check_dir $($(module)_OBJ); \
-	@echo "Build Module: $(module)\n"; \
-))
-
-# generate rules for build .o files
-# $(module)_OBJ: $(module)_check_dir $($(module)_SRC)
-$(foreach module, $(MODULES), \
-$(eval \
-$($(module)_OBJ): $($(module)_SRC); \
-	@$(GCC) $(GCC_FLAGS) $(GCC_DEPS_FLAGS)  \
-	$$(addprefix $(BUILD_PATH)/$(module)/dep/, $$(patsubst %.o, %.d,$$(notdir $$@))) \
-	-I $($(module)_INC) -c $$< -o $$@; \
-	echo "  + CC\t$$<" \
-))
-
-# generate include the dependency files for each module
-# -include $($(module)_DEP)
-$(foreach module, $(MODULES), \
-$(eval \
--include $($(module)_DEP) \
-))
-
-export UTIL_LIBRARY_PATH
-export UTIL_LIBRARY_NAME
-export UTEST_INCLUDE_PATH
-export LIB_METHOD
-export HOST_OS
-export DEBUG
-
-# generate rules test-module for each module
-# test-$(module): 
-$(foreach module, $(MODULES), \
-$(eval \
-test-$(module): all; \
-	@$(MAKE) -C $(MODULE_PATH)/$(module)/test \
-))
-
-# generate rules clean-module for each module
-# clean-$(module):
-$(foreach module, $(MODULES), \
-$(eval \
-clean-$(module):; \
-	@$(MAKE) -C $(MODULE_PATH)/$(module)/test clean \
-))
-
-# Targets will defined here #
-
-# Default Goal will be help
-.DEFAULT_GOAL	:= 	help
-.PHONY:				all clean help always list info lib clean-all install docs
-
-# help target
-help:
-	@echo "Makefile for building the util library"
-	@echo "Copyright (c) 2025 QIU YIXIANG"
-	@echo "USAGE:"
-	@echo "\tmake all\t\tbuild all modules"
-	@echo "\tmake clean\t\tclean builds"
-	@echo "\tmake list\t\tlist all modules"
-	@echo "\tmake help\t\tshow this help message"
-	@echo "\tmake test-[module]\tbuild test for [module]"
-	@echo "\tmake clean-[module]\tclean test for [module]"
-	@echo "\tmake clean-all\t\tcompletely clean all builds"
-	@echo "\tmake install\t\tinstall all headers to $(INSTALL_PATH)"
-	@echo "\tmake docs\t\tbuild and serve documentation"
-	@echo ""
-	@echo "You can change the configuration in config/config.mk"
-
-# info target
-info: 
-	@echo "Building util library"
-	@echo "Selected Module : $(shell echo $(MODULES) | wc -w | xargs)"
-	@echo "Building Method : $(LIB_METHOD)\n"
-
-
-# all target
-ifeq ($(MODULES),)
-all:
-	@echo "No module selected, please select a module in config/config.mk"
+lib: create_build_dir $(OBJS)
+ifeq ($(LIB_METHOD), static)
+	@$(AR) $(AR_FLAGS) $(LIB_PATH)/lib$(LIB_NAME).a $(OBJS)
+	@echo "  + AR	lib$(LIB_NAME).a"
+	@echo "Building static library: $(LIB_PATH)/lib$(LIB_NAME).a"
+else ifeq ($(LIB_METHOD), shared)
+ifeq ($(HOST_OS), Darwin)
+	@$(LD) -shared -o $(LIB_PATH)/lib$(LIB_NAME).dylib $(OBJS)
+	@echo "  + LD	lib$(LIB_NAME).dylib"
+	@echo "Building shared library: $(LIB_PATH)/lib$(LIB_NAME).dylib"
 else
-all: info $(MODULES) lib
+	@$(LD) -shared -o $(LIB_PATH)/lib$(LIB_NAME).so $(OBJS)
+	@echo "  + LD	lib$(LIB_NAME).so"
+	@echo "Building shared library: $(LIB_PATH)/lib$(LIB_NAME).so"
 endif
-	
-# clean target
+else
+	@echo "Error: Unknown LIB_METHOD: $(LIB_METHOD)"
+endif
+	@echo ""
+
+all: lib
+
+test: lib
+	@$(MAKE) -C test test
+
+test-%: lib
+	@$(MAKE) -C test test-$*
+
 clean:
 	@rm -rf $(BUILD_PATH)
 	@rm -rf $(LIB_PATH)
-	@rm -rf $(INSTALL_PATH)
 
-# always target
-always:
-	@:
-
-# clean-all target
-clean-all:
-	@$(MAKE) clean
-	@for module in $(MODULES); do \
-		$(MAKE) -C $(MODULE_PATH)/$$module/test clean; \
-	done
-
-# lib target
-lib: $(ALL_OBJ)
-	@mkdir -p $(LIB_PATH)
-ifeq ($(LIB_METHOD), static)
-	@$(AR) $(AR_FLAGS) $(LIB_PATH)/lib$(LIB_NAME).a $^
-	@echo "  + AR\tlib$(LIB_NAME).a"
-	@echo "Building $(LIB_METHOD) library : $(LIB_PATH)/lib$(LIB_NAME).a"
-else ifeq ($(LIB_METHOD), shared)
-ifeq ($(HOST_OS), Darwin)
-	@$(LD) -shared -o $(LIB_PATH)/lib$(LIB_NAME).dylib $^
-	@echo "+ LD\tlib$(LIB_NAME).dylib"
-	@echo "Building $(LIB_METHOD) library : $(LIB_PATH)/lib$(LIB_NAME).dylib"
-else
-	@$(LD) -shared -o $(LIB_PATH)/lib$(LIB_NAME).so $^
-	@echo "+ LD\tlib$(LIB_NAME).so"
-	@echo "Building $(LIB_METHOD) library : $(LIB_PATH)/lib$(LIB_NAME).so"
-endif
-else
-	@echo "Error: Unknown library method: $(LIB_METHOD)"
-endif
-	@echo ""
-	
-# list target
-list:
-	@echo "Module List : "
-	@for module in $(MODULES); do \
-		echo "  - $$module"; \
-	done
-	@echo "Total: $(shell echo $(MODULES) | wc -w | xargs) modules"
-	
-# install target
 install:
 	@mkdir -p $(INSTALL_PATH)
-	@for module in $(MODULES); do \
-		cp -r $(MODULE_PATH)/$$module/include/* $(INSTALL_PATH)/; \
-	done
-	@echo "Install all headers to $(INSTALL_PATH)"
+	@cp -r $(INCLUDE_PATH)/* $(INSTALL_PATH)/
+	@echo "Installed headers to $(INSTALL_PATH)"
+
+list:
+	@echo "Sources:"
+	@echo $(SRCS) | tr ' ' '\n' | sed 's/^/  /'
+	@echo "Total: $(words $(SRCS)) files"
+
+info:
+	@echo "Build configuration"
+	@echo "  LIB_NAME   : $(LIB_NAME)"
+	@echo "  LIB_METHOD : $(LIB_METHOD)"
+	@echo "  DEBUG      : $(DEBUG)"
+	@echo "  HOST_OS    : $(HOST_OS)"
+	@echo ""
+
+help:
+	@echo "Makefile for util library (c) 2025 QIU YIXIANG"
+	@echo "USAGE:"
+	@echo "  make all       - build library"
+	@echo "  make test      - build and run all tests"
+	@echo "  make test-NAME - build and run tests for module NAME"
+	@echo "  make clean     - remove build and lib"
+	@echo "  make list      - list source files"
+	@echo "  make info    - show build configuration"
+	@echo "  make install - install headers to $(INSTALL_PATH)"
+	@echo "  make docs    - build and serve documentation"
+	@echo "  make help    - this message"
+	@echo "Options: config/config.mk (LIB_NAME, LIB_METHOD, DEBUG)\n"
 
 clang:
 	@bear -- make all
 
-# docs target
 docs:
-	@if [ ! -d "docs/venv" ]; then \
-		cd docs && python3 -m venv venv; \
-	fi
-	@if ! docs/venv/bin/python3 -m pip show mkdocs-material > /dev/null 2>&1; then \
-		docs/venv/bin/pip install mkdocs-material; \
-	fi
+	@if [ ! -d "docs/venv" ]; then cd docs && python3 -m venv venv; fi
+	@if ! docs/venv/bin/python3 -c "import mkdocs_material" 2>/dev/null; then docs/venv/bin/pip install mkdocs-material; fi
 	@cd docs && venv/bin/mkdocs build
 	@cd docs && venv/bin/mkdocs serve
+
+export GCC
