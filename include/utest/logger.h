@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-#ifndef UTEST_CORE_H
-#define UTEST_CORE_H
+#ifndef UTEST_LOGGER_H
+#define UTEST_LOGGER_H
 
 #endif

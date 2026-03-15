@@ -25,35 +25,4 @@
 #ifndef UTEST_TYPES_H
 #define UTEST_TYPES_H
 
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-
-typedef void *(utest_func_t)(void *);
-typedef utest_func_t utest_case_func_t;
-typedef utest_func_t utest_suite_func_t;
-
-struct utest_ctx {
-  int flags;                   /* flags for the test context */
-  size_t ntotal;               /* total number of tests suites */
-  size_t npassed;              /* number of passed tests suites */
-  size_t nctotal;              /* total number of test cases */
-  size_t ncpassed;             /* number of passed test cases */
-  utest_suite_func_t **suites; /* suites list */
-  size_t nsuites;              /* number of suites */
-  size_t nsuitescap;           /* capacity of suites list */
-};
-
-/* Thread-safe suite, which is maintained in stack by each thread, since the
-   suite is the minimal thread unit. */
-struct utest_suite {
-  const char *name; /* suite name */
-  bool failed;      /* one of the case failed */
-  char *buf;        /* output buffer */
-  size_t bufsz;     /* output buffer size */
-  size_t bufcap;    /* output buffer capacity */
-  size_t nctotal;   /* total number of test cases */
-  size_t ncpassed;  /* number of passed test cases */
-};
-
 #endif
