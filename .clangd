@@ -1,6 +1,5 @@
 CompileFlags:
   Add:
-    - "-std=c11"
     - "-I./include"
     - "-Wall"
     - "-Wextra"
