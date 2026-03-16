@@ -46,6 +46,7 @@ extern "C" {
 extern void utprintb(int type, const char *name);
 extern void utprinte(int type, const char *name, int stat);
 extern void utprintstats(struct utest_stats *stats);
+extern void utprintassert(int line, const char *file, const char *fmt, ...);
 
 #ifdef __cplusplus
 }

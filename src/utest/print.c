@@ -22,6 +22,7 @@
  * SOFTWARE.
  */
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <utest/flags.h>
 #include <utest/print.h>
@@ -66,15 +67,26 @@ void utprintstats(struct utest_stats *stats)
   double elapsed = elapsedms(&stats->start, &stats->end);
   putc('\n', stdout);
   fprintf(stdout,
-          "TEST CASE   skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
+          "[CASES ] skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
           stats->cnskipped, cntotal, stats->cnfailed, cntotal, stats->cnpassed,
           cntotal);
   fprintf(stdout,
-          "TEST SUITE  skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
+          "[SUITES] skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
           stats->snskipped, sntotal, stats->snfailed, sntotal, stats->snpassed,
           sntotal);
   if (elapsed > 1000.0)
     fprintf(stdout, "time:  %.2f s\n", elapsed / 1000.0);
   else
     fprintf(stdout, "time:  %.2f ms\n", elapsed);
+}
+
+void utprintassert(int line, const char *file, const char *fmt, ...)
+{
+  fprintf(stdout, "   |- %s:%d assertion failed\n", file, line);
+  fprintf(stdout, "   |  ");
+  va_list args;
+  va_start(args, fmt);
+  vfprintf(stdout, fmt, args);
+  va_end(args);
+  fprintf(stdout, "\n");
 }

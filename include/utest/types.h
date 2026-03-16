@@ -32,7 +32,6 @@
 struct utest_suite;
 struct utest_case;
 
-typedef void (*utest_func_t)(void *);
 typedef void (*utest_case_func_t)(struct utest_case *);
 typedef void (*utest_suite_func_t)(struct utest_suite *);
 
