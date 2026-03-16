@@ -21,3 +21,125 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <utest/core.h>
+#include <utest/flags.h>
+#include <utest/print.h>
+#include <utest/types.h>
+
+#define MAX_SUITES 64  /* initial capacity of suites list */
+#define SCALE_FACTOR 2 /* scale factor for suites list */
+
+struct utest_ctx utest_ctx;
+
+static void fatal()
+{
+  perror("utest");
+  exit(EXIT_FAILURE);
+}
+
+void utest_init(int flags)
+{
+  memset(&utest_ctx, 0, sizeof(utest_ctx));
+  utest_ctx.flags = flags;
+  clock_gettime(CLOCK_MONOTONIC, &utest_ctx.tstart);
+  if (pthread_mutex_init(&utest_ctx.lock, NULL))
+    fatal();
+  /* lazy allocate until first suite is added */
+  utest_ctx.nsuitescap = MAX_SUITES;
+}
+
+void utest_fini()
+{
+  clock_gettime(CLOCK_MONOTONIC, &utest_ctx.tend);
+  struct utest_stats stats = {
+      .start = utest_ctx.tstart,
+      .end = utest_ctx.tend,
+      .cnpassed = utest_ctx.cnpassed,
+      .cnfailed = utest_ctx.cnfailed,
+      .cnskipped = utest_ctx.cnskipped,
+      .snpassed = utest_ctx.snpassed,
+      .snfailed = utest_ctx.snfailed,
+      .snskipped = utest_ctx.snskipped,
+  };
+  utprintstats(&stats);
+
+  if (pthread_mutex_destroy(&utest_ctx.lock))
+    fatal();
+
+  if (utest_ctx.suites)
+    free(utest_ctx.suites);
+}
+
+void utest_addsuite(const char *name, utest_suite_func_t func)
+{
+  if (utest_ctx.suites) {
+    if (utest_ctx.nsuites >= utest_ctx.nsuitescap) {
+      utest_ctx.nsuitescap *= SCALE_FACTOR;
+      utest_ctx.suites = realloc(
+          utest_ctx.suites, utest_ctx.nsuitescap * sizeof(struct utest_suite));
+      if (!utest_ctx.suites)
+        fatal();
+    }
+  } else {
+    utest_ctx.suites = calloc(MAX_SUITES, sizeof(struct utest_suite));
+    if (!utest_ctx.suites)
+      fatal();
+  }
+  utest_ctx.suites[utest_ctx.nsuites].name = name;
+  utest_ctx.suites[utest_ctx.nsuites].func = func;
+  utest_ctx.nsuites++;
+}
+
+void utest_runcase(struct utest_suite *suite, const char *name,
+                   utest_case_func_t func)
+{
+  struct utest_case cas = {
+      .name = name,
+      .func = func,
+      .status = UT_PASS,
+  };
+
+  utprintb(UT_CASE, name);
+  func(&cas);
+  utprinte(UT_CASE, name, cas.status);
+
+  suite->cntotal++;
+  if (cas.status == UT_PASS)
+    suite->cnpassed++;
+  else
+    suite->cnfailed++;
+}
+
+static void runsuite(struct utest_suite *suite)
+{
+  /* TODO: Add lock for per thread access */
+  if (!suite->func)
+    fatal();
+
+  utprintb(UT_SUITE, suite->name);
+  suite->func(suite);
+  utprinte(UT_SUITE, suite->name, suite->cnfailed ? UT_FAIL : UT_PASS);
+
+  if (suite->cnfailed)
+    utest_ctx.snfailed++;
+  else
+    utest_ctx.snpassed++;
+  utest_ctx.cnpassed += suite->cnpassed;
+  utest_ctx.cnfailed += suite->cnfailed;
+}
+
+void utest_runsuites()
+{
+  for (size_t i = 0; i < utest_ctx.nsuites; i++)
+    runsuite(&utest_ctx.suites[i]);
+}
+
+void utest_runsuites_thread(int nthreads)
+{
+  (void)nthreads;
+  /* TODO: implement multiple threads */
+}

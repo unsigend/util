@@ -22,7 +22,33 @@
  * SOFTWARE.
  */
 
-#ifndef UTEST_LOGGER_H
-#define UTEST_LOGGER_H
+#ifndef UTEST_PRINT_H
+#define UTEST_PRINT_H
+
+#include <stddef.h>
+#include <time.h>
+
+struct utest_stats {
+  struct timespec start;
+  struct timespec end;
+  size_t cnpassed;
+  size_t cnfailed;
+  size_t cnskipped;
+  size_t snpassed;
+  size_t snfailed;
+  size_t snskipped;
+};
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern void utprintb(int type, const char *name);
+extern void utprinte(int type, const char *name, int stat);
+extern void utprintstats(struct utest_stats *stats);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

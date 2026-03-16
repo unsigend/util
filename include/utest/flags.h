@@ -21,3 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+#ifndef UTEST_FLAGS_H
+#define UTEST_FLAGS_H
+
+#define UT_PASS 0
+#define UT_FAIL 1
+
+#define UT_CASE 0
+#define UT_SUITE 1
+
+#endif

@@ -25,4 +25,56 @@
 #ifndef UTEST_CORE_H
 #define UTEST_CORE_H
 
+#include <utest/flags.h>
+#include <utest/types.h>
+
+extern struct utest_ctx utest_ctx;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern void utest_init(int flags);
+extern void utest_fini();
+extern void utest_addsuite(const char *name, utest_suite_func_t func);
+extern void utest_runcase(struct utest_suite *suite, const char *name,
+                          utest_case_func_t func);
+extern void utest_runsuites();
+extern void utest_runsuites_thread(int nthreads);
+
+#ifdef __cplusplus
+}
+#endif
+
+#define _CONCAT(x, y) x##y
+#define CONCAT(x, y) _CONCAT(x, y)
+#define CASEPREFIX __utest_case_
+#define SUITEPREFIX __utest_suite_
+
+#define UTEST_INIT(flags) utest_init(flags)
+#define UTEST_FINI() utest_fini()
+
+#define UTEST_CASE(name)                                                       \
+  static void CONCAT(CASEPREFIX, name)(struct utest_case * cas)
+#define UTEST_SUITE(name)                                                      \
+  void CONCAT(SUITEPREFIX, name)(struct utest_suite * suite)
+
+#define UTEST_RUNCASE(name)                                                    \
+  utest_runcase(suite, #name, CONCAT(CASEPREFIX, name))
+#define UTEST_ADDSUITE(name) utest_addsuite(#name, CONCAT(SUITEPREFIX, name))
+#define UTEST_RUNSUITES() utest_runsuites()
+#define UTEST_RUNSUITES_THREAD(nthreads) utest_runsuites_thread(nthreads)
+
+#define EXPECT_TRUE(expr)                                                      \
+  if (!(expr)) {                                                               \
+    cas->status = UT_FAIL;                                                     \
+    return;                                                                    \
+  }
+
+#define EXPECT_FALSE(expr)                                                     \
+  if ((expr)) {                                                                \
+    cas->status = UT_FAIL;                                                     \
+    return;                                                                    \
+  }
+
 #endif

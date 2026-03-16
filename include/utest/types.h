@@ -25,4 +25,49 @@
 #ifndef UTEST_TYPES_H
 #define UTEST_TYPES_H
 
+#include <pthread.h>
+#include <stdbool.h>
+#include <stddef.h>
+
+struct utest_suite;
+struct utest_case;
+
+typedef void (*utest_func_t)(void *);
+typedef void (*utest_case_func_t)(struct utest_case *);
+typedef void (*utest_suite_func_t)(struct utest_suite *);
+
+struct utest_suite {
+  const char *name;        /* suite name */
+  utest_suite_func_t func; /* function ptr */
+  size_t cntotal;          /* total cases */
+  size_t cnpassed;         /* passed cases */
+  size_t cnfailed;         /* failed cases */
+  size_t cnskipped;        /* skipped cases */
+};
+
+struct utest_case {
+  const char *name;       /* case name */
+  utest_case_func_t func; /* function ptr */
+  int status;             /* case status */
+};
+
+struct utest_ctx {
+  int flags; /* context flags */
+
+  size_t snpassed;  /* passed suites */
+  size_t snfailed;  /* failed suites */
+  size_t snskipped; /* skipped suites */
+
+  size_t cnpassed;  /* passed cases */
+  size_t cnfailed;  /* failed cases */
+  size_t cnskipped; /* skipped cases */
+
+  struct utest_suite *suites; /* suites list */
+  size_t nsuites;             /* number of suites */
+  size_t nsuitescap;          /* capacity of suites list */
+  pthread_mutex_t lock;       /* lock for the test context */
+  struct timespec tstart;     /* start time */
+  struct timespec tend;       /* end time */
+};
+
 #endif
