@@ -36,6 +36,7 @@ struct utest_stats {
   size_t cnskipped;
   size_t snpassed;
   size_t snfailed;
+  size_t snskipped;
 };
 
 #ifdef __cplusplus

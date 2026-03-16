@@ -55,6 +55,7 @@ struct utest_ctx {
 
   size_t snpassed;  /* passed suites */
   size_t snfailed;  /* failed suites */
+  size_t snskipped; /* skipped suites */
   size_t cnpassed;  /* passed cases */
   size_t cnfailed;  /* failed cases */
   size_t cnskipped; /* skipped cases */

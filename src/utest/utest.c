@@ -44,6 +44,7 @@ static void fatal()
 void utest_init(int flags)
 {
   memset(&utest_ctx, 0, sizeof(utest_ctx));
+
   if (!flags)
     utest_ctx.flags = UTF_DEFAULT;
   else
@@ -66,6 +67,7 @@ void utest_fini()
       .cnskipped = utest_ctx.cnskipped,
       .snpassed = utest_ctx.snpassed,
       .snfailed = utest_ctx.snfailed,
+      .snskipped = utest_ctx.snskipped,
   };
   utprintstats(&stats);
 
@@ -130,6 +132,11 @@ static void runsuite(struct utest_suite *suite)
   /* TODO: Add lock for per thread access */
   if (!suite->func)
     fatal();
+
+  if ((utest_ctx.flags & UTF_STOPONSUITE) && utest_ctx.snfailed) {
+    utest_ctx.snskipped++;
+    return;
+  }
 
   /* TODO: optimize this order by passing to a buffer */
   if (utest_ctx.flags & UTF_SHOWSUITE || suite->cnfailed)
