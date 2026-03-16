@@ -1,4 +1,4 @@
-#include "utest/core.h"
+#include "utest/flags.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <utest.h>
@@ -54,7 +54,7 @@ UTEST_SUITE(failsuite)
 
 int main()
 {
-  UTEST_INIT(0);
+  UTEST_INIT(UTF_FULLSTYLE | UTF_STOPONCASE);
 
   UTEST_ADDSUITE(passsuite);
   UTEST_ADDSUITE(failsuite);

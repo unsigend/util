@@ -63,17 +63,15 @@ void utprinte(int type, const char *name, int stat)
 void utprintstats(struct utest_stats *stats)
 {
   size_t cntotal = stats->cnpassed + stats->cnfailed + stats->cnskipped;
-  size_t sntotal = stats->snpassed + stats->snfailed + stats->snskipped;
+  size_t sntotal = stats->snpassed + stats->snfailed;
   double elapsed = elapsedms(&stats->start, &stats->end);
   putc('\n', stdout);
   fprintf(stdout,
           "[CASES ] skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
           stats->cnskipped, cntotal, stats->cnfailed, cntotal, stats->cnpassed,
           cntotal);
-  fprintf(stdout,
-          "[SUITES] skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
-          stats->snskipped, sntotal, stats->snfailed, sntotal, stats->snpassed,
-          sntotal);
+  fprintf(stdout, "[SUITES] failed: %zu/%zu, passed: %zu/%zu\n",
+          stats->snfailed, sntotal, stats->snpassed, sntotal);
   if (elapsed > 1000.0)
     fprintf(stdout, "time:  %.2f s\n", elapsed / 1000.0);
   else

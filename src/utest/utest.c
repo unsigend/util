@@ -44,7 +44,10 @@ static void fatal()
 void utest_init(int flags)
 {
   memset(&utest_ctx, 0, sizeof(utest_ctx));
-  utest_ctx.flags = flags;
+  if (!flags)
+    utest_ctx.flags = UTF_DEFAULT;
+  else
+    utest_ctx.flags = flags;
   clock_gettime(CLOCK_MONOTONIC, &utest_ctx.tstart);
   if (pthread_mutex_init(&utest_ctx.lock, NULL))
     fatal();
@@ -63,7 +66,6 @@ void utest_fini()
       .cnskipped = utest_ctx.cnskipped,
       .snpassed = utest_ctx.snpassed,
       .snfailed = utest_ctx.snfailed,
-      .snskipped = utest_ctx.snskipped,
   };
   utprintstats(&stats);
 
@@ -89,6 +91,7 @@ void utest_addsuite(const char *name, utest_suite_func_t func)
     if (!utest_ctx.suites)
       fatal();
   }
+  memset(&utest_ctx.suites[utest_ctx.nsuites], 0, sizeof(struct utest_suite));
   utest_ctx.suites[utest_ctx.nsuites].name = name;
   utest_ctx.suites[utest_ctx.nsuites].func = func;
   utest_ctx.nsuites++;
@@ -97,17 +100,25 @@ void utest_addsuite(const char *name, utest_suite_func_t func)
 void utest_runcase(struct utest_suite *suite, const char *name,
                    utest_case_func_t func)
 {
+  suite->cntotal++;
+
+  if ((utest_ctx.flags & UTF_STOPONCASE) && suite->cnfailed) {
+    suite->cnskipped++;
+    return;
+  }
   struct utest_case cas = {
       .name = name,
       .func = func,
       .status = UT_PASS,
   };
 
-  utprintb(UT_CASE, name);
+  /* TODO: optimize this order by passing to a buffer */
+  if (utest_ctx.flags & UTF_SHOWCASE || cas.status == UT_FAIL)
+    utprintb(UT_CASE, name);
   func(&cas);
-  utprinte(UT_CASE, name, cas.status);
+  if (utest_ctx.flags & UTF_SHOWCASE || cas.status == UT_FAIL)
+    utprinte(UT_CASE, name, cas.status);
 
-  suite->cntotal++;
   if (cas.status == UT_PASS)
     suite->cnpassed++;
   else
@@ -120,16 +131,22 @@ static void runsuite(struct utest_suite *suite)
   if (!suite->func)
     fatal();
 
-  utprintb(UT_SUITE, suite->name);
+  /* TODO: optimize this order by passing to a buffer */
+  if (utest_ctx.flags & UTF_SHOWSUITE || suite->cnfailed)
+    utprintb(UT_SUITE, suite->name);
   suite->func(suite);
-  utprinte(UT_SUITE, suite->name, suite->cnfailed ? UT_FAIL : UT_PASS);
+  if (utest_ctx.flags & UTF_SHOWSUITE || suite->cnfailed)
+    utprinte(UT_SUITE, suite->name, suite->cnfailed ? UT_FAIL : UT_PASS);
 
   if (suite->cnfailed)
     utest_ctx.snfailed++;
   else
     utest_ctx.snpassed++;
+
+  /* update global stats */
   utest_ctx.cnpassed += suite->cnpassed;
   utest_ctx.cnfailed += suite->cnfailed;
+  utest_ctx.cnskipped += suite->cnskipped;
 }
 
 void utest_runsuites()
