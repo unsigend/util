@@ -147,7 +147,7 @@ help:
 	@echo "  make install   - install headers to $(INSTALL_PATH)"
 	@echo "  make docs      - build and serve documentation"
 	@echo "  make clang     - generate compile_commands.json (src + test)"
-	@echo "  make format   - format .c and .h in include, src, test"
+	@echo "  make format    - format .c and .h in include, src, test"
 	@echo "  make help      - this message"
 
 # generate compile_commands.json
