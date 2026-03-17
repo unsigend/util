@@ -29,7 +29,10 @@
 #include <stdio.h>
 #include <time.h>
 
-struct utest_stats {
+/* This file is used to manage context unaware output buffer, the operations
+   based on the buffer and has no context related to the core. */
+
+struct ut_stats {
   struct timespec start;
   struct timespec end;
   size_t cnpassed;
@@ -56,7 +59,7 @@ extern void utbuf_flush(struct utbuf *buf, FILE *stream);
 extern void utbuf_printb(struct utbuf *buf, int type, const char *name);
 extern void utbuf_printe(struct utbuf *buf, int type, const char *name,
                          int stat);
-extern void utbuf_printstats(struct utbuf *buf, struct utest_stats *stats);
+extern void utbuf_printstats(struct utbuf *buf, struct ut_stats *stats);
 extern void utbuf_printassert(struct utbuf *buf, int line, const char *file,
                               const char *fmt, ...);
 

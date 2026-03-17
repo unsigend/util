@@ -25,6 +25,82 @@
 #ifndef UTEST_H
 #define UTEST_H
 
+/* Utest is a simple macro-based multi-threaded unit testing framework. This is
+   the only public API header needed. */
+
+#define UTEST_INIT(flags)
+#define UTEST_FINI()
+
+#define UTEST_CASE(name)
+#define UTEST_SUITE(name)
+
+#define UTEST_RUNCASE(name)
+#define UTEST_ADDSUITE(name)
+#define UTEST_RUNSUITES()
+#define UTEST_RUNSUITES_THREAD(nthreads)
+
+/* boolean */
+#define EXPECT_TRUE(expr)
+#define EXPECT_FALSE(expr)
+
+/* pointer */
+#define EXPECT_NULL(ptr)
+#define EXPECT_NOTNULL(ptr)
+#define EXPECT_EQ_PTR(actual, expect)
+#define EXPECT_NE_PTR(actual, expect)
+#define EXPECT_GT_PTR(actual, expect)
+#define EXPECT_GE_PTR(actual, expect)
+#define EXPECT_LT_PTR(actual, expect)
+#define EXPECT_LE_PTR(actual, expect)
+
+/* integer */
+#define EXPECT_EQ_INT(actual, expect)
+#define EXPECT_NE_INT(actual, expect)
+#define EXPECT_GT_INT(actual, expect)
+#define EXPECT_GE_INT(actual, expect)
+#define EXPECT_LT_INT(actual, expect)
+#define EXPECT_LE_INT(actual, expect)
+
+/* unsigned integer */
+#define EXPECT_EQ_UINT(actual, expect)
+#define EXPECT_NE_UINT(actual, expect)
+#define EXPECT_GT_UINT(actual, expect)
+#define EXPECT_GE_UINT(actual, expect)
+#define EXPECT_LT_UINT(actual, expect)
+#define EXPECT_LE_UINT(actual, expect)
+
+/* character */
+#define EXPECT_EQ_CHAR(actual, expect)
+#define EXPECT_NE_CHAR(actual, expect)
+#define EXPECT_GT_CHAR(actual, expect)
+#define EXPECT_GE_CHAR(actual, expect)
+#define EXPECT_LT_CHAR(actual, expect)
+#define EXPECT_LE_CHAR(actual, expect)
+
+/* unsigned character */
+#define EXPECT_EQ_UCHAR(actual, expect)
+#define EXPECT_NE_UCHAR(actual, expect)
+#define EXPECT_GT_UCHAR(actual, expect)
+#define EXPECT_GE_UCHAR(actual, expect)
+#define EXPECT_LT_UCHAR(actual, expect)
+#define EXPECT_LE_UCHAR(actual, expect)
+
+/* double */
+#define EXPECT_EQ_DOUBLE(actual, expect)
+#define EXPECT_NE_DOUBLE(actual, expect)
+#define EXPECT_GT_DOUBLE(actual, expect)
+#define EXPECT_GE_DOUBLE(actual, expect)
+#define EXPECT_LT_DOUBLE(actual, expect)
+#define EXPECT_LE_DOUBLE(actual, expect)
+
+/* string */
+#define EXPECT_EQ_STR(actual, expect)
+#define EXPECT_NE_STR(actual, expect)
+#define EXPECT_GT_STR(actual, expect)
+#define EXPECT_GE_STR(actual, expect)
+#define EXPECT_LT_STR(actual, expect)
+#define EXPECT_LE_STR(actual, expect)
+
 #include <utest/core.h>
 
 #endif

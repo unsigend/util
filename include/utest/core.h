@@ -31,42 +31,105 @@
 #include <utest/print.h>
 #include <utest/types.h>
 
-extern struct utest_ctx utest_ctx;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern void utest_init(int flags);
-extern void utest_fini();
-extern void utest_addsuite(const char *name, utest_suite_func_t func);
-extern void utest_runcase(struct utest_suite *suite, const char *name,
-                          utest_case_func_t func);
-extern void utest_runsuites();
-extern void utest_runsuites_thread(int nthreads);
-
-#ifdef __cplusplus
-}
-#endif
-
 #define _CONCAT(x, y) x##y
 #define CONCAT(x, y) _CONCAT(x, y)
 #define CASEPREFIX __utest_case_
 #define SUITEPREFIX __utest_suite_
 
-#define UTEST_INIT(flags) utest_init(flags)
-#define UTEST_FINI() utest_fini()
+#undef UTEST_INIT
+#undef UTEST_FINI
+
+#undef UTEST_CASE
+#undef UTEST_SUITE
+
+#undef UTEST_RUNCASE
+#undef UTEST_ADDSUITE
+#undef UTEST_RUNSUITES
+#undef UTEST_RUNSUITES_THREAD
+
+#undef EXPECT_TRUE
+#undef EXPECT_FALSE
+
+#undef EXPECT_NULL
+#undef EXPECT_NOTNULL
+#undef EXPECT_EQ_PTR
+#undef EXPECT_NE_PTR
+#undef EXPECT_GT_PTR
+#undef EXPECT_GE_PTR
+#undef EXPECT_LT_PTR
+#undef EXPECT_LE_PTR
+
+#undef EXPECT_EQ_INT
+#undef EXPECT_NE_INT
+#undef EXPECT_GT_INT
+#undef EXPECT_GE_INT
+#undef EXPECT_LT_INT
+#undef EXPECT_LE_INT
+
+#undef EXPECT_EQ_UINT
+#undef EXPECT_NE_UINT
+#undef EXPECT_GT_UINT
+#undef EXPECT_GE_UINT
+#undef EXPECT_LT_UINT
+#undef EXPECT_LE_UINT
+
+#undef EXPECT_EQ_CHAR
+#undef EXPECT_NE_CHAR
+#undef EXPECT_GT_CHAR
+#undef EXPECT_GE_CHAR
+#undef EXPECT_LT_CHAR
+#undef EXPECT_LE_CHAR
+
+#undef EXPECT_EQ_UCHAR
+#undef EXPECT_NE_UCHAR
+#undef EXPECT_GT_UCHAR
+#undef EXPECT_GE_UCHAR
+#undef EXPECT_LT_UCHAR
+#undef EXPECT_LE_UCHAR
+
+#undef EXPECT_EQ_DOUBLE
+#undef EXPECT_NE_DOUBLE
+#undef EXPECT_GT_DOUBLE
+#undef EXPECT_GE_DOUBLE
+#undef EXPECT_LT_DOUBLE
+#undef EXPECT_LE_DOUBLE
+
+#undef EXPECT_EQ_STR
+#undef EXPECT_NE_STR
+#undef EXPECT_GT_STR
+#undef EXPECT_GE_STR
+#undef EXPECT_LT_STR
+#undef EXPECT_LE_STR
+
+extern struct ut_ctx utest_ctx;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern void ut_init(int flags);
+extern void ut_fini(void);
+extern void ut_addsuite(const char *name, utsuite_func func);
+extern void ut_runcase(struct utsuite *suite, const char *name,
+                       utcase_func func);
+extern void ut_runsuites(void);
+extern void ut_runsuites_th(int nthreads);
+
+#ifdef __cplusplus
+}
+#endif
+
+#define UTEST_INIT(flags) ut_init(flags)
+#define UTEST_FINI() ut_fini()
 
 #define UTEST_CASE(name)                                                       \
-  static void CONCAT(CASEPREFIX, name)(struct utest_case * cas)
-#define UTEST_SUITE(name)                                                      \
-  void CONCAT(SUITEPREFIX, name)(struct utest_suite * suite)
+  static void CONCAT(CASEPREFIX, name)(struct utcase * cas)
+#define UTEST_SUITE(name) void CONCAT(SUITEPREFIX, name)(struct utsuite * suite)
 
-#define UTEST_RUNCASE(name)                                                    \
-  utest_runcase(suite, #name, CONCAT(CASEPREFIX, name))
-#define UTEST_ADDSUITE(name) utest_addsuite(#name, CONCAT(SUITEPREFIX, name))
-#define UTEST_RUNSUITES() utest_runsuites()
-#define UTEST_RUNSUITES_THREAD(nthreads) utest_runsuites_thread(nthreads)
+#define UTEST_RUNCASE(name) ut_runcase(suite, #name, CONCAT(CASEPREFIX, name))
+#define UTEST_ADDSUITE(name) ut_addsuite(#name, CONCAT(SUITEPREFIX, name))
+#define UTEST_RUNSUITES() ut_runsuites()
+#define UTEST_RUNSUITES_THREAD(nthreads) ut_runsuites_th(nthreads)
 
 #define _UTASSERT(expr, fmt, ...)                                              \
   do {                                                                         \

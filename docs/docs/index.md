@@ -19,21 +19,21 @@ Util is a modern, lightweight C utility library that extends the standard C libr
 
 ### Key Features
 
--   **Modular Design**: Each module is independent and can be used separately
--   **Header-Only**: Most modules are header-only, making integration simple
--   **Cross-Platform**: Works on Linux, macOS, and Windows
--   **C++ Compatible**: All modules are compatible with C++ code
--   **MIT Licensed**: Free to use in both open-source and commercial projects
--   **Zero Dependencies**: No external dependencies required
--   **Modern C**: Written in modern C with clean, maintainable code
+- **Modular Design**: Each module is independent and can be used separately
+- **Header-Only**: Most modules are header-only, making integration simple
+- **Cross-Platform**: Works on Linux, macOS, and Windows
+- **C++ Compatible**: All modules are compatible with C++ code
+- **MIT Licensed**: Free to use in both open-source and commercial projects
+- **Zero Dependencies**: No external dependencies required
+- **Modern C**: Written in modern C with clean, maintainable code
 
 ## Requirements
 
 ### Build Dependencies
 
--   **C Compiler**: GCC or Clang with C11 support
--   **Make**: GNU Make 3.81 or later
--   **Standard C Library**: glibc or compatible
+- **C Compiler**: GCC or Clang with C11 support
+- **Make**: GNU Make 3.81 or later
+- **Standard C Library**: glibc or compatible
 
 ## Quick Start
 
@@ -44,13 +44,17 @@ git clone https://github.com/unsigend/util.git
 cd util
 ```
 
-### 2. Configure Modules
+### 2. Configure Build
 
-Configure modules in `config/config.mk` (all modules are included by default).
+Configure the build in `config/config.mk`. The most important options are:
+
+- `LIB_NAME` – library name (default: `util`)
+- `LIB_METHOD` – `static` or `shared`
+- `DEBUG` – `0` for optimized builds, `1` for debug builds
 
 ### 3. Build and Install
 
-Build all modules:
+Build the library:
 
 ```bash
 make all
@@ -64,11 +68,10 @@ make install
 
 ### 4. Use the Library
 
-Include the library in your project:
+Include the headers in your project:
 
 ```c
-#include <utest.h>
-#include <argparse.h>
+#include <utest.h>   /* unit test framework */
 ```
 
 Link against the library:
@@ -81,58 +84,48 @@ gcc -I./include your_program.c -L./lib -lutil -o your_program
 
 The build system is configured via `config/config.mk`:
 
--   **C Standard**: c11
--   **Build Method**: static or shared
--   **Library Name**: util
--   **Modules**: Select which modules to include
-
-To change the build method, edit `config/config.mk`:
-
-```makefile
-LIB_METHOD := static  # or shared
-```
-
-Then rebuild:
-
-```bash
-make clean
-make all
-```
+- **C Standard**: C11
+- **Build Method**: `static` or `shared`
+- **Library Name**: `util`
+- **Debug Mode**: `DEBUG=0` (release) or `DEBUG=1` (debug)
 
 ## Available Make Targets
 
-Everything is managed through Makefile. Use `make help` to see detailed commands:
+Everything is managed through the top-level `Makefile`. Use `make help` to see detailed commands:
 
-| Target                | Description                         |
-| --------------------- | ----------------------------------- |
-| `make all`            | Build all modules                   |
-| `make clean`          | Clean builds                        |
-| `make list`           | List all modules                    |
-| `make help`           | Show this help message              |
-| `make test-[module]`  | Build test for [module]             |
-| `make clean-[module]` | Clean test for [module]             |
-| `make clean-all`      | Completely clean all builds         |
-| `make install`        | Install all headers to install path |
-| `make docs`           | Build and serve documentation       |
+| Target           | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| `make all`       | Build the library (same as `make lib`)           |
+| `make lib`       | Build the library only                           |
+| `make test`      | Build the library and run all tests              |
+| `make test-NAME` | Build the library and run tests for module NAME  |
+| `make clean`     | Remove build artifacts and test outputs          |
+| `make list`      | List all source files                            |
+| `make info`      | Show current build configuration                 |
+| `make install`   | Install headers to `./include`                   |
+| `make docs`      | Build and serve documentation                    |
+| `make clang`     | Generate `compile_commands.json` for tooling     |
+| `make format`    | Run `clang-format` over `include`, `src`, `test` |
+| `make help`      | Show the Makefile help message                   |
 
 You can change the configuration in `config/config.mk`.
 
 ## Why Util?
 
--   **Simplicity**: Each module is designed to be simple to use while providing powerful features
--   **Modularity**: Use only what you need, reducing code bloat
--   **Maintainability**: Clean, well-documented code that's easy to understand and modify
--   **Reliability**: Thoroughly tested with comprehensive unit tests
--   **Community**: Open to contributions and improvements
+- **Simplicity**: Each module is designed to be simple to use while providing powerful features
+- **Modularity**: Use only what you need, reducing code bloat
+- **Maintainability**: Clean, well-documented code that's easy to understand and modify
+- **Reliability**: Thoroughly tested with comprehensive unit tests
+- **Community**: Open to contributions and improvements
 
 ## Contributing
 
 Contributions are welcome! Whether it's:
 
--   Bug reports
--   Feature requests
--   Documentation improvements
--   Code contributions
+- Bug reports
+- Feature requests
+- Documentation improvements
+- Code contributions
 
 Please feel free to:
 
@@ -152,10 +145,10 @@ make docs
 
 This will:
 
--   Create a Python virtual environment if needed
--   Install dependencies automatically
--   Build the documentation
--   Start a local server at `http://127.0.0.1:8000`
+- Create a Python virtual environment if needed
+- Install dependencies automatically
+- Build the documentation
+- Start a local server at `http://127.0.0.1:8000`
 
 ## License
 

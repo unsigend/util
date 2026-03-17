@@ -34,7 +34,14 @@
 #define SCALE_FACTOR 2 /* scale factor for suites list */
 #define BUFSZ 1024
 
-struct utest_ctx utest_ctx;
+#define LOCK(lock)                                                             \
+  if (pthread_mutex_lock(lock))                                                \
+    fatal();
+#define UNLOCK(lock)                                                           \
+  if (pthread_mutex_unlock(lock))                                              \
+    fatal();
+
+struct ut_ctx utest_ctx;
 
 static void fatal()
 {
@@ -42,9 +49,17 @@ static void fatal()
   exit(EXIT_FAILURE);
 }
 
-void utest_init(int flags)
+static void error(const char *msg)
+{
+  fprintf(stderr, "utest: %s\n", msg);
+  exit(EXIT_FAILURE);
+}
+
+void ut_init(int flags)
 {
   memset(&utest_ctx, 0, sizeof(utest_ctx));
+  atomic_init(&utest_ctx.stop, false);
+  atomic_init(&utest_ctx.nextsidx, 0);
 
   if (!flags)
     utest_ctx.flags = UTF_DEFAULT;
@@ -57,10 +72,10 @@ void utest_init(int flags)
   utest_ctx.nsuitescap = MAX_SUITES;
 }
 
-void utest_fini()
+void ut_fini(void)
 {
   clock_gettime(CLOCK_MONOTONIC, &utest_ctx.tend);
-  struct utest_stats stats = {
+  struct ut_stats stats = {
       .start = utest_ctx.tstart,
       .end = utest_ctx.tend,
       .cnpassed = utest_ctx.cnpassed,
@@ -87,30 +102,29 @@ void utest_fini()
   }
 }
 
-void utest_addsuite(const char *name, utest_suite_func_t func)
+void ut_addsuite(const char *name, utsuite_func func)
 {
   if (utest_ctx.suites) {
     if (utest_ctx.nsuites >= utest_ctx.nsuitescap) {
       utest_ctx.nsuitescap *= SCALE_FACTOR;
-      utest_ctx.suites = realloc(
-          utest_ctx.suites, utest_ctx.nsuitescap * sizeof(struct utest_suite));
+      utest_ctx.suites = realloc(utest_ctx.suites,
+                                 utest_ctx.nsuitescap * sizeof(struct utsuite));
       if (!utest_ctx.suites)
         fatal();
     }
   } else {
-    utest_ctx.suites = calloc(MAX_SUITES, sizeof(struct utest_suite));
+    utest_ctx.suites = calloc(MAX_SUITES, sizeof(struct utsuite));
     if (!utest_ctx.suites)
       fatal();
   }
-  memset(&utest_ctx.suites[utest_ctx.nsuites], 0, sizeof(struct utest_suite));
+  memset(&utest_ctx.suites[utest_ctx.nsuites], 0, sizeof(struct utsuite));
   utest_ctx.suites[utest_ctx.nsuites].name = name;
   utest_ctx.suites[utest_ctx.nsuites].func = func;
   utbuf_init(&utest_ctx.suites[utest_ctx.nsuites].buf, BUFSZ);
   utest_ctx.nsuites++;
 }
 
-void utest_runcase(struct utest_suite *suite, const char *name,
-                   utest_case_func_t func)
+void ut_runcase(struct utsuite *suite, const char *name, utcase_func func)
 {
   suite->cntotal++;
 
@@ -118,7 +132,7 @@ void utest_runcase(struct utest_suite *suite, const char *name,
     suite->cnskipped++;
     return;
   }
-  struct utest_case cas = {
+  struct utcase cas = {
       .name = name,
       .func = func,
       .status = UT_PASS,
@@ -138,14 +152,15 @@ void utest_runcase(struct utest_suite *suite, const char *name,
     suite->cnfailed++;
 }
 
-static void runsuite(struct utest_suite *suite)
+static void runsuite(struct utsuite *suite)
 {
-  /* TODO: Add lock for per thread access */
   if (!suite->func)
     fatal();
 
-  if ((utest_ctx.flags & UTF_STOPONSUITE) && utest_ctx.snfailed) {
+  if ((utest_ctx.flags & UTF_STOPONSUITE) && atomic_load(&utest_ctx.stop)) {
+    LOCK(&utest_ctx.lock);
     utest_ctx.snskipped++;
+    UNLOCK(&utest_ctx.lock);
     return;
   }
 
@@ -160,25 +175,60 @@ static void runsuite(struct utest_suite *suite)
 
   utbuf_flush(&suite->buf, stdout);
 
-  if (suite->cnfailed)
+  LOCK(&utest_ctx.lock);
+
+  if (suite->cnfailed) {
     utest_ctx.snfailed++;
-  else
+    if (utest_ctx.flags & UTF_STOPONSUITE)
+      atomic_store(&utest_ctx.stop, true);
+  } else
     utest_ctx.snpassed++;
 
   /* update global stats */
   utest_ctx.cnpassed += suite->cnpassed;
   utest_ctx.cnfailed += suite->cnfailed;
   utest_ctx.cnskipped += suite->cnskipped;
+
+  UNLOCK(&utest_ctx.lock);
 }
 
-void utest_runsuites()
+static void *runsuite_thread(void *arg)
+{
+  (void)arg;
+  while (1) {
+    size_t sidx = atomic_fetch_add(&utest_ctx.nextsidx, 1);
+    if (sidx >= utest_ctx.nsuites)
+      break;
+    runsuite(&utest_ctx.suites[sidx]);
+  }
+  return NULL;
+}
+
+void ut_runsuites(void)
 {
   for (size_t i = 0; i < utest_ctx.nsuites; i++)
     runsuite(&utest_ctx.suites[i]);
 }
 
-void utest_runsuites_thread(int nthreads)
+void ut_runsuites_th(int nthreads)
 {
-  (void)nthreads;
-  /* TODO: implement multiple threads */
+  if (nthreads <= 0)
+    error("invalid args");
+
+  atomic_store(&utest_ctx.stop, false);
+  atomic_store(&utest_ctx.nextsidx, 0);
+
+  pthread_t *tpool = calloc(nthreads, sizeof(pthread_t));
+  if (!tpool)
+    fatal();
+
+  for (int i = 0; i < nthreads; i++)
+    if (pthread_create(&tpool[i], NULL, runsuite_thread, NULL))
+      fatal();
+
+  for (int i = 0; i < nthreads; i++)
+    if (pthread_join(tpool[i], NULL))
+      fatal();
+
+  free(tpool);
 }

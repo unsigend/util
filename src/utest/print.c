@@ -112,20 +112,22 @@ void utbuf_flush(struct utbuf *buf, FILE *stream)
 
 void utbuf_printb(struct utbuf *buf, int type, const char *name)
 {
-  printfbuf(buf, "%s[" COLCYAN "RUNNING" COLRESET "] TEST %s: %s\n",
-            type == UT_CASE ? " |- " : "", type == UT_CASE ? "CASE" : "SUITE",
-            name);
+  if (type == UT_CASE)
+    printfbuf(buf, " |- ");
+  printfbuf(buf, "[" COLCYAN "RUNNING" COLRESET "] TEST %s: %s\n",
+            type == UT_CASE ? "CASE" : "SUITE", name);
 }
 
 void utbuf_printe(struct utbuf *buf, int type, const char *name, int stat)
 {
-  printfbuf(buf, "%s[%s%s%s ] TEST %s: %s\n", type == UT_CASE ? " |- " : "",
-            stat == UT_PASS ? COLGREEN : COLRED,
+  if (type == UT_CASE)
+    printfbuf(buf, " |- ");
+  printfbuf(buf, "[%s%s%s ] TEST %s: %s\n", stat == UT_PASS ? COLGREEN : COLRED,
             stat == UT_PASS ? "PASSED" : "FAILED", COLRESET,
             type == UT_CASE ? "CASE" : "SUITE", name);
 }
 
-void utbuf_printstats(struct utbuf *buf, struct utest_stats *stats)
+void utbuf_printstats(struct utbuf *buf, struct ut_stats *stats)
 {
   size_t cntotal = stats->cnpassed + stats->cnfailed + stats->cnskipped;
   size_t sntotal = stats->snpassed + stats->snfailed + stats->snskipped;
