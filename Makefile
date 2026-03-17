@@ -29,7 +29,6 @@ BUILD_PATH   := $(CUR_DIR)/build
 OBJ_PATH     := $(BUILD_PATH)/obj
 DEP_PATH     := $(BUILD_PATH)/dep
 LIB_PATH     := $(CUR_DIR)/lib
-INSTALL_PATH := $(CUR_DIR)/include
 TEST_PATH    := $(CUR_DIR)/test
 
 include $(CONFIG_PATH)/config.mk
@@ -77,7 +76,7 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 -include $(DEPS)
 
 .DEFAULT_GOAL := help
-.PHONY: all clean help create_build_dir lib install list info docs clang format test test-%
+.PHONY: all clean help create_build_dir lib list info docs clang format test test-%
 
 create_build_dir:
 	@mkdir -p $(OBJ_PATH)
@@ -117,10 +116,6 @@ clean:
 	@rm -rf $(LIB_PATH)
 	@$(MAKE) -C $(TEST_PATH) clean
 
-install:
-	@mkdir -p $(INSTALL_PATH)
-	@cp -r $(INCLUDE_PATH)/* $(INSTALL_PATH)/
-	@echo "Installed headers to $(INSTALL_PATH)"
 
 list:
 	@echo "Sources:"
@@ -144,7 +139,6 @@ help:
 	@echo "  make clean     - remove build and lib"
 	@echo "  make list      - list source files"
 	@echo "  make info      - show build configuration"
-	@echo "  make install   - install headers to $(INSTALL_PATH)"
 	@echo "  make docs      - build and serve documentation"
 	@echo "  make clang     - generate compile_commands.json (src + test)"
 	@echo "  make format    - format .c and .h in include, src, test"
@@ -166,5 +160,8 @@ docs:
 	@if ! docs/venv/bin/python3 -c "import mkdocs_material" 2>/dev/null; then docs/venv/bin/pip install mkdocs-material; fi
 	@cd docs && venv/bin/mkdocs build
 	@cd docs && venv/bin/mkdocs serve
+
+deploy:
+	@cd docs && venv/bin/mkdocs gh-deploy
 
 export GCC

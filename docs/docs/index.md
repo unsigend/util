@@ -93,20 +93,19 @@ The build system is configured via `config/config.mk`:
 
 Everything is managed through the top-level `Makefile`. Use `make help` to see detailed commands:
 
-| Target           | Description                                      |
-| ---------------- | ------------------------------------------------ |
-| `make all`       | Build the library (same as `make lib`)           |
-| `make lib`       | Build the library only                           |
-| `make test`      | Build the library and run all tests              |
-| `make test-NAME` | Build the library and run tests for module NAME  |
-| `make clean`     | Remove build artifacts and test outputs          |
-| `make list`      | List all source files                            |
-| `make info`      | Show current build configuration                 |
-| `make install`   | Install headers to `./include`                   |
-| `make docs`      | Build and serve documentation                    |
-| `make clang`     | Generate `compile_commands.json` for tooling     |
-| `make format`    | Run `clang-format` over `include`, `src`, `test` |
-| `make help`      | Show the Makefile help message                   |
+```makefile
+make all        # Build the library
+make lib        # Build the library only
+make test       # Build the library and run all tests
+make test-NAME  # Build the library and run tests for module NAME
+make clean      # Remove build artifacts and test outputs
+make list       # List all source files
+make info       # Show current build configuration
+make docs       # Build and serve documentation
+make clang      # Generate compile_commands.json for tooling
+make format     # Run clang-format over include, src, test
+make help       # Show the Makefile help message
+```
 
 You can change the configuration in `config/config.mk`.
 

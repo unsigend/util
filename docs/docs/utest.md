@@ -108,13 +108,13 @@ Flags are bitmasks combined and passed to `UTEST_INIT(flags)`.
 
 #### Stop-on-failure behavior
 
-- `UTF_STOPONASS`
+- `UTF_STOPONASS`  
   On first failed assertion **within a case**, stop executing the rest of that case body.
 
-- `UTF_STOPONCASE`
+- `UTF_STOPONCASE`  
   On first failed case **within a suite**, skip the remaining cases in that suite.
 
-- `UTF_STOPONSUITE`
+- `UTF_STOPONSUITE`  
   On first failed suite, skip the remaining suites.
 
 You can combine these:
@@ -224,3 +224,4 @@ Assertions are **thread-safe** when used inside `UTEST_CASE` bodies, because eac
 - **Suite-based parallelism**: Parallel execution happens at the suite level with `UTEST_RUNSUITES_THREAD`.
 - **Thread-safe core**: Internal state and statistics are synchronized, suites do not share mutable state.
 - **Structured output**: Each suite accumulates its own output and flushes once, minimizing interleaving even in multi-threaded runs.
+
