@@ -44,8 +44,10 @@
 
 #undef UTEST_RUNCASE
 #undef UTEST_ADDSUITE
+#undef UTEST_RUNSUITE
 #undef UTEST_RUNSUITES
 #undef UTEST_RUNSUITES_THREAD
+#undef UTEST_SHOWSUITES
 
 #undef EXPECT_TRUE
 #undef EXPECT_FALSE
@@ -112,8 +114,10 @@ extern void ut_fini(void);
 extern void ut_addsuite(const char *name, utsuite_func func);
 extern void ut_runcase(struct utsuite *suite, const char *name,
                        utcase_func func);
+extern int ut_runsuite(const char *name);
 extern void ut_runsuites(void);
 extern void ut_runsuites_th(int nthreads);
+extern void ut_showsuites(void);
 
 #ifdef __cplusplus
 }
@@ -128,8 +132,10 @@ extern void ut_runsuites_th(int nthreads);
 
 #define UTEST_RUNCASE(name) ut_runcase(suite, #name, CONCAT(CASEPREFIX, name))
 #define UTEST_ADDSUITE(name) ut_addsuite(#name, CONCAT(SUITEPREFIX, name))
+#define UTEST_RUNSUITE(name) ut_runsuite(name)
 #define UTEST_RUNSUITES() ut_runsuites()
 #define UTEST_RUNSUITES_THREAD(nthreads) ut_runsuites_th(nthreads)
+#define UTEST_SHOWSUITES() ut_showsuites()
 
 #define _UTASSERT(expr, fmt, ...)                                              \
   do {                                                                         \

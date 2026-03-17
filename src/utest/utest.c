@@ -204,6 +204,43 @@ static void *runsuite_thread(void *arg)
   return NULL;
 }
 
+int ut_runsuite(const char *name)
+{
+  for (size_t i = 0; i < utest_ctx.nsuites; i++) {
+    if (!strcmp(utest_ctx.suites[i].name, name)) {
+      runsuite(&utest_ctx.suites[i]);
+      return 0;
+    }
+  }
+  return -1;
+}
+
+void ut_showsuites(void)
+{
+#define TTY_WIDTH 80
+
+  size_t maxlen = 0;
+  for (size_t i = 0; i < utest_ctx.nsuites; i++) {
+    size_t len = strlen(utest_ctx.suites[i].name);
+    if (len > maxlen)
+      maxlen = len;
+  }
+
+  size_t colwidth = maxlen + 2; /* padding between columns */
+  size_t ncols = TTY_WIDTH / colwidth;
+  if (ncols == 0)
+    ncols = 1; /* name wider than terminal, one per line */
+
+  fprintf(stdout, "Available test suites (%zu):\n", utest_ctx.nsuites);
+
+  for (size_t i = 0; i < utest_ctx.nsuites; i++) {
+    if (i % ncols == 0 && i > 0)
+      fputc('\n', stdout);
+    fprintf(stdout, "  %-*s", (int)colwidth, utest_ctx.suites[i].name);
+  }
+  fputc('\n', stdout);
+}
+
 void ut_runsuites(void)
 {
   for (size_t i = 0; i < utest_ctx.nsuites; i++)
@@ -213,7 +250,7 @@ void ut_runsuites(void)
 void ut_runsuites_th(int nthreads)
 {
   if (nthreads <= 0)
-    error("invalid args");
+    error("invalid arguments");
 
   atomic_store(&utest_ctx.stop, false);
   atomic_store(&utest_ctx.nextsidx, 0);
