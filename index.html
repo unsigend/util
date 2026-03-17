@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
@@ -456,10 +456,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-configure-modules" class="md-nav__link">
+  <a href="#2-configure-build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Configure Modules
+        2. Configure Build
       
     </span>
   </a>
@@ -752,10 +752,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-configure-modules" class="md-nav__link">
+  <a href="#2-configure-build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Configure Modules
+        2. Configure Build
       
     </span>
   </a>
@@ -908,19 +908,23 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/unsigend/util.git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>util
 </code></pre></div>
-<h3 id="2-configure-modules">2. Configure Modules<a class="headerlink" href="#2-configure-modules" title="Permanent link">&para;</a></h3>
-<p>Configure modules in <code>config/config.mk</code> (all modules are included by default).</p>
+<h3 id="2-configure-build">2. Configure Build<a class="headerlink" href="#2-configure-build" title="Permanent link">&para;</a></h3>
+<p>Configure the build in <code>config/config.mk</code>. The most important options are:</p>
+<ul>
+<li><code>LIB_NAME</code> – library name (default: <code>util</code>)</li>
+<li><code>LIB_METHOD</code> – <code>static</code> or <code>shared</code></li>
+<li><code>DEBUG</code> – <code>0</code> for optimized builds, <code>1</code> for debug builds</li>
+</ul>
 <h3 id="3-build-and-install">3. Build and Install<a class="headerlink" href="#3-build-and-install" title="Permanent link">&para;</a></h3>
-<p>Build all modules:</p>
+<p>Build the library:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>all
 </code></pre></div>
 <p>Install headers to the install path:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>install
 </code></pre></div>
 <h3 id="4-use-the-library">4. Use the Library<a class="headerlink" href="#4-use-the-library" title="Permanent link">&para;</a></h3>
-<p>Include the library in your project:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;argparse.h&gt;</span>
+<p>Include the headers in your project:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span><span class="c1">   /* unit test framework */</span>
 </code></pre></div>
 <p>Link against the library:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>gcc<span class="w"> </span>-I./include<span class="w"> </span>your_program.c<span class="w"> </span>-L./lib<span class="w"> </span>-lutil<span class="w"> </span>-o<span class="w"> </span>your_program
@@ -928,20 +932,13 @@
 <h2 id="build-configuration">Build Configuration<a class="headerlink" href="#build-configuration" title="Permanent link">&para;</a></h2>
 <p>The build system is configured via <code>config/config.mk</code>:</p>
 <ul>
-<li><strong>C Standard</strong>: c11</li>
-<li><strong>Build Method</strong>: static or shared</li>
-<li><strong>Library Name</strong>: util</li>
-<li><strong>Modules</strong>: Select which modules to include</li>
+<li><strong>C Standard</strong>: C11</li>
+<li><strong>Build Method</strong>: <code>static</code> or <code>shared</code></li>
+<li><strong>Library Name</strong>: <code>util</code></li>
+<li><strong>Debug Mode</strong>: <code>DEBUG=0</code> (release) or <code>DEBUG=1</code> (debug)</li>
 </ul>
-<p>To change the build method, edit <code>config/config.mk</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">LIB_METHOD</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>static<span class="w">  </span><span class="c1"># or shared</span>
-</code></pre></div>
-<p>Then rebuild:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>clean
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>make<span class="w"> </span>all
-</code></pre></div>
 <h2 id="available-make-targets">Available Make Targets<a class="headerlink" href="#available-make-targets" title="Permanent link">&para;</a></h2>
-<p>Everything is managed through Makefile. Use <code>make help</code> to see detailed commands:</p>
+<p>Everything is managed through the top-level <code>Makefile</code>. Use <code>make help</code> to see detailed commands:</p>
 <table>
 <thead>
 <tr>
@@ -952,39 +949,51 @@
 <tbody>
 <tr>
 <td><code>make all</code></td>
-<td>Build all modules</td>
+<td>Build the library (same as <code>make lib</code>)</td>
+</tr>
+<tr>
+<td><code>make lib</code></td>
+<td>Build the library only</td>
+</tr>
+<tr>
+<td><code>make test</code></td>
+<td>Build the library and run all tests</td>
+</tr>
+<tr>
+<td><code>make test-NAME</code></td>
+<td>Build the library and run tests for module NAME</td>
 </tr>
 <tr>
 <td><code>make clean</code></td>
-<td>Clean builds</td>
+<td>Remove build artifacts and test outputs</td>
 </tr>
 <tr>
 <td><code>make list</code></td>
-<td>List all modules</td>
+<td>List all source files</td>
 </tr>
 <tr>
-<td><code>make help</code></td>
-<td>Show this help message</td>
-</tr>
-<tr>
-<td><code>make test-[module]</code></td>
-<td>Build test for [module]</td>
-</tr>
-<tr>
-<td><code>make clean-[module]</code></td>
-<td>Clean test for [module]</td>
-</tr>
-<tr>
-<td><code>make clean-all</code></td>
-<td>Completely clean all builds</td>
+<td><code>make info</code></td>
+<td>Show current build configuration</td>
 </tr>
 <tr>
 <td><code>make install</code></td>
-<td>Install all headers to install path</td>
+<td>Install headers to <code>./include</code></td>
 </tr>
 <tr>
 <td><code>make docs</code></td>
 <td>Build and serve documentation</td>
+</tr>
+<tr>
+<td><code>make clang</code></td>
+<td>Generate <code>compile_commands.json</code> for tooling</td>
+</tr>
+<tr>
+<td><code>make format</code></td>
+<td>Run <code>clang-format</code> over <code>include</code>, <code>src</code>, <code>test</code></td>
+</tr>
+<tr>
+<td><code>make help</code></td>
+<td>Show the Makefile help message</td>
 </tr>
 </tbody>
 </table>
@@ -1014,7 +1023,7 @@
 <h2 id="building-documentation">Building Documentation<a class="headerlink" href="#building-documentation" title="Permanent link">&para;</a></h2>
 <p>The documentation is built using MkDocs with Material theme.</p>
 <p>To build and serve the documentation locally:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>make<span class="w"> </span>docs
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>docs
 </code></pre></div>
 <p>This will:</p>
 <ul>

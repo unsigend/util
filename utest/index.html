@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Lightweight unit testing framework for C">
+        <meta name="description" content="Modern, lightweight C utility library documentation">
       
       
       
@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
     
     
       
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#release-v11" class="md-skip">
+        <a href="#utest-minimal-c-unit-test-framework" class="md-skip">
           Skip to content
         </a>
       
@@ -458,56 +458,78 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#release-v11" class="md-nav__link">
+  <a href="#utest-minimal-c-unit-test-framework" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Release (v1.1)
+        utest – Minimal C Unit Test Framework
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#header-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Header Files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#macros" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Macros
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Macros">
+    <nav class="md-nav" aria-label="utest – Minimal C Unit Test Framework">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#test-declaration-and-execution" class="md-nav__link">
+  <a href="#including-utest" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Test Declaration and Execution
+        Including utest
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Test Declaration and Execution">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-cases-and-suites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining Cases and Suites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registering-and-running-suites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registering and Running Suites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flags-utestflagsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flags (utest/flags.h)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flags (utest/flags.h)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#utest_test_case" class="md-nav__link">
+  <a href="#stop-on-failure-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_TEST_CASE
+        Stop-on-failure behavior
       
     </span>
   </a>
@@ -515,54 +537,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#utest_run_test_case" class="md-nav__link">
+  <a href="#output-style" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_RUN_TEST_CASE
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utest_test_suite" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UTEST_TEST_SUITE
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utest_run_test_suite" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UTEST_RUN_TEST_SUITE
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utest_begin" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UTEST_BEGIN
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utest_end" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UTEST_END
+        Output style
       
     </span>
   </a>
@@ -575,22 +553,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#flag-management" class="md-nav__link">
+  <a href="#assertions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Flag Management
+        Assertions
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Flag Management">
+    <nav class="md-nav" aria-label="Assertions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#utest_set_flag" class="md-nav__link">
+  <a href="#booleans" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_SET_FLAG
+        Booleans
       
     </span>
   </a>
@@ -598,10 +576,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#utest_clear_flag" class="md-nav__link">
+  <a href="#pointers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_CLEAR_FLAG
+        Pointers
       
     </span>
   </a>
@@ -609,10 +587,65 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#utest_flag_reset" class="md-nav__link">
+  <a href="#integers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_FLAG_RESET
+        Integers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unsigned-integers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsigned Integers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Characters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unsigned-characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsigned Characters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doubles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doubles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strings-const-char" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strings (const char *)
       
     </span>
   </a>
@@ -625,365 +658,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#flags" class="md-nav__link">
+  <a href="#design-summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Flags
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#integer-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Integer Assertions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Integer Assertions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#equality-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Equality Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#inequality-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Inequality Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#greater-than-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Greater Than Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#greater-than-or-equal-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Greater Than or Equal Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#less-than-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Less Than Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#less-than-or-equal-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Less Than or Equal Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unsigned-integer-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unsigned Integer Assertions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Unsigned Integer Assertions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#equality-assertions_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Equality Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#other-unsigned-integer-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Other Unsigned Integer Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#floating-point-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Floating Point Assertions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Floating Point Assertions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#float-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Float Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#double-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Double Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#string-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        String Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pointer-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pointer Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#boolean-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Boolean Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#character-assertions-v11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Character Assertions (v1.1)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Character Assertions (v1.1)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#signed-character-char" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Signed character (char)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unsigned-character-unsigned-char" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unsigned character (unsigned char)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Usage Examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Usage Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-flags" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        With Flags
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multiple-test-suites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multiple Test Suites
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#comprehensive-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Comprehensive Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#important-notes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Important Notes
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Important Notes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#test-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Test Organization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#assertion-behavior" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Assertion Behavior
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#thread-safety" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Thread Safety
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#undefined-behavior" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Undefined Behavior
+        Design Summary
       
     </span>
   </a>
@@ -1028,56 +706,78 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#release-v11" class="md-nav__link">
+  <a href="#utest-minimal-c-unit-test-framework" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Release (v1.1)
+        utest – Minimal C Unit Test Framework
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#header-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Header Files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#macros" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Macros
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Macros">
+    <nav class="md-nav" aria-label="utest – Minimal C Unit Test Framework">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#test-declaration-and-execution" class="md-nav__link">
+  <a href="#including-utest" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Test Declaration and Execution
+        Including utest
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Test Declaration and Execution">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#test-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#defining-cases-and-suites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining Cases and Suites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registering-and-running-suites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registering and Running Suites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flags-utestflagsh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flags (utest/flags.h)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flags (utest/flags.h)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#utest_test_case" class="md-nav__link">
+  <a href="#stop-on-failure-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_TEST_CASE
+        Stop-on-failure behavior
       
     </span>
   </a>
@@ -1085,54 +785,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#utest_run_test_case" class="md-nav__link">
+  <a href="#output-style" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_RUN_TEST_CASE
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utest_test_suite" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UTEST_TEST_SUITE
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utest_run_test_suite" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UTEST_RUN_TEST_SUITE
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utest_begin" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UTEST_BEGIN
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#utest_end" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        UTEST_END
+        Output style
       
     </span>
   </a>
@@ -1145,22 +801,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#flag-management" class="md-nav__link">
+  <a href="#assertions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Flag Management
+        Assertions
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Flag Management">
+    <nav class="md-nav" aria-label="Assertions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#utest_set_flag" class="md-nav__link">
+  <a href="#booleans" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_SET_FLAG
+        Booleans
       
     </span>
   </a>
@@ -1168,10 +824,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#utest_clear_flag" class="md-nav__link">
+  <a href="#pointers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_CLEAR_FLAG
+        Pointers
       
     </span>
   </a>
@@ -1179,10 +835,65 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#utest_flag_reset" class="md-nav__link">
+  <a href="#integers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        UTEST_FLAG_RESET
+        Integers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unsigned-integers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsigned Integers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Characters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unsigned-characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unsigned Characters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doubles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doubles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strings-const-char" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Strings (const char *)
       
     </span>
   </a>
@@ -1195,365 +906,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#flags" class="md-nav__link">
+  <a href="#design-summary" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Flags
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#integer-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Integer Assertions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Integer Assertions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#equality-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Equality Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#inequality-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Inequality Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#greater-than-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Greater Than Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#greater-than-or-equal-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Greater Than or Equal Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#less-than-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Less Than Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#less-than-or-equal-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Less Than or Equal Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unsigned-integer-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unsigned Integer Assertions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Unsigned Integer Assertions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#equality-assertions_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Equality Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#other-unsigned-integer-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Other Unsigned Integer Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#floating-point-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Floating Point Assertions
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Floating Point Assertions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#float-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Float Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#double-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Double Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#string-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        String Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pointer-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pointer Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#boolean-assertions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Boolean Assertions
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#character-assertions-v11" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Character Assertions (v1.1)
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Character Assertions (v1.1)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#signed-character-char" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Signed character (char)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unsigned-character-unsigned-char" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unsigned character (unsigned char)
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Usage Examples
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Usage Examples">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#basic-usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Basic Usage
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#with-flags" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        With Flags
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#multiple-test-suites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multiple Test Suites
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#comprehensive-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Comprehensive Example
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#important-notes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Important Notes
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Important Notes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#test-organization" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Test Organization
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#assertion-behavior" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Assertion Behavior
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#thread-safety" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Thread Safety
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#undefined-behavior" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Undefined Behavior
+        Design Summary
       
     </span>
   </a>
@@ -1584,537 +940,213 @@
 
   <h1>Utest</h1>
 
-<p>The <code>Utest</code> module provides a lightweight, modular unit testing framework for C, designed to make writing and running tests simple and expressive. It provides a rich set of macros for defining test cases, test suites, and a variety of assertions for different data types.</p>
-<p><strong>Version:</strong> utest v1.1</p>
-<h3 id="release-v11">Release (v1.1)<a class="headerlink" href="#release-v11" title="Permanent link">&para;</a></h3>
-<p>Remove <code>_</code>-prefixed macro family, simplify the <code>&lt;utest.h&gt;</code> public header structure. Add support for character assertion, testing. Add <code>UTEST_CASENAME_PREFIX</code> and <code>UTEST_SUITENAME_PREFIX</code> for extract function pointer.</p>
-<h2 id="header-files">Header Files<a class="headerlink" href="#header-files" title="Permanent link">&para;</a></h2>
-<p>To use the utest module in your code, include the header file:</p>
+<h2 id="utest-minimal-c-unit-test-framework">utest – Minimal C Unit Test Framework<a class="headerlink" href="#utest-minimal-c-unit-test-framework" title="Permanent link">&para;</a></h2>
+<p><code>utest</code> is a small, macro-based unit testing framework for C. It is designed to:</p>
+<ul>
+<li><strong>Expose only one public header</strong>: <code>utest.h</code></li>
+<li><strong>Run tests in parallel at suite level</strong> with <code>UTEST_RUNSUITES_THREAD</code></li>
+<li><strong>Be thread-safe by design</strong>: global statistics and output are synchronized</li>
+<li><strong>Keep tests simple</strong>: no registration boilerplate beyond a few macros</li>
+</ul>
+<p>This document describes only the public API in <code>include/utest.h</code>.</p>
+<hr />
+<h3 id="including-utest">Including utest<a class="headerlink" href="#including-utest" title="Permanent link">&para;</a></h3>
+<p>Add the header and link against <code>libutil</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span>
 </code></pre></div>
-<p>This provides access to all test declaration macros, assertion macros, and framework control macros.</p>
 <hr />
-<h2 id="macros">Macros<a class="headerlink" href="#macros" title="Permanent link">&para;</a></h2>
-<h3 id="test-declaration-and-execution">Test Declaration and Execution<a class="headerlink" href="#test-declaration-and-execution" title="Permanent link">&para;</a></h3>
-<h4 id="utest_test_case">UTEST_TEST_CASE<a class="headerlink" href="#utest_test_case" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TEST_CASE_NAME</span><span class="p">)</span>
-</code></pre></div>
-<p>Declares a test case with the given name.</p>
-<p><strong>Parameters:</strong></p>
+<h3 id="test-lifecycle">Test Lifecycle<a class="headerlink" href="#test-lifecycle" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>TEST_CASE_NAME</code> - The name of the test case</li>
+<li>
+<p><strong><code>UTEST_INIT(flags)</code></strong><br />
+  Initialize the testing framework. <code>flags</code> control reporting and stop-on-failure behavior.</p>
+</li>
+<li>
+<p><strong><code>UTEST_FINI()</code></strong><br />
+  Finalize the framework, print a summary, and release internal resources.</p>
+</li>
 </ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">MyFirstTest</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_INT</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">EXPECT_TRUE</span><span class="p">(</span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<p>You normally call these once in <code>main</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">{</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="n">UTEST_INIT</span><span class="p">(</span><span class="n">UTF_DEFAULT</span><span class="p">);</span><span class="w">  </span><span class="cm">/* or custom flags */</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="cm">/* add suites and run them */</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="n">UTEST_FINI</span><span class="p">();</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</code></pre></div>
+<hr />
+<h3 id="defining-cases-and-suites">Defining Cases and Suites<a class="headerlink" href="#defining-cases-and-suites" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>UTEST_CASE(name)</code></strong><br />
+  Define a test case function:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">UTEST_CASE</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="n">EXPECT_TRUE</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
 </code></pre></div>
-<hr />
-<h4 id="utest_run_test_case">UTEST_RUN_TEST_CASE<a class="headerlink" href="#utest_run_test_case" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">TEST_CASE_NAME</span><span class="p">)</span>
-</code></pre></div>
-<p>Runs a test case. This macro should be called inside a test suite.</p>
-<p><strong>Parameters:</strong></p>
 <ul>
-<li><code>TEST_CASE_NAME</code> - The name of the test case to run</li>
+<li><strong><code>UTEST_SUITE(name)</code></strong><br />
+  Define a suite that calls <code>UTEST_RUNCASE</code> for its cases:</li>
 </ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">UTEST_TEST_SUITE</span><span class="p">(</span><span class="n">MySuite</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">MyFirstTest</span><span class="p">);</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">MySecondTest</span><span class="p">);</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">UTEST_SUITE</span><span class="p">(</span><span class="n">math</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">{</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="n">UTEST_RUNCASE</span><span class="p">(</span><span class="n">example</span><span class="p">);</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
 </code></pre></div>
+<p>Suites are the <strong>unit of parallelism</strong>: each suite can be run on a different thread.</p>
 <hr />
-<h4 id="utest_test_suite">UTEST_TEST_SUITE<a class="headerlink" href="#utest_test_suite" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">UTEST_TEST_SUITE</span><span class="p">(</span><span class="n">TEST_SUITE_NAME</span><span class="p">)</span>
-</code></pre></div>
-<p>Declares a test suite with the given name.</p>
-<p><strong>Parameters:</strong></p>
+<h3 id="registering-and-running-suites">Registering and Running Suites<a class="headerlink" href="#registering-and-running-suites" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>TEST_SUITE_NAME</code> - The name of the test suite</li>
+<li>
+<p><strong><code>UTEST_ADDSUITE(name)</code></strong><br />
+  Register a suite by name (call this in <code>main</code>).</p>
+</li>
+<li>
+<p><strong><code>UTEST_RUNSUITES()</code></strong><br />
+  Run all registered suites sequentially in single thread.</p>
+</li>
+<li>
+<p><strong><code>UTEST_RUNSUITES_THREAD(nthreads)</code></strong><br />
+  Run all registered suites using up to <code>nthreads</code> threads. Suites are dispatched dynamically, each suite still runs its own cases sequentially.</p>
+</li>
 </ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">UTEST_TEST_SUITE</span><span class="p">(</span><span class="n">MySuite</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">MyFirstTest</span><span class="p">);</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">MySecondTest</span><span class="p">);</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h4 id="utest_run_test_suite">UTEST_RUN_TEST_SUITE<a class="headerlink" href="#utest_run_test_suite" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">TEST_SUITE_NAME</span><span class="p">)</span>
-</code></pre></div>
-<p>Runs a test suite. This macro should be called in the main function.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>TEST_SUITE_NAME</code> - The name of the test suite to run</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">UTEST_BEGIN</span><span class="p">();</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">MySuite</span><span class="p">);</span>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="n">UTEST_END</span><span class="p">();</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">}</span>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nthreads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="n">UTEST_INIT</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="n">UTEST_ADDSUITE</span><span class="p">(</span><span class="n">math</span><span class="p">);</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nthreads</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="n">UTEST_RUNSUITES</span><span class="p">();</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="k">else</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="n">UTEST_RUNSUITES_THREAD</span><span class="p">(</span><span class="n">nthreads</span><span class="p">);</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">  </span><span class="n">UTEST_FINI</span><span class="p">();</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h4 id="utest_begin">UTEST_BEGIN<a class="headerlink" href="#utest_begin" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">UTEST_BEGIN</span><span class="p">()</span>
+<h3 id="flags-utestflagsh">Flags (<code>utest/flags.h</code>)<a class="headerlink" href="#flags-utestflagsh" title="Permanent link">&para;</a></h3>
+<p>Flags are bitmasks combined and passed to <code>UTEST_INIT(flags)</code>.</p>
+<h4 id="stop-on-failure-behavior">Stop-on-failure behavior<a class="headerlink" href="#stop-on-failure-behavior" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><code>UTF_STOPONASS</code><br />
+  On first failed assertion <strong>within a case</strong>, stop executing the rest of that case body.</p>
+</li>
+<li>
+<p><code>UTF_STOPONCASE</code><br />
+  On first failed case <strong>within a suite</strong>, skip the remaining cases in that suite.</p>
+</li>
+<li>
+<p><code>UTF_STOPONSUITE</code><br />
+  On first failed suite, skip the remaining suites.</p>
+</li>
+</ul>
+<p>You can combine these:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">UTEST_INIT</span><span class="p">(</span><span class="n">UTF_STOPONASS</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">UTF_STOPONCASE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">UTF_STOPONSUITE</span><span class="p">);</span>
 </code></pre></div>
-<p>Initializes the Utest framework. Must be called before running any test suites.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="n">UTEST_BEGIN</span><span class="p">();</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">MySuite</span><span class="p">);</span>
-<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="n">UTEST_END</span><span class="p">();</span>
-<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">}</span>
-</code></pre></div>
+<h4 id="output-style">Output style<a class="headerlink" href="#output-style" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>UTF_SHOWCASE</code> – print per-case begin/end lines.</li>
+<li><code>UTF_SHOWSUITE</code> – print per-suite begin/end lines.</li>
+</ul>
+<p>Convenience presets:</p>
+<ul>
+<li><code>UTF_FULLSTYLE</code> – <code>UTF_SHOWCASE | UTF_SHOWSUITE</code></li>
+<li><code>UTF_BRIEFSTYLE</code> – <code>UTF_SHOWSUITE</code></li>
+<li><code>UTF_DEFAULT</code> – <code>UTF_STOPONASS | UTF_FULLSTYLE</code></li>
+</ul>
 <hr />
-<h4 id="utest_end">UTEST_END<a class="headerlink" href="#utest_end" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">UTEST_END</span><span class="p">()</span>
-</code></pre></div>
-<p>Finalizes the Utest framework. Must be called after running all test suites.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="n">UTEST_BEGIN</span><span class="p">();</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">MySuite</span><span class="p">);</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="n">UTEST_END</span><span class="p">();</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="p">}</span>
-</code></pre></div>
+<h3 id="assertions">Assertions<a class="headerlink" href="#assertions" title="Permanent link">&para;</a></h3>
+<p>All assertions are macros that operate on the current test case and record:</p>
+<ul>
+<li>pass / fail status for the case</li>
+<li>a detailed message on failure</li>
+</ul>
+<p>Assertions are <strong>thread-safe</strong> when used inside <code>UTEST_CASE</code> bodies, because each case writes into a per-suite output buffer and global stats are updated under internal synchronization.</p>
+<h4 id="booleans">Booleans<a class="headerlink" href="#booleans" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>EXPECT_TRUE(expr)</code></li>
+<li><code>EXPECT_FALSE(expr)</code></li>
+</ul>
+<h4 id="pointers">Pointers<a class="headerlink" href="#pointers" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>EXPECT_NULL(ptr)</code></li>
+<li><code>EXPECT_NOTNULL(ptr)</code></li>
+<li><code>EXPECT_EQ_PTR(actual, expect)</code></li>
+<li><code>EXPECT_NE_PTR(actual, expect)</code></li>
+<li><code>EXPECT_GT_PTR(actual, expect)</code></li>
+<li><code>EXPECT_GE_PTR(actual, expect)</code></li>
+<li><code>EXPECT_LT_PTR(actual, expect)</code></li>
+<li><code>EXPECT_LE_PTR(actual, expect)</code></li>
+</ul>
+<h4 id="integers">Integers<a class="headerlink" href="#integers" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>EXPECT_EQ_INT(actual, expect)</code></li>
+<li><code>EXPECT_NE_INT(actual, expect)</code></li>
+<li><code>EXPECT_GT_INT(actual, expect)</code></li>
+<li><code>EXPECT_GE_INT(actual, expect)</code></li>
+<li><code>EXPECT_LT_INT(actual, expect)</code></li>
+<li><code>EXPECT_LE_INT(actual, expect)</code></li>
+</ul>
+<h4 id="unsigned-integers">Unsigned Integers<a class="headerlink" href="#unsigned-integers" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>EXPECT_EQ_UINT(actual, expect)</code></li>
+<li><code>EXPECT_NE_UINT(actual, expect)</code></li>
+<li><code>EXPECT_GT_UINT(actual, expect)</code></li>
+<li><code>EXPECT_GE_UINT(actual, expect)</code></li>
+<li><code>EXPECT_LT_UINT(actual, expect)</code></li>
+<li><code>EXPECT_LE_UINT(actual, expect)</code></li>
+</ul>
+<h4 id="characters">Characters<a class="headerlink" href="#characters" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>EXPECT_EQ_CHAR(actual, expect)</code></li>
+<li><code>EXPECT_NE_CHAR(actual, expect)</code></li>
+<li><code>EXPECT_GT_CHAR(actual, expect)</code></li>
+<li><code>EXPECT_GE_CHAR(actual, expect)</code></li>
+<li><code>EXPECT_LT_CHAR(actual, expect)</code></li>
+<li><code>EXPECT_LE_CHAR(actual, expect)</code></li>
+</ul>
+<h4 id="unsigned-characters">Unsigned Characters<a class="headerlink" href="#unsigned-characters" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>EXPECT_EQ_UCHAR(actual, expect)</code></li>
+<li><code>EXPECT_NE_UCHAR(actual, expect)</code></li>
+<li><code>EXPECT_GT_UCHAR(actual, expect)</code></li>
+<li><code>EXPECT_GE_UCHAR(actual, expect)</code></li>
+<li><code>EXPECT_LT_UCHAR(actual, expect)</code></li>
+<li><code>EXPECT_LE_UCHAR(actual, expect)</code></li>
+</ul>
+<h4 id="doubles">Doubles<a class="headerlink" href="#doubles" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>EXPECT_EQ_DOUBLE(actual, expect)</code></li>
+<li><code>EXPECT_NE_DOUBLE(actual, expect)</code></li>
+<li><code>EXPECT_GT_DOUBLE(actual, expect)</code></li>
+<li><code>EXPECT_GE_DOUBLE(actual, expect)</code></li>
+<li><code>EXPECT_LT_DOUBLE(actual, expect)</code></li>
+<li><code>EXPECT_LE_DOUBLE(actual, expect)</code></li>
+</ul>
+<h4 id="strings-const-char">Strings (<code>const char *</code>)<a class="headerlink" href="#strings-const-char" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>EXPECT_EQ_STR(actual, expect)</code></li>
+<li><code>EXPECT_NE_STR(actual, expect)</code></li>
+<li><code>EXPECT_GT_STR(actual, expect)</code></li>
+<li><code>EXPECT_GE_STR(actual, expect)</code></li>
+<li><code>EXPECT_LT_STR(actual, expect)</code></li>
+<li><code>EXPECT_LE_STR(actual, expect)</code></li>
+</ul>
 <hr />
-<h3 id="flag-management">Flag Management<a class="headerlink" href="#flag-management" title="Permanent link">&para;</a></h3>
-<h4 id="utest_set_flag">UTEST_SET_FLAG<a class="headerlink" href="#utest_set_flag" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">UTEST_SET_FLAG</span><span class="p">(</span><span class="n">UTEST_FLAG</span><span class="p">)</span>
-</code></pre></div>
-<p>Sets a flag (bitwise) for the utest library.</p>
-<p><strong>Parameters:</strong></p>
+<h3 id="design-summary">Design Summary<a class="headerlink" href="#design-summary" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>UTEST_FLAG</code> - The flag to set</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">UTEST_SET_FLAG</span><span class="p">(</span><span class="n">UTEST_FLAG_SHOW_CASE</span><span class="p">);</span>
-</code></pre></div>
-<hr />
-<h4 id="utest_clear_flag">UTEST_CLEAR_FLAG<a class="headerlink" href="#utest_clear_flag" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">UTEST_CLEAR_FLAG</span><span class="p">(</span><span class="n">UTEST_FLAG</span><span class="p">)</span>
-</code></pre></div>
-<p>Clears a flag (bitwise) for the utest library.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><code>UTEST_FLAG</code> - The flag to clear</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">UTEST_CLEAR_FLAG</span><span class="p">(</span><span class="n">UTEST_FLAG_STYLE_FULL</span><span class="p">);</span>
-</code></pre></div>
-<hr />
-<h4 id="utest_flag_reset">UTEST_FLAG_RESET<a class="headerlink" href="#utest_flag_reset" title="Permanent link">&para;</a></h4>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">UTEST_FLAG_RESET</span><span class="p">()</span>
-</code></pre></div>
-<p>Resets all flags to the default value.</p>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">UTEST_FLAG_RESET</span><span class="p">();</span>
-</code></pre></div>
-<hr />
-<h3 id="flags">Flags<a class="headerlink" href="#flags" title="Permanent link">&para;</a></h3>
-<p>Utest supports runtime flags to control output and behavior:</p>
-<table>
-<thead>
-<tr>
-<th>Flag</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>UTEST_FLAG_NONE</code></td>
-<td>No special behavior</td>
-</tr>
-<tr>
-<td><code>UTEST_FLAG_SHOW_CASE</code></td>
-<td>Show each test case result</td>
-</tr>
-<tr>
-<td><code>UTEST_FLAG_SHOW_SUITE</code></td>
-<td>Show each test suite result</td>
-</tr>
-<tr>
-<td><code>UTEST_FLAG_STYLE_FULL</code></td>
-<td>Use full output style</td>
-</tr>
-<tr>
-<td><code>UTEST_FLAG_STOP_ON_FAILURE</code></td>
-<td>Stop on first failure</td>
-</tr>
-<tr>
-<td><code>UTEST_FLAG_DEFAULT</code></td>
-<td>Default flag set</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h3 id="integer-assertions">Integer Assertions<a class="headerlink" href="#integer-assertions" title="Permanent link">&para;</a></h3>
-<h4 id="equality-assertions">Equality Assertions<a class="headerlink" href="#equality-assertions" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_EQUAL_INT(ACTUAL, EXPECTED)</code> - Expects two integers to be equal</li>
-<li><code>EXPECT_EQUAL_INT8(ACTUAL, EXPECTED)</code> - Expects two 8-bit integers to be equal</li>
-<li><code>EXPECT_EQUAL_INT16(ACTUAL, EXPECTED)</code> - Expects two 16-bit integers to be equal</li>
-<li><code>EXPECT_EQUAL_INT32(ACTUAL, EXPECTED)</code> - Expects two 32-bit integers to be equal</li>
-<li><code>EXPECT_EQUAL_INT64(ACTUAL, EXPECTED)</code> - Expects two 64-bit integers to be equal</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestAddition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_INT</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_INT32</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="p">}</span>
-</code></pre></div>
-<h4 id="inequality-assertions">Inequality Assertions<a class="headerlink" href="#inequality-assertions" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_NOT_EQUAL_INT(ACTUAL, EXPECTED)</code> - Expects two integers to be not equal</li>
-<li><code>EXPECT_NOT_EQUAL_INT8(ACTUAL, EXPECTED)</code> - Expects two 8-bit integers to be not equal</li>
-<li><code>EXPECT_NOT_EQUAL_INT16(ACTUAL, EXPECTED)</code> - Expects two 16-bit integers to be not equal</li>
-<li><code>EXPECT_NOT_EQUAL_INT32(ACTUAL, EXPECTED)</code> - Expects two 32-bit integers to be not equal</li>
-<li><code>EXPECT_NOT_EQUAL_INT64(ACTUAL, EXPECTED)</code> - Expects two 64-bit integers to be not equal</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestInequality</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">    </span><span class="n">EXPECT_NOT_EQUAL_INT</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="p">}</span>
-</code></pre></div>
-<h4 id="greater-than-assertions">Greater Than Assertions<a class="headerlink" href="#greater-than-assertions" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_GREATER_INT(ACTUAL, EXPECTED)</code> - Expects actual to be greater than expected</li>
-<li><code>EXPECT_GREATER_INT8(ACTUAL, EXPECTED)</code> - Expects actual to be greater than expected (8-bit)</li>
-<li><code>EXPECT_GREATER_INT16(ACTUAL, EXPECTED)</code> - Expects actual to be greater than expected (16-bit)</li>
-<li><code>EXPECT_GREATER_INT32(ACTUAL, EXPECTED)</code> - Expects actual to be greater than expected (32-bit)</li>
-<li><code>EXPECT_GREATER_INT64(ACTUAL, EXPECTED)</code> - Expects actual to be greater than expected (64-bit)</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestGreater</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">    </span><span class="n">EXPECT_GREATER_INT</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="p">}</span>
-</code></pre></div>
-<h4 id="greater-than-or-equal-assertions">Greater Than or Equal Assertions<a class="headerlink" href="#greater-than-or-equal-assertions" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_GREATER_EQUAL_INT(ACTUAL, EXPECTED)</code> - Expects actual to be greater than or equal to expected</li>
-<li><code>EXPECT_GREATER_EQUAL_INT8(ACTUAL, EXPECTED)</code> - Expects actual to be greater than or equal to expected (8-bit)</li>
-<li><code>EXPECT_GREATER_EQUAL_INT16(ACTUAL, EXPECTED)</code> - Expects actual to be greater than or equal to expected (16-bit)</li>
-<li><code>EXPECT_GREATER_EQUAL_INT32(ACTUAL, EXPECTED)</code> - Expects actual to be greater than or equal to expected (32-bit)</li>
-<li><code>EXPECT_GREATER_EQUAL_INT64(ACTUAL, EXPECTED)</code> - Expects actual to be greater than or equal to expected (64-bit)</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestGreaterEqual</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span><span class="n">EXPECT_GREATER_EQUAL_INT</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span><span class="n">EXPECT_GREATER_EQUAL_INT</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="p">}</span>
-</code></pre></div>
-<h4 id="less-than-assertions">Less Than Assertions<a class="headerlink" href="#less-than-assertions" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_LESS_INT(ACTUAL, EXPECTED)</code> - Expects actual to be less than expected</li>
-<li><code>EXPECT_LESS_INT8(ACTUAL, EXPECTED)</code> - Expects actual to be less than expected (8-bit)</li>
-<li><code>EXPECT_LESS_INT16(ACTUAL, EXPECTED)</code> - Expects actual to be less than expected (16-bit)</li>
-<li><code>EXPECT_LESS_INT32(ACTUAL, EXPECTED)</code> - Expects actual to be less than expected (32-bit)</li>
-<li><code>EXPECT_LESS_INT64(ACTUAL, EXPECTED)</code> - Expects actual to be less than expected (64-bit)</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestLess</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span><span class="n">EXPECT_LESS_INT</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="p">}</span>
-</code></pre></div>
-<h4 id="less-than-or-equal-assertions">Less Than or Equal Assertions<a class="headerlink" href="#less-than-or-equal-assertions" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_LESS_EQUAL_INT(ACTUAL, EXPECTED)</code> - Expects actual to be less than or equal to expected</li>
-<li><code>EXPECT_LESS_EQUAL_INT8(ACTUAL, EXPECTED)</code> - Expects actual to be less than or equal to expected (8-bit)</li>
-<li><code>EXPECT_LESS_EQUAL_INT16(ACTUAL, EXPECTED)</code> - Expects actual to be less than or equal to expected (16-bit)</li>
-<li><code>EXPECT_LESS_EQUAL_INT32(ACTUAL, EXPECTED)</code> - Expects actual to be less than or equal to expected (32-bit)</li>
-<li><code>EXPECT_LESS_EQUAL_INT64(ACTUAL, EXPECTED)</code> - Expects actual to be less than or equal to expected (64-bit)</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestLessEqual</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span><span class="n">EXPECT_LESS_EQUAL_INT</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="n">EXPECT_LESS_EQUAL_INT</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h3 id="unsigned-integer-assertions">Unsigned Integer Assertions<a class="headerlink" href="#unsigned-integer-assertions" title="Permanent link">&para;</a></h3>
-<p>All integer assertion macros have unsigned variants with <code>UINT</code> in the macro name:</p>
-<h4 id="equality-assertions_1">Equality Assertions<a class="headerlink" href="#equality-assertions_1" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_EQUAL_UINT(ACTUAL, EXPECTED)</code> - Expects two unsigned integers to be equal</li>
-<li><code>EXPECT_EQUAL_UINT8(ACTUAL, EXPECTED)</code> - Expects two 8-bit unsigned integers to be equal</li>
-<li><code>EXPECT_EQUAL_UINT16(ACTUAL, EXPECTED)</code> - Expects two 16-bit unsigned integers to be equal</li>
-<li><code>EXPECT_EQUAL_UINT32(ACTUAL, EXPECTED)</code> - Expects two 32-bit unsigned integers to be equal</li>
-<li><code>EXPECT_EQUAL_UINT64(ACTUAL, EXPECTED)</code> - Expects two 64-bit unsigned integers to be equal</li>
-</ul>
-<h4 id="other-unsigned-integer-assertions">Other Unsigned Integer Assertions<a class="headerlink" href="#other-unsigned-integer-assertions" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_NOT_EQUAL_UINT(ACTUAL, EXPECTED)</code> and variants</li>
-<li><code>EXPECT_GREATER_UINT(ACTUAL, EXPECTED)</code> and variants</li>
-<li><code>EXPECT_GREATER_EQUAL_UINT(ACTUAL, EXPECTED)</code> and variants</li>
-<li><code>EXPECT_LESS_UINT(ACTUAL, EXPECTED)</code> and variants</li>
-<li><code>EXPECT_LESS_EQUAL_UINT(ACTUAL, EXPECTED)</code> and variants</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestUnsigned</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_UINT</span><span class="p">(</span><span class="mi">10u</span><span class="p">,</span><span class="w"> </span><span class="mi">10u</span><span class="p">);</span>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="n">EXPECT_GREATER_UINT</span><span class="p">(</span><span class="mi">20u</span><span class="p">,</span><span class="w"> </span><span class="mi">10u</span><span class="p">);</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h3 id="floating-point-assertions">Floating Point Assertions<a class="headerlink" href="#floating-point-assertions" title="Permanent link">&para;</a></h3>
-<h4 id="float-assertions">Float Assertions<a class="headerlink" href="#float-assertions" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_EQUAL_FLOAT(ACTUAL, EXPECTED)</code> - Expects two floats to be equal</li>
-<li><code>EXPECT_NOT_EQUAL_FLOAT(ACTUAL, EXPECTED)</code> - Expects two floats to be not equal</li>
-<li><code>EXPECT_GREATER_FLOAT(ACTUAL, EXPECTED)</code> - Expects actual float to be greater than expected</li>
-<li><code>EXPECT_GREATER_EQUAL_FLOAT(ACTUAL, EXPECTED)</code> - Expects actual float to be greater than or equal to expected</li>
-<li><code>EXPECT_LESS_FLOAT(ACTUAL, EXPECTED)</code> - Expects actual float to be less than expected</li>
-<li><code>EXPECT_LESS_EQUAL_FLOAT(ACTUAL, EXPECTED)</code> - Expects actual float to be less than or equal to expected</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestFloat</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_FLOAT</span><span class="p">(</span><span class="mf">3.14f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.14f</span><span class="p">);</span>
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="n">EXPECT_GREATER_FLOAT</span><span class="p">(</span><span class="mf">5.0f</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0f</span><span class="p">);</span>
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h3 id="double-assertions">Double Assertions<a class="headerlink" href="#double-assertions" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>EXPECT_EQUAL_DOUBLE(ACTUAL, EXPECTED)</code> - Expects two doubles to be equal</li>
-<li><code>EXPECT_NOT_EQUAL_DOUBLE(ACTUAL, EXPECTED)</code> - Expects two doubles to be not equal</li>
-<li><code>EXPECT_GREATER_DOUBLE(ACTUAL, EXPECTED)</code> - Expects actual double to be greater than expected</li>
-<li><code>EXPECT_GREATER_EQUAL_DOUBLE(ACTUAL, EXPECTED)</code> - Expects actual double to be greater than or equal to expected</li>
-<li><code>EXPECT_LESS_DOUBLE(ACTUAL, EXPECTED)</code> - Expects actual double to be less than expected</li>
-<li><code>EXPECT_LESS_EQUAL_DOUBLE(ACTUAL, EXPECTED)</code> - Expects actual double to be less than or equal to expected</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestDouble</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_DOUBLE</span><span class="p">(</span><span class="mf">3.14159</span><span class="p">,</span><span class="w"> </span><span class="mf">3.14159</span><span class="p">);</span>
-<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">    </span><span class="n">EXPECT_LESS_DOUBLE</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span><span class="w"> </span><span class="mf">3.0</span><span class="p">);</span>
-<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h3 id="string-assertions">String Assertions<a class="headerlink" href="#string-assertions" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>EXPECT_EQUAL_STRING(ACTUAL, EXPECTED)</code> - Expects two strings to be equal</li>
-<li><code>EXPECT_NOT_EQUAL_STRING(ACTUAL, EXPECTED)</code> - Expects two strings to be not equal</li>
-<li><code>EXPECT_GREATER_STRING(ACTUAL, EXPECTED)</code> - Expects actual string to be greater than expected (lexicographically)</li>
-<li><code>EXPECT_GREATER_EQUAL_STRING(ACTUAL, EXPECTED)</code> - Expects actual string to be greater than or equal to expected</li>
-<li><code>EXPECT_LESS_STRING(ACTUAL, EXPECTED)</code> - Expects actual string to be less than expected (lexicographically)</li>
-<li><code>EXPECT_LESS_EQUAL_STRING(ACTUAL, EXPECTED)</code> - Expects actual string to be less than or equal to expected</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestString</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_STRING</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">);</span>
-<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">    </span><span class="n">EXPECT_NOT_EQUAL_STRING</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;world&quot;</span><span class="p">);</span>
-<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">    </span><span class="n">EXPECT_LESS_STRING</span><span class="p">(</span><span class="s">&quot;apple&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;banana&quot;</span><span class="p">);</span>
-<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h3 id="pointer-assertions">Pointer Assertions<a class="headerlink" href="#pointer-assertions" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>EXPECT_NULL(POINTER)</code> - Expects pointer to be NULL</li>
-<li><code>EXPECT_NOT_NULL(POINTER)</code> - Expects pointer to be not NULL</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestPointer</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
-<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">    </span><span class="n">EXPECT_NULL</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
-<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>
-<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
-<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">ptr2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span>
-<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">    </span><span class="n">EXPECT_NOT_NULL</span><span class="p">(</span><span class="n">ptr2</span><span class="p">);</span>
-<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h3 id="boolean-assertions">Boolean Assertions<a class="headerlink" href="#boolean-assertions" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>EXPECT_TRUE(EXPRESSION)</code> - Expects expression to be true (non-zero)</li>
-<li><code>EXPECT_FALSE(EXPRESSION)</code> - Expects expression to be false (zero)</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestBoolean</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">    </span><span class="n">EXPECT_TRUE</span><span class="p">(</span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
-<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="n">EXPECT_FALSE</span><span class="p">(</span><span class="mi">3</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
-<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="n">EXPECT_TRUE</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">    </span><span class="n">EXPECT_FALSE</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h3 id="character-assertions-v11">Character Assertions (v1.1)<a class="headerlink" href="#character-assertions-v11" title="Permanent link">&para;</a></h3>
-<p>Assertions for signed and unsigned character types:</p>
-<h4 id="signed-character-char">Signed character (<code>char</code>)<a class="headerlink" href="#signed-character-char" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_EQUAL_CHAR(ACTUAL, EXPECTED)</code> - Expects two characters to be equal</li>
-<li><code>EXPECT_NOT_EQUAL_CHAR(ACTUAL, EXPECTED)</code> - Expects two characters to be not equal</li>
-<li><code>EXPECT_GREATER_CHAR(ACTUAL, EXPECTED)</code> - Expects actual character to be greater than expected</li>
-<li><code>EXPECT_GREATER_EQUAL_CHAR(ACTUAL, EXPECTED)</code> - Expects actual to be greater than or equal to expected</li>
-<li><code>EXPECT_LESS_CHAR(ACTUAL, EXPECTED)</code> - Expects actual character to be less than expected</li>
-<li><code>EXPECT_LESS_EQUAL_CHAR(ACTUAL, EXPECTED)</code> - Expects actual to be less than or equal to expected</li>
-</ul>
-<h4 id="unsigned-character-unsigned-char">Unsigned character (<code>unsigned char</code>)<a class="headerlink" href="#unsigned-character-unsigned-char" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_EQUAL_UCHAR(ACTUAL, EXPECTED)</code> - Expects two unsigned characters to be equal</li>
-<li><code>EXPECT_NOT_EQUAL_UCHAR(ACTUAL, EXPECTED)</code> - Expects two unsigned characters to be not equal</li>
-<li><code>EXPECT_GREATER_UCHAR(ACTUAL, EXPECTED)</code> - Expects actual unsigned char to be greater than expected</li>
-<li><code>EXPECT_GREATER_EQUAL_UCHAR(ACTUAL, EXPECTED)</code> - Expects actual to be greater than or equal to expected</li>
-<li><code>EXPECT_LESS_UCHAR(ACTUAL, EXPECTED)</code> - Expects actual unsigned char to be less than expected</li>
-<li><code>EXPECT_LESS_EQUAL_UCHAR(ACTUAL, EXPECTED)</code> - Expects actual to be less than or equal to expected</li>
-</ul>
-<p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestChar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_CHAR</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">);</span>
-<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">    </span><span class="n">EXPECT_NOT_EQUAL_CHAR</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;b&#39;</span><span class="p">);</span>
-<a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">    </span><span class="n">EXPECT_LESS_CHAR</span><span class="p">(</span><span class="sc">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">);</span>
-<a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="p">}</span>
-<a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>
-<a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestUchar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_UCHAR</span><span class="p">((</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">)</span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">)</span><span class="mi">255</span><span class="p">);</span>
-<a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="w">    </span><span class="n">EXPECT_GREATER_UCHAR</span><span class="p">((</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">)</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="p">)</span><span class="mi">100</span><span class="p">);</span>
-<a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h2 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">&para;</a></h2>
-<h3 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span>
-<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
-<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">Addition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_INT</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
-<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="p">}</span>
-<a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>
-<a id="__codelineno-32-7" name="__codelineno-32-7" href="#__codelineno-32-7"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">Subtraction</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-32-8" name="__codelineno-32-8" href="#__codelineno-32-8"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_INT</span><span class="p">(</span><span class="mi">5</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
-<a id="__codelineno-32-9" name="__codelineno-32-9" href="#__codelineno-32-9"></a><span class="p">}</span>
-<a id="__codelineno-32-10" name="__codelineno-32-10" href="#__codelineno-32-10"></a>
-<a id="__codelineno-32-11" name="__codelineno-32-11" href="#__codelineno-32-11"></a><span class="n">UTEST_TEST_SUITE</span><span class="p">(</span><span class="n">MathTests</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-32-12" name="__codelineno-32-12" href="#__codelineno-32-12"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">Addition</span><span class="p">);</span>
-<a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">Subtraction</span><span class="p">);</span>
-<a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="p">}</span>
-<a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a>
-<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a><span class="w">    </span><span class="n">UTEST_BEGIN</span><span class="p">();</span>
-<a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">MathTests</span><span class="p">);</span>
-<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a><span class="w">    </span><span class="n">UTEST_END</span><span class="p">();</span>
-<a id="__codelineno-32-20" name="__codelineno-32-20" href="#__codelineno-32-20"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-32-21" name="__codelineno-32-21" href="#__codelineno-32-21"></a><span class="p">}</span>
-</code></pre></div>
-<h3 id="with-flags">With Flags<a class="headerlink" href="#with-flags" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span>
-<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>
-<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">Addition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_INT</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
-<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="p">}</span>
-<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>
-<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="n">UTEST_TEST_SUITE</span><span class="p">(</span><span class="n">MathTests</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">Addition</span><span class="p">);</span>
-<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a><span class="p">}</span>
-<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a>
-<a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="w">    </span><span class="n">UTEST_BEGIN</span><span class="p">();</span>
-<a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="w">    </span><span class="n">UTEST_CLEAR_FLAG</span><span class="p">(</span><span class="n">UTEST_FLAG_STYLE_FULL</span><span class="p">);</span>
-<a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a><span class="w">    </span><span class="n">UTEST_SET_FLAG</span><span class="p">(</span><span class="n">UTEST_FLAG_SHOW_CASE</span><span class="p">);</span>
-<a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">MathTests</span><span class="p">);</span>
-<a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="w">    </span><span class="n">UTEST_END</span><span class="p">();</span>
-<a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="p">}</span>
-</code></pre></div>
-<h3 id="multiple-test-suites">Multiple Test Suites<a class="headerlink" href="#multiple-test-suites" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span>
-<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>
-<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">Test1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_INT</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="p">}</span>
-<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>
-<a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">Test2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_STRING</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">);</span>
-<a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="p">}</span>
-<a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a>
-<a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="n">UTEST_TEST_SUITE</span><span class="p">(</span><span class="n">Suite1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">Test1</span><span class="p">);</span>
-<a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a><span class="p">}</span>
-<a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a>
-<a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a><span class="n">UTEST_TEST_SUITE</span><span class="p">(</span><span class="n">Suite2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-34-16" name="__codelineno-34-16" href="#__codelineno-34-16"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">Test2</span><span class="p">);</span>
-<a id="__codelineno-34-17" name="__codelineno-34-17" href="#__codelineno-34-17"></a><span class="p">}</span>
-<a id="__codelineno-34-18" name="__codelineno-34-18" href="#__codelineno-34-18"></a>
-<a id="__codelineno-34-19" name="__codelineno-34-19" href="#__codelineno-34-19"></a><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-34-20" name="__codelineno-34-20" href="#__codelineno-34-20"></a><span class="w">    </span><span class="n">UTEST_BEGIN</span><span class="p">();</span>
-<a id="__codelineno-34-21" name="__codelineno-34-21" href="#__codelineno-34-21"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">Suite1</span><span class="p">);</span>
-<a id="__codelineno-34-22" name="__codelineno-34-22" href="#__codelineno-34-22"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">Suite2</span><span class="p">);</span>
-<a id="__codelineno-34-23" name="__codelineno-34-23" href="#__codelineno-34-23"></a><span class="w">    </span><span class="n">UTEST_END</span><span class="p">();</span>
-<a id="__codelineno-34-24" name="__codelineno-34-24" href="#__codelineno-34-24"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-34-25" name="__codelineno-34-25" href="#__codelineno-34-25"></a><span class="p">}</span>
-</code></pre></div>
-<h3 id="comprehensive-example">Comprehensive Example<a class="headerlink" href="#comprehensive-example" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span>
-<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
-<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
-<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>
-<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestIntegers</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_INT</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
-<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="w">    </span><span class="n">EXPECT_NOT_EQUAL_INT</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
-<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="w">    </span><span class="n">EXPECT_GREATER_INT</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
-<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="w">    </span><span class="n">EXPECT_LESS_INT</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">);</span>
-<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="p">}</span>
-<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a>
-<a id="__codelineno-35-12" name="__codelineno-35-12" href="#__codelineno-35-12"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestStrings</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-35-13" name="__codelineno-35-13" href="#__codelineno-35-13"></a><span class="w">    </span><span class="n">EXPECT_EQUAL_STRING</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test&quot;</span><span class="p">);</span>
-<a id="__codelineno-35-14" name="__codelineno-35-14" href="#__codelineno-35-14"></a><span class="w">    </span><span class="n">EXPECT_NOT_EQUAL_STRING</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fail&quot;</span><span class="p">);</span>
-<a id="__codelineno-35-15" name="__codelineno-35-15" href="#__codelineno-35-15"></a><span class="p">}</span>
-<a id="__codelineno-35-16" name="__codelineno-35-16" href="#__codelineno-35-16"></a>
-<a id="__codelineno-35-17" name="__codelineno-35-17" href="#__codelineno-35-17"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestPointers</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-35-18" name="__codelineno-35-18" href="#__codelineno-35-18"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
-<a id="__codelineno-35-19" name="__codelineno-35-19" href="#__codelineno-35-19"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">value</span><span class="p">;</span>
-<a id="__codelineno-35-20" name="__codelineno-35-20" href="#__codelineno-35-20"></a><span class="w">    </span><span class="n">EXPECT_NOT_NULL</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
-<a id="__codelineno-35-21" name="__codelineno-35-21" href="#__codelineno-35-21"></a><span class="w">    </span><span class="n">EXPECT_NULL</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
-<a id="__codelineno-35-22" name="__codelineno-35-22" href="#__codelineno-35-22"></a><span class="p">}</span>
-<a id="__codelineno-35-23" name="__codelineno-35-23" href="#__codelineno-35-23"></a>
-<a id="__codelineno-35-24" name="__codelineno-35-24" href="#__codelineno-35-24"></a><span class="n">UTEST_TEST_CASE</span><span class="p">(</span><span class="n">TestBooleans</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-35-25" name="__codelineno-35-25" href="#__codelineno-35-25"></a><span class="w">    </span><span class="n">EXPECT_TRUE</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-35-26" name="__codelineno-35-26" href="#__codelineno-35-26"></a><span class="w">    </span><span class="n">EXPECT_FALSE</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<a id="__codelineno-35-27" name="__codelineno-35-27" href="#__codelineno-35-27"></a><span class="w">    </span><span class="n">EXPECT_TRUE</span><span class="p">(</span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
-<a id="__codelineno-35-28" name="__codelineno-35-28" href="#__codelineno-35-28"></a><span class="p">}</span>
-<a id="__codelineno-35-29" name="__codelineno-35-29" href="#__codelineno-35-29"></a>
-<a id="__codelineno-35-30" name="__codelineno-35-30" href="#__codelineno-35-30"></a><span class="n">UTEST_TEST_SUITE</span><span class="p">(</span><span class="n">AllTests</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-35-31" name="__codelineno-35-31" href="#__codelineno-35-31"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">TestIntegers</span><span class="p">);</span>
-<a id="__codelineno-35-32" name="__codelineno-35-32" href="#__codelineno-35-32"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">TestStrings</span><span class="p">);</span>
-<a id="__codelineno-35-33" name="__codelineno-35-33" href="#__codelineno-35-33"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">TestPointers</span><span class="p">);</span>
-<a id="__codelineno-35-34" name="__codelineno-35-34" href="#__codelineno-35-34"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_CASE</span><span class="p">(</span><span class="n">TestBooleans</span><span class="p">);</span>
-<a id="__codelineno-35-35" name="__codelineno-35-35" href="#__codelineno-35-35"></a><span class="p">}</span>
-<a id="__codelineno-35-36" name="__codelineno-35-36" href="#__codelineno-35-36"></a>
-<a id="__codelineno-35-37" name="__codelineno-35-37" href="#__codelineno-35-37"></a><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-35-38" name="__codelineno-35-38" href="#__codelineno-35-38"></a><span class="w">    </span><span class="n">UTEST_BEGIN</span><span class="p">();</span>
-<a id="__codelineno-35-39" name="__codelineno-35-39" href="#__codelineno-35-39"></a><span class="w">    </span><span class="n">UTEST_RUN_TEST_SUITE</span><span class="p">(</span><span class="n">AllTests</span><span class="p">);</span>
-<a id="__codelineno-35-40" name="__codelineno-35-40" href="#__codelineno-35-40"></a><span class="w">    </span><span class="n">UTEST_END</span><span class="p">();</span>
-<a id="__codelineno-35-41" name="__codelineno-35-41" href="#__codelineno-35-41"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-35-42" name="__codelineno-35-42" href="#__codelineno-35-42"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h2 id="important-notes">Important Notes<a class="headerlink" href="#important-notes" title="Permanent link">&para;</a></h2>
-<h3 id="test-organization">Test Organization<a class="headerlink" href="#test-organization" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Test cases must be declared before they are used in test suites</li>
-<li>Test suites can contain multiple test cases</li>
-<li>Multiple test suites can be run in a single program</li>
-<li>Always call <code>UTEST_BEGIN()</code> before running tests and <code>UTEST_END()</code> after</li>
-</ul>
-<h3 id="assertion-behavior">Assertion Behavior<a class="headerlink" href="#assertion-behavior" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Assertions do not stop execution on failure by default</li>
-<li>Use <code>UTEST_FLAG_STOP_ON_FAILURE</code> flag to stop on first failure</li>
-<li>Failed assertions are reported in the test output</li>
-<li>All assertions in a test case are evaluated unless stopped by flags</li>
-</ul>
-<h3 id="thread-safety">Thread Safety<a class="headerlink" href="#thread-safety" title="Permanent link">&para;</a></h3>
-<p>Utest operations are <strong>not thread-safe</strong>. External synchronization is required for concurrent test execution.</p>
-<h3 id="undefined-behavior">Undefined Behavior<a class="headerlink" href="#undefined-behavior" title="Permanent link">&para;</a></h3>
-<p>Avoid the following:</p>
-<ul>
-<li>Calling test macros outside of proper test case/suite contexts</li>
-<li>Not calling <code>UTEST_BEGIN()</code> before running tests</li>
-<li>Not calling <code>UTEST_END()</code> after running tests</li>
-<li>Using test case names that conflict with C keywords or other identifiers</li>
+<li><strong>Single public header</strong>: <code>utest.h</code> is the only header you need to include.</li>
+<li><strong>Macro-based</strong>: Cases and suites are declared via macros, compiled as normal C functions.</li>
+<li><strong>Suite-based parallelism</strong>: Parallel execution happens at the suite level with <code>UTEST_RUNSUITES_THREAD</code>.</li>
+<li><strong>Thread-safe core</strong>: Internal state and statistics are synchronized, suites do not share mutable state.</li>
+<li><strong>Structured output</strong>: Each suite accumulates its own output and flushes once, minimizing interleaving even in multi-threaded runs.</li>
 </ul>
 
 
@@ -2122,9 +1154,6 @@
 
 
 
-
-  
-  
 
 
 
