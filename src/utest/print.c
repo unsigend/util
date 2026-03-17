@@ -23,7 +23,10 @@
  */
 
 #include <stdarg.h>
+#include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <utest/flags.h>
 #include <utest/print.h>
 
@@ -35,6 +38,14 @@
 #define COLMAGENTA "\033[35m"
 #define COLCYAN "\033[36m"
 
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+
+static void fatal()
+{
+  perror("utest");
+  exit(EXIT_FAILURE);
+}
+
 static double elapsedms(struct timespec *start, struct timespec *end)
 {
   /* calculate elapsed time in milliseconds */
@@ -42,51 +53,106 @@ static double elapsedms(struct timespec *start, struct timespec *end)
          (end->tv_nsec - start->tv_nsec) / 1000000.0;
 }
 
-void utprintb(int type, const char *name)
+static void growbuf(struct utbuf *buf, size_t newcap)
 {
-  if (type == UT_CASE)
-    fprintf(stdout, " |- ");
-  fprintf(stdout, "[" COLCYAN "RUNNING" COLRESET "] TEST %s: %s\n",
-          type == UT_CASE ? "CASE" : "SUITE", name);
+  buf->bufcap = newcap;
+  buf->buf = realloc(buf->buf, buf->bufcap);
+  if (!buf->buf)
+    fatal();
 }
 
-void utprinte(int type, const char *name, int stat)
+static void vprintfbuf(struct utbuf *buf, const char *fmt, va_list ap)
 {
-  if (type == UT_CASE)
-    fprintf(stdout, " |- ");
-  fprintf(stdout, "[%s%s%s ] TEST %s: %s\n",
-          stat == UT_PASS ? COLGREEN : COLRED,
-          stat == UT_PASS ? "PASSED" : "FAILED", COLRESET,
-          type == UT_CASE ? "CASE" : "SUITE", name);
+  va_list ap2;
+  va_copy(ap2, ap);
+  int nw = vsnprintf(NULL, 0, fmt, ap2); /* dry run */
+  va_end(ap2);
+
+  if (nw < 0)
+    fatal();
+
+  if ((size_t)nw > buf->bufcap - buf->bufsz) {
+    size_t needed = buf->bufsz + (size_t)nw + 1;
+    size_t newcap = MAX(buf->bufcap * 2, needed);
+    growbuf(buf, newcap);
+  }
+
+  nw = vsnprintf(buf->buf + buf->bufsz, buf->bufcap - buf->bufsz, fmt, ap);
+  buf->bufsz += nw;
 }
 
-void utprintstats(struct utest_stats *stats)
+static void printfbuf(struct utbuf *buf, const char *fmt, ...)
+{
+  va_list ap;
+  va_start(ap, fmt);
+  vprintfbuf(buf, fmt, ap);
+  va_end(ap);
+}
+
+void utbuf_init(struct utbuf *buf, size_t cap)
+{
+  buf->buf = malloc(cap);
+  if (!buf->buf)
+    fatal();
+  buf->bufsz = 0;
+  buf->bufcap = cap;
+}
+
+void utbuf_fini(struct utbuf *buf)
+{
+  free(buf->buf);
+  memset(buf, 0, sizeof(*buf));
+}
+
+void utbuf_flush(struct utbuf *buf, FILE *stream)
+{
+  fwrite(buf->buf, 1, buf->bufsz, stream);
+  fflush(stream);
+}
+
+void utbuf_printb(struct utbuf *buf, int type, const char *name)
+{
+  printfbuf(buf, "%s[" COLCYAN "RUNNING" COLRESET "] TEST %s: %s\n",
+            type == UT_CASE ? " |- " : "", type == UT_CASE ? "CASE" : "SUITE",
+            name);
+}
+
+void utbuf_printe(struct utbuf *buf, int type, const char *name, int stat)
+{
+  printfbuf(buf, "%s[%s%s%s ] TEST %s: %s\n", type == UT_CASE ? " |- " : "",
+            stat == UT_PASS ? COLGREEN : COLRED,
+            stat == UT_PASS ? "PASSED" : "FAILED", COLRESET,
+            type == UT_CASE ? "CASE" : "SUITE", name);
+}
+
+void utbuf_printstats(struct utbuf *buf, struct utest_stats *stats)
 {
   size_t cntotal = stats->cnpassed + stats->cnfailed + stats->cnskipped;
   size_t sntotal = stats->snpassed + stats->snfailed + stats->snskipped;
   double elapsed = elapsedms(&stats->start, &stats->end);
-  putc('\n', stdout);
-  fprintf(stdout,
-          "[CASES ] skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
-          stats->cnskipped, cntotal, stats->cnfailed, cntotal, stats->cnpassed,
-          cntotal);
-  fprintf(stdout,
-          "[SUITES] skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
-          stats->snskipped, sntotal, stats->snfailed, sntotal, stats->snpassed,
-          sntotal);
+  printfbuf(buf, "\n");
+  printfbuf(buf,
+            "[CASES ] skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
+            stats->cnskipped, cntotal, stats->cnfailed, cntotal,
+            stats->cnpassed, cntotal);
+  printfbuf(buf,
+            "[SUITES] skipped: %zu/%zu, failed: %zu/%zu, passed: %zu/%zu\n",
+            stats->snskipped, sntotal, stats->snfailed, sntotal,
+            stats->snpassed, sntotal);
   if (elapsed > 1000.0)
-    fprintf(stdout, "time:  %.2f s\n", elapsed / 1000.0);
+    printfbuf(buf, "time:  %.2f s\n", elapsed / 1000.0);
   else
-    fprintf(stdout, "time:  %.2f ms\n", elapsed);
+    printfbuf(buf, "time:  %.2f ms\n", elapsed);
 }
 
-void utprintassert(int line, const char *file, const char *fmt, ...)
+void utbuf_printassert(struct utbuf *buf, int line, const char *file,
+                       const char *fmt, ...)
 {
-  fprintf(stdout, "   |- %s:%d assertion failed\n", file, line);
-  fprintf(stdout, "   |  ");
-  va_list args;
-  va_start(args, fmt);
-  vfprintf(stdout, fmt, args);
-  va_end(args);
-  fprintf(stdout, "\n");
+  printfbuf(buf, "   |- %s:%d assertion failed\n", file, line);
+  printfbuf(buf, "   |  ");
+  va_list ap;
+  va_start(ap, fmt);
+  vprintfbuf(buf, fmt, ap);
+  va_end(ap);
+  printfbuf(buf, "\n");
 }

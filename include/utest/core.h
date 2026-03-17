@@ -72,7 +72,7 @@ extern void utest_runsuites_thread(int nthreads);
   do {                                                                         \
     if (!(expr)) {                                                             \
       (cas)->status = UT_FAIL;                                                 \
-      utprintassert(__LINE__, __FILE__, fmt, ##__VA_ARGS__);                   \
+      utbuf_printassert((cas)->buf, __LINE__, __FILE__, fmt, ##__VA_ARGS__);   \
       if (utest_ctx.flags & UTF_STOPONASS)                                     \
         return;                                                                \
     }                                                                          \

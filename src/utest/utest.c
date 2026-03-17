@@ -32,6 +32,7 @@
 
 #define MAX_SUITES 64  /* initial capacity of suites list */
 #define SCALE_FACTOR 2 /* scale factor for suites list */
+#define BUFSZ 1024
 
 struct utest_ctx utest_ctx;
 
@@ -69,13 +70,21 @@ void utest_fini()
       .snfailed = utest_ctx.snfailed,
       .snskipped = utest_ctx.snskipped,
   };
-  utprintstats(&stats);
+
+  struct utbuf buf;
+  utbuf_init(&buf, BUFSZ);
+  utbuf_printstats(&buf, &stats);
+  utbuf_flush(&buf, stdout);
+  utbuf_fini(&buf);
 
   if (pthread_mutex_destroy(&utest_ctx.lock))
     fatal();
 
-  if (utest_ctx.suites)
+  if (utest_ctx.suites) {
+    for (size_t i = 0; i < utest_ctx.nsuites; i++)
+      utbuf_fini(&utest_ctx.suites[i].buf);
     free(utest_ctx.suites);
+  }
 }
 
 void utest_addsuite(const char *name, utest_suite_func_t func)
@@ -96,6 +105,7 @@ void utest_addsuite(const char *name, utest_suite_func_t func)
   memset(&utest_ctx.suites[utest_ctx.nsuites], 0, sizeof(struct utest_suite));
   utest_ctx.suites[utest_ctx.nsuites].name = name;
   utest_ctx.suites[utest_ctx.nsuites].func = func;
+  utbuf_init(&utest_ctx.suites[utest_ctx.nsuites].buf, BUFSZ);
   utest_ctx.nsuites++;
 }
 
@@ -112,14 +122,15 @@ void utest_runcase(struct utest_suite *suite, const char *name,
       .name = name,
       .func = func,
       .status = UT_PASS,
+      .buf = &suite->buf,
   };
 
-  /* TODO: optimize this order by passing to a buffer */
-  if (utest_ctx.flags & UTF_SHOWCASE || cas.status == UT_FAIL)
-    utprintb(UT_CASE, name);
+  if (utest_ctx.flags & UTF_SHOWCASE)
+    utbuf_printb(cas.buf, UT_CASE, name);
   func(&cas);
+
   if (utest_ctx.flags & UTF_SHOWCASE || cas.status == UT_FAIL)
-    utprinte(UT_CASE, name, cas.status);
+    utbuf_printe(cas.buf, UT_CASE, name, cas.status);
 
   if (cas.status == UT_PASS)
     suite->cnpassed++;
@@ -138,12 +149,16 @@ static void runsuite(struct utest_suite *suite)
     return;
   }
 
-  /* TODO: optimize this order by passing to a buffer */
-  if (utest_ctx.flags & UTF_SHOWSUITE || suite->cnfailed)
-    utprintb(UT_SUITE, suite->name);
+  if (utest_ctx.flags & UTF_SHOWSUITE)
+    utbuf_printb(&suite->buf, UT_SUITE, suite->name);
+
   suite->func(suite);
+
   if (utest_ctx.flags & UTF_SHOWSUITE || suite->cnfailed)
-    utprinte(UT_SUITE, suite->name, suite->cnfailed ? UT_FAIL : UT_PASS);
+    utbuf_printe(&suite->buf, UT_SUITE, suite->name,
+                 suite->cnfailed ? UT_FAIL : UT_PASS);
+
+  utbuf_flush(&suite->buf, stdout);
 
   if (suite->cnfailed)
     utest_ctx.snfailed++;

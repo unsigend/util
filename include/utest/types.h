@@ -28,6 +28,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <utest/print.h>
 
 struct utest_suite;
 struct utest_case;
@@ -42,24 +43,24 @@ struct utest_suite {
   size_t cnpassed;         /* passed cases */
   size_t cnfailed;         /* failed cases */
   size_t cnskipped;        /* skipped cases */
+  struct utbuf buf;        /* buffer for suite output */
 };
 
 struct utest_case {
   const char *name;       /* case name */
   utest_case_func_t func; /* function ptr */
   int status;             /* case status */
+  struct utbuf *buf;      /* buffer for case output */
 };
 
 struct utest_ctx {
-  int flags; /* context flags */
-
-  size_t snpassed;  /* passed suites */
-  size_t snfailed;  /* failed suites */
-  size_t snskipped; /* skipped suites */
-  size_t cnpassed;  /* passed cases */
-  size_t cnfailed;  /* failed cases */
-  size_t cnskipped; /* skipped cases */
-
+  int flags;                  /* context flags */
+  size_t snpassed;            /* passed suites */
+  size_t snfailed;            /* failed suites */
+  size_t snskipped;           /* skipped suites */
+  size_t cnpassed;            /* passed cases */
+  size_t cnfailed;            /* failed cases */
+  size_t cnskipped;           /* skipped cases */
   struct utest_suite *suites; /* suites list */
   size_t nsuites;             /* number of suites */
   size_t nsuitescap;          /* capacity of suites list */

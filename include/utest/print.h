@@ -26,6 +26,7 @@
 #define UTEST_PRINT_H
 
 #include <stddef.h>
+#include <stdio.h>
 #include <time.h>
 
 struct utest_stats {
@@ -39,14 +40,25 @@ struct utest_stats {
   size_t snskipped;
 };
 
+struct utbuf {
+  char *buf;
+  size_t bufsz;
+  size_t bufcap;
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern void utprintb(int type, const char *name);
-extern void utprinte(int type, const char *name, int stat);
-extern void utprintstats(struct utest_stats *stats);
-extern void utprintassert(int line, const char *file, const char *fmt, ...);
+extern void utbuf_init(struct utbuf *buf, size_t cap);
+extern void utbuf_fini(struct utbuf *buf);
+extern void utbuf_flush(struct utbuf *buf, FILE *stream);
+extern void utbuf_printb(struct utbuf *buf, int type, const char *name);
+extern void utbuf_printe(struct utbuf *buf, int type, const char *name,
+                         int stat);
+extern void utbuf_printstats(struct utbuf *buf, struct utest_stats *stats);
+extern void utbuf_printassert(struct utbuf *buf, int line, const char *file,
+                              const char *fmt, ...);
 
 #ifdef __cplusplus
 }
