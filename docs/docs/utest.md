@@ -74,11 +74,17 @@ Suites are the **unit of parallelism**: each suite can be run on a different thr
 - **`UTEST_ADDSUITE(name)`**  
   Register a suite by name (call this in `main`).
 
+- **`UTEST_RUNSUITE(name)`**  
+  Run a single suite by name. Returns `0` on success, `-1` if the suite is not found.
+
 - **`UTEST_RUNSUITES()`**  
-  Run all registered suites sequentially in single thread.
+  Run all registered suites sequentially in a single thread.
 
 - **`UTEST_RUNSUITES_THREAD(nthreads)`**  
   Run all registered suites using up to `nthreads` threads. Suites are dispatched dynamically, each suite still runs its own cases sequentially.
+
+- **`UTEST_SHOWSUITES()`**  
+  Print all registered suite names to stdout in a grid-aligned layout (no tests are run).
 
 Example:
 
@@ -224,4 +230,3 @@ Assertions are **thread-safe** when used inside `UTEST_CASE` bodies, because eac
 - **Suite-based parallelism**: Parallel execution happens at the suite level with `UTEST_RUNSUITES_THREAD`.
 - **Thread-safe core**: Internal state and statistics are synchronized, suites do not share mutable state.
 - **Structured output**: Each suite accumulates its own output and flushes once, minimizing interleaving even in multi-threaded runs.
-

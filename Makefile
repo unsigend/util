@@ -140,8 +140,8 @@ help:
 	@echo "  make list      - list source files"
 	@echo "  make info      - show build configuration"
 	@echo "  make docs      - build and serve documentation"
-	@echo "  make clang     - generate compile_commands.json (src + test)"
-	@echo "  make format    - format .c and .h in include, src, test"
+	@echo "  make clang     - generate compile_commands.json"
+	@echo "  make format    - format .c and .h"
 	@echo "  make help      - this message\n"
 
 # generate compile_commands.json
@@ -149,7 +149,7 @@ clang:
 	@$(MAKE) clean
 	@bear -- $(MAKE) test
 
-# format .c and .h in include, src, test
+# format .c and .h
 format:
 	@find $(INCLUDE_PATH) $(SRC_PATH) $(TEST_PATH) \
 		\( -name "*.c" -o -name "*.h" \) -exec clang-format -i {} +

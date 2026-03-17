@@ -34,10 +34,14 @@
 #define UTEST_CASE(name)
 #define UTEST_SUITE(name)
 
-#define UTEST_RUNCASE(name)
-#define UTEST_ADDSUITE(name)
-#define UTEST_RUNSUITES()
-#define UTEST_RUNSUITES_THREAD(nthreads)
+#define UTEST_RUNCASE(name)  /* run a test case */
+#define UTEST_ADDSUITE(name) /* add a test suite */
+#define UTEST_RUNSUITE(                                                        \
+    name) /* run a test suite. Return 0 if successful, -1 if not found */
+#define UTEST_RUNSUITES() /* run all test suites */
+#define UTEST_RUNSUITES_THREAD(                                                \
+    nthreads)              /* run all test suites parallel with nthreads */
+#define UTEST_SHOWSUITES() /* show all test suites */
 
 /* boolean */
 #define EXPECT_TRUE(expr)
