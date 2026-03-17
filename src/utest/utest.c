@@ -1,7 +1,7 @@
 /**
  * MIT License
  *
- * Copyright (c) 2025 QIU YIXIANG
+ * Copyright (c) 2026 YIXIANG QIU
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,147 +22,213 @@
  * SOFTWARE.
  */
 
-#include <stdarg.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <utest/core.h>
+#include <utest/flags.h>
+#include <utest/print.h>
+#include <utest/types.h>
 
-#define _ASCII_COLOR_RED "\033[31m"
-#define _ASCII_COLOR_GREEN "\033[32m"
-#define _ASCII_COLOR_YELLOW "\033[33m"
-#define _ASCII_COLOR_BLUE "\033[34m"
-#define _ASCII_COLOR_MAGENTA "\033[35m"
-#define _ASCII_COLOR_CYAN "\033[36m"
-#define _ASCII_COLOR_WHITE "\033[37m"
-#define _ASCII_COLOR_RESET "\033[0m"
-#define _ASCII_COLOR_BOLD "\033[1m"
+#define MAX_SUITES 64  /* initial capacity of suites list */
+#define SCALE_FACTOR 2 /* scale factor for suites list */
+#define BUFSZ 1024
 
-UtestStateType gstate;
+#define LOCK(lock)                                                             \
+  if (pthread_mutex_lock(lock))                                                \
+    fatal();
+#define UNLOCK(lock)                                                           \
+  if (pthread_mutex_unlock(lock))                                              \
+    fatal();
 
-static UtestCaseType currcase;
-static UtestSuiteType currsuite;
+struct ut_ctx utest_ctx;
 
-static void PrintUtestVersion()
+static void fatal()
 {
-  fprintf(stdout, "Utest version: %d.%d\n", _UTEST_VERSION_MAJOR,
-          _UTEST_VERSION_MINOR);
+  perror("utest");
+  exit(EXIT_FAILURE);
 }
-static void TestCasePrintResult(UtestResultType result)
+
+static void error(const char *msg)
 {
-  if (gstate.flag & UTEST_FLAG_SHOW_CASE) {
-    if (gstate.flag & UTEST_FLAG_SHOW_SUITE) {
-      fprintf(stdout, " |- ");
-    }
-    if (result == UTEST_RESULT_SUCCESS) {
-      fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED " _ASCII_COLOR_RESET "]");
-    } else if (result == UTEST_RESULT_FAILURE) {
-      fprintf(stdout, "[" _ASCII_COLOR_RED "FAILED " _ASCII_COLOR_RESET "]");
-    } else if (result == UTEST_RESULT_RUNNING) {
-      fprintf(stdout, "[" _ASCII_COLOR_YELLOW "RUNNING" _ASCII_COLOR_RESET "]");
-    }
-    fprintf(stdout, "  TEST CASE: %s\n", currcase.name);
+  fprintf(stderr, "utest: %s\n", msg);
+  exit(EXIT_FAILURE);
+}
+
+void ut_init(int flags)
+{
+  memset(&utest_ctx, 0, sizeof(utest_ctx));
+  atomic_init(&utest_ctx.stop, false);
+  atomic_init(&utest_ctx.nextsidx, 0);
+
+  if (!flags)
+    utest_ctx.flags = UTF_DEFAULT;
+  else
+    utest_ctx.flags = flags;
+  clock_gettime(CLOCK_MONOTONIC, &utest_ctx.tstart);
+  if (pthread_mutex_init(&utest_ctx.lock, NULL))
+    fatal();
+  /* lazy allocate until first suite is added */
+  utest_ctx.nsuitescap = MAX_SUITES;
+}
+
+void ut_fini(void)
+{
+  clock_gettime(CLOCK_MONOTONIC, &utest_ctx.tend);
+  struct ut_stats stats = {
+      .start = utest_ctx.tstart,
+      .end = utest_ctx.tend,
+      .cnpassed = utest_ctx.cnpassed,
+      .cnfailed = utest_ctx.cnfailed,
+      .cnskipped = utest_ctx.cnskipped,
+      .snpassed = utest_ctx.snpassed,
+      .snfailed = utest_ctx.snfailed,
+      .snskipped = utest_ctx.snskipped,
+  };
+
+  struct utbuf buf;
+  utbuf_init(&buf, BUFSZ);
+  utbuf_printstats(&buf, &stats);
+  utbuf_flush(&buf, stdout);
+  utbuf_fini(&buf);
+
+  if (pthread_mutex_destroy(&utest_ctx.lock))
+    fatal();
+
+  if (utest_ctx.suites) {
+    for (size_t i = 0; i < utest_ctx.nsuites; i++)
+      utbuf_fini(&utest_ctx.suites[i].buf);
+    free(utest_ctx.suites);
   }
 }
-static void TestSuitePrintResult(UtestResultType result)
+
+void ut_addsuite(const char *name, utsuite_func func)
 {
-  if (gstate.flag & UTEST_FLAG_SHOW_SUITE) {
-    if (result == UTEST_RESULT_SUCCESS) {
-      fprintf(stdout, "[" _ASCII_COLOR_GREEN "PASSED " _ASCII_COLOR_RESET "]");
-    } else if (result == UTEST_RESULT_FAILURE) {
-      fprintf(stdout, "[" _ASCII_COLOR_RED "FAILED " _ASCII_COLOR_RESET "]");
-    } else if (result == UTEST_RESULT_RUNNING) {
-      fprintf(stdout, "[" _ASCII_COLOR_YELLOW "RUNNING" _ASCII_COLOR_RESET "]");
+  if (utest_ctx.suites) {
+    if (utest_ctx.nsuites >= utest_ctx.nsuitescap) {
+      utest_ctx.nsuitescap *= SCALE_FACTOR;
+      utest_ctx.suites = realloc(utest_ctx.suites,
+                                 utest_ctx.nsuitescap * sizeof(struct utsuite));
+      if (!utest_ctx.suites)
+        fatal();
     }
-    fprintf(stdout, "  TEST SUITE: %s\n", currsuite.name);
-  }
-}
-static void PrintNextLine()
-{
-  if ((gstate.flag & UTEST_FLAG_SHOW_SUITE) &&
-      (gstate.flag & UTEST_FLAG_SHOW_CASE)) {
-    fputc('\n', stdout);
-  }
-}
-static void PrintAssertErrorPrefix()
-{
-  fprintf(stdout, "   ");
-  if (gstate.flag & UTEST_FLAG_SHOW_CASE) {
-    if (gstate.flag & UTEST_FLAG_SHOW_SUITE) {
-      fprintf(stdout, " |- ");
-    }
-  }
-}
-
-void UtestBegin()
-{
-  memset(&gstate, 0, sizeof(gstate));
-  gstate.flag = UTEST_FLAG_DEFAULT;
-
-  // print the version
-  PrintUtestVersion();
-}
-
-void UtestEnd()
-{
-  if (gstate.flag & UTEST_FLAG_STYLE_FULL) {
-    fprintf(stdout, "====================\n");
-    fprintf(stdout, "TOTAL  : %llu\n", gstate.ntotal);
-    fprintf(stdout, "PASSED : %llu\n", gstate.npass);
-    fprintf(stdout, "FAILED : %llu\n", gstate.nfail);
-    fprintf(stdout, "====================\n");
   } else {
-    fprintf(stdout, "PASSED : %llu/%llu\n", gstate.npass, gstate.ntotal);
+    utest_ctx.suites = calloc(MAX_SUITES, sizeof(struct utsuite));
+    if (!utest_ctx.suites)
+      fatal();
   }
+  memset(&utest_ctx.suites[utest_ctx.nsuites], 0, sizeof(struct utsuite));
+  utest_ctx.suites[utest_ctx.nsuites].name = name;
+  utest_ctx.suites[utest_ctx.nsuites].func = func;
+  utbuf_init(&utest_ctx.suites[utest_ctx.nsuites].buf, BUFSZ);
+  utest_ctx.nsuites++;
 }
 
-void UtestRunTestCase(utest_func_ptr caseptr, utest_string name)
+void ut_runcase(struct utsuite *suite, const char *name, utcase_func func)
 {
-  currcase.name = name;
-  currcase.failed = false;
-  caseptr();
-  if (currcase.failed) {
-    gstate.nfail++;
-    currsuite.failed = true;
-    TestCasePrintResult(UTEST_RESULT_FAILURE);
-  } else {
-    gstate.npass++;
-    TestCasePrintResult(UTEST_RESULT_SUCCESS);
+  suite->cntotal++;
+
+  if ((utest_ctx.flags & UTF_STOPONCASE) && suite->cnfailed) {
+    suite->cnskipped++;
+    return;
   }
-  gstate.ntotal++;
+  struct utcase cas = {
+      .name = name,
+      .func = func,
+      .status = UT_PASS,
+      .buf = &suite->buf,
+  };
+
+  if (utest_ctx.flags & UTF_SHOWCASE)
+    utbuf_printb(cas.buf, UT_CASE, name);
+  func(&cas);
+
+  if (utest_ctx.flags & UTF_SHOWCASE || cas.status == UT_FAIL)
+    utbuf_printe(cas.buf, UT_CASE, name, cas.status);
+
+  if (cas.status == UT_PASS)
+    suite->cnpassed++;
+  else
+    suite->cnfailed++;
 }
 
-void UtestRunTestSuite(utest_func_ptr suiteptr, utest_string name)
+static void runsuite(struct utsuite *suite)
 {
-  currsuite.name = name;
-  currsuite.failed = false;
+  if (!suite->func)
+    fatal();
 
-  TestSuitePrintResult(UTEST_RESULT_RUNNING);
-  suiteptr();
-  if (currsuite.failed) {
-    TestSuitePrintResult(UTEST_RESULT_FAILURE);
-  } else {
-    TestSuitePrintResult(UTEST_RESULT_SUCCESS);
+  if ((utest_ctx.flags & UTF_STOPONSUITE) && atomic_load(&utest_ctx.stop)) {
+    LOCK(&utest_ctx.lock);
+    utest_ctx.snskipped++;
+    UNLOCK(&utest_ctx.lock);
+    return;
   }
-  PrintNextLine();
+
+  if (utest_ctx.flags & UTF_SHOWSUITE)
+    utbuf_printb(&suite->buf, UT_SUITE, suite->name);
+
+  suite->func(suite);
+
+  if (utest_ctx.flags & UTF_SHOWSUITE || suite->cnfailed)
+    utbuf_printe(&suite->buf, UT_SUITE, suite->name,
+                 suite->cnfailed ? UT_FAIL : UT_PASS);
+
+  utbuf_flush(&suite->buf, stdout);
+
+  LOCK(&utest_ctx.lock);
+
+  if (suite->cnfailed) {
+    utest_ctx.snfailed++;
+    if (utest_ctx.flags & UTF_STOPONSUITE)
+      atomic_store(&utest_ctx.stop, true);
+  } else
+    utest_ctx.snpassed++;
+
+  /* update global stats */
+  utest_ctx.cnpassed += suite->cnpassed;
+  utest_ctx.cnfailed += suite->cnfailed;
+  utest_ctx.cnskipped += suite->cnskipped;
+
+  UNLOCK(&utest_ctx.lock);
 }
-void UtestAssertionError(utest_string file, utest_int line, const char *fmt,
-                         ...)
+
+static void *runsuite_thread(void *arg)
 {
-  if ((!(gstate.flag & UTEST_FLAG_STOP_ON_FAILURE)) || (!(currcase.failed))) {
-
-    TestCasePrintResult(UTEST_RESULT_FAILURE);
-    currcase.failed = true;
-
-    PrintAssertErrorPrefix();
-    fprintf(stdout, "%s:%lld failure", file, line);
-    PrintNextLine();
-
-    PrintAssertErrorPrefix();
-    va_list args;
-    va_start(args, fmt);
-    vprintf(fmt, args);
-    va_end(args);
-
-    PrintNextLine();
+  (void)arg;
+  while (1) {
+    size_t sidx = atomic_fetch_add(&utest_ctx.nextsidx, 1);
+    if (sidx >= utest_ctx.nsuites)
+      break;
+    runsuite(&utest_ctx.suites[sidx]);
   }
+  return NULL;
+}
+
+void ut_runsuites(void)
+{
+  for (size_t i = 0; i < utest_ctx.nsuites; i++)
+    runsuite(&utest_ctx.suites[i]);
+}
+
+void ut_runsuites_th(int nthreads)
+{
+  if (nthreads <= 0)
+    error("invalid args");
+
+  atomic_store(&utest_ctx.stop, false);
+  atomic_store(&utest_ctx.nextsidx, 0);
+
+  pthread_t *tpool = calloc(nthreads, sizeof(pthread_t));
+  if (!tpool)
+    fatal();
+
+  for (int i = 0; i < nthreads; i++)
+    if (pthread_create(&tpool[i], NULL, runsuite_thread, NULL))
+      fatal();
+
+  for (int i = 0; i < nthreads; i++)
+    if (pthread_join(tpool[i], NULL))
+      fatal();
+
+  free(tpool);
 }

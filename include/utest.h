@@ -1,7 +1,7 @@
 /**
  * MIT License
  *
- * Copyright (c) 2025 QIU YIXIANG
+ * Copyright (c) 2026 YIXIANG QIU
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,158 +25,81 @@
 #ifndef UTEST_H
 #define UTEST_H
 
-/* Flags for the utest library. */
-#define UTEST_FLAG_NONE
-#define UTEST_FLAG_SHOW_CASE
-#define UTEST_FLAG_SHOW_SUITE
-#define UTEST_FLAG_STYLE_FULL
-#define UTEST_FLAG_STOP_ON_FAILURE
-#define UTEST_FLAG_DEFAULT
+/* Utest is a simple macro-based multi-threaded unit testing framework. This is
+   the only public API header needed. */
 
-/* These macros are used for specific usage only, often combined with
-   UTEST_STRINGIFY and UTEST_CONCATENATE to get the function name for the
-   function pointer. */
-#define UTEST_CASENAME_PREFIX
-#define UTEST_SUITENAME_PREFIX
+#define UTEST_INIT(flags)
+#define UTEST_FINI()
 
-/* Declare a test case and run it. */
-#define UTEST_TEST_CASE(CASE_NAME)
-#define UTEST_RUN_TEST_CASE(CASE_NAME)
+#define UTEST_CASE(name)
+#define UTEST_SUITE(name)
 
-/* Declare a test suite and run it. */
-#define UTEST_TEST_SUITE(SUITE_NAME)
-#define UTEST_RUN_TEST_SUITE(SUITE_NAME)
+#define UTEST_RUNCASE(name)
+#define UTEST_ADDSUITE(name)
+#define UTEST_RUNSUITES()
+#define UTEST_RUNSUITES_THREAD(nthreads)
 
-/* Initialize the utest library. */
-#define UTEST_BEGIN()
-#define UTEST_END()
+/* boolean */
+#define EXPECT_TRUE(expr)
+#define EXPECT_FALSE(expr)
 
-/* These macros are used to control the flags of the utest library. */
-#define UTEST_SET_FLAG(FLAG)
-#define UTEST_CLEAR_FLAG(FLAG)
-#define UTEST_FLAG_RESET()
+/* pointer */
+#define EXPECT_NULL(ptr)
+#define EXPECT_NOTNULL(ptr)
+#define EXPECT_EQ_PTR(actual, expect)
+#define EXPECT_NE_PTR(actual, expect)
+#define EXPECT_GT_PTR(actual, expect)
+#define EXPECT_GE_PTR(actual, expect)
+#define EXPECT_LT_PTR(actual, expect)
+#define EXPECT_LE_PTR(actual, expect)
 
-/* Integer assertions */
-#define EXPECT_EQUAL_INT(ACTUAL, EXPECTED)
-#define EXPECT_EQUAL_INT8(ACTUAL, EXPECTED)
-#define EXPECT_EQUAL_INT16(ACTUAL, EXPECTED)
-#define EXPECT_EQUAL_INT32(ACTUAL, EXPECTED)
-#define EXPECT_EQUAL_INT64(ACTUAL, EXPECTED)
+/* integer */
+#define EXPECT_EQ_INT(actual, expect)
+#define EXPECT_NE_INT(actual, expect)
+#define EXPECT_GT_INT(actual, expect)
+#define EXPECT_GE_INT(actual, expect)
+#define EXPECT_LT_INT(actual, expect)
+#define EXPECT_LE_INT(actual, expect)
 
-#define EXPECT_NOT_EQUAL_INT(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_INT8(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_INT16(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_INT32(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_INT64(ACTUAL, EXPECTED)
+/* unsigned integer */
+#define EXPECT_EQ_UINT(actual, expect)
+#define EXPECT_NE_UINT(actual, expect)
+#define EXPECT_GT_UINT(actual, expect)
+#define EXPECT_GE_UINT(actual, expect)
+#define EXPECT_LT_UINT(actual, expect)
+#define EXPECT_LE_UINT(actual, expect)
 
-#define EXPECT_GREATER_INT(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_INT8(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_INT16(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_INT32(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_INT64(ACTUAL, EXPECTED)
+/* character */
+#define EXPECT_EQ_CHAR(actual, expect)
+#define EXPECT_NE_CHAR(actual, expect)
+#define EXPECT_GT_CHAR(actual, expect)
+#define EXPECT_GE_CHAR(actual, expect)
+#define EXPECT_LT_CHAR(actual, expect)
+#define EXPECT_LE_CHAR(actual, expect)
 
-#define EXPECT_GREATER_EQUAL_INT(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_INT8(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_INT16(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_INT32(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_INT64(ACTUAL, EXPECTED)
+/* unsigned character */
+#define EXPECT_EQ_UCHAR(actual, expect)
+#define EXPECT_NE_UCHAR(actual, expect)
+#define EXPECT_GT_UCHAR(actual, expect)
+#define EXPECT_GE_UCHAR(actual, expect)
+#define EXPECT_LT_UCHAR(actual, expect)
+#define EXPECT_LE_UCHAR(actual, expect)
 
-#define EXPECT_LESS_INT(ACTUAL, EXPECTED)
-#define EXPECT_LESS_INT8(ACTUAL, EXPECTED)
-#define EXPECT_LESS_INT16(ACTUAL, EXPECTED)
-#define EXPECT_LESS_INT32(ACTUAL, EXPECTED)
-#define EXPECT_LESS_INT64(ACTUAL, EXPECTED)
+/* double */
+#define EXPECT_EQ_DOUBLE(actual, expect)
+#define EXPECT_NE_DOUBLE(actual, expect)
+#define EXPECT_GT_DOUBLE(actual, expect)
+#define EXPECT_GE_DOUBLE(actual, expect)
+#define EXPECT_LT_DOUBLE(actual, expect)
+#define EXPECT_LE_DOUBLE(actual, expect)
 
-#define EXPECT_LESS_EQUAL_INT(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_INT8(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_INT16(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_INT32(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_INT64(ACTUAL, EXPECTED)
-
-/* Unsigned integer assertions */
-#define EXPECT_EQUAL_UINT(ACTUAL, EXPECTED)
-#define EXPECT_EQUAL_UINT8(ACTUAL, EXPECTED)
-#define EXPECT_EQUAL_UINT16(ACTUAL, EXPECTED)
-#define EXPECT_EQUAL_UINT32(ACTUAL, EXPECTED)
-#define EXPECT_EQUAL_UINT64(ACTUAL, EXPECTED)
-
-#define EXPECT_NOT_EQUAL_UINT(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_UINT8(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_UINT16(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_UINT32(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_UINT64(ACTUAL, EXPECTED)
-
-#define EXPECT_GREATER_UINT(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_UINT8(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_UINT16(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_UINT32(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_UINT64(ACTUAL, EXPECTED)
-
-#define EXPECT_GREATER_EQUAL_UINT(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_UINT8(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_UINT16(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_UINT32(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_UINT64(ACTUAL, EXPECTED)
-
-#define EXPECT_LESS_UINT(ACTUAL, EXPECTED)
-#define EXPECT_LESS_UINT8(ACTUAL, EXPECTED)
-#define EXPECT_LESS_UINT16(ACTUAL, EXPECTED)
-#define EXPECT_LESS_UINT32(ACTUAL, EXPECTED)
-#define EXPECT_LESS_UINT64(ACTUAL, EXPECTED)
-
-#define EXPECT_LESS_EQUAL_UINT(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_UINT8(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_UINT16(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_UINT32(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_UINT64(ACTUAL, EXPECTED)
-
-/* float assertion */
-#define EXPECT_EQUAL_FLOAT(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_FLOAT(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_FLOAT(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_FLOAT(ACTUAL, EXPECTED)
-#define EXPECT_LESS_FLOAT(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_FLOAT(ACTUAL, EXPECTED)
-
-/* double assertion */
-#define EXPECT_EQUAL_DOUBLE(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_DOUBLE(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_DOUBLE(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_DOUBLE(ACTUAL, EXPECTED)
-#define EXPECT_LESS_DOUBLE(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_DOUBLE(ACTUAL, EXPECTED)
-
-/* string assertion */
-#define EXPECT_EQUAL_STRING(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_STRING(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_STRING(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_STRING(ACTUAL, EXPECTED)
-#define EXPECT_LESS_STRING(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_STRING(ACTUAL, EXPECTED)
-
-/* pointer assertion */
-#define EXPECT_NULL(POINTER)
-#define EXPECT_NOT_NULL(POINTER)
-
-/* boolean expression */
-#define EXPECT_TRUE(EXPRESSION)
-#define EXPECT_FALSE(EXPRESSION)
-
-/* character assertion */
-#define EXPECT_EQUAL_CHAR(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_CHAR(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_CHAR(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_CHAR(ACTUAL, EXPECTED)
-#define EXPECT_LESS_CHAR(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_CHAR(ACTUAL, EXPECTED)
-
-/* unsigned character assertion */
-#define EXPECT_EQUAL_UCHAR(ACTUAL, EXPECTED)
-#define EXPECT_NOT_EQUAL_UCHAR(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_UCHAR(ACTUAL, EXPECTED)
-#define EXPECT_GREATER_EQUAL_UCHAR(ACTUAL, EXPECTED)
-#define EXPECT_LESS_UCHAR(ACTUAL, EXPECTED)
-#define EXPECT_LESS_EQUAL_UCHAR(ACTUAL, EXPECTED)
+/* string */
+#define EXPECT_EQ_STR(actual, expect)
+#define EXPECT_NE_STR(actual, expect)
+#define EXPECT_GT_STR(actual, expect)
+#define EXPECT_GE_STR(actual, expect)
+#define EXPECT_LT_STR(actual, expect)
+#define EXPECT_LE_STR(actual, expect)
 
 #include <utest/core.h>
 

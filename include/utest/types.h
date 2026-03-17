@@ -1,7 +1,7 @@
 /**
  * MIT License
  *
- * Copyright (c) 2025 QIU YIXIANG
+ * Copyright (c) 2026 YIXIANG QIU
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,66 +21,55 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
 #ifndef UTEST_TYPES_H
 #define UTEST_TYPES_H
 
+#include <pthread.h>
+#include <stdatomic.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <utest/print.h>
 
-typedef signed char utest_i8;
-typedef signed short utest_i16;
-typedef signed int utest_i32;
-typedef signed long long utest_i64;
+struct utsuite;
+struct utcase;
 
-typedef unsigned char utest_u8;
-typedef unsigned short utest_u16;
-typedef unsigned int utest_u32;
-typedef unsigned long long utest_u64;
+typedef void (*utcase_func)(struct utcase *);
+typedef void (*utsuite_func)(struct utsuite *);
 
-typedef utest_i64 utest_int;
-typedef utest_u64 utest_uint;
-typedef float utest_float;
-typedef double utest_double;
-typedef bool utest_bool;
-typedef utest_uint utest_counter;
-typedef utest_uint utest_flag;
-typedef const char *utest_string;
-typedef char utest_char;
-typedef unsigned char utest_uchar;
+struct utsuite {
+  const char *name;  /* suite name */
+  utsuite_func func; /* function ptr */
+  size_t cntotal;    /* total cases */
+  size_t cnpassed;   /* passed cases */
+  size_t cnfailed;   /* failed cases */
+  size_t cnskipped;  /* skipped cases */
+  struct utbuf buf;  /* buffer for suite output */
+};
 
-typedef void (*utest_func_ptr)(void);
+struct utcase {
+  const char *name;  /* case name */
+  utcase_func func;  /* function ptr */
+  int status;        /* case status */
+  struct utbuf *buf; /* buffer for case output */
+};
 
-typedef enum {
-  UTEST_RESULT_SUCCESS,
-  UTEST_RESULT_FAILURE,
-  UTEST_RESULT_RUNNING,
-} UtestResultType;
-
-typedef enum {
-  UTEST_CMP_EQUAL,
-  UTEST_CMP_NOT_EQUAL,
-  UTEST_CMP_GREATER,
-  UTEST_CMP_GREATER_EQUAL,
-  UTEST_CMP_LESS,
-  UTEST_CMP_LESS_EQUAL,
-  UTEST_CMP_NULL,
-  UTEST_CMP_NOT_NULL,
-} UtestCompareType;
-
-typedef struct {
-  utest_string name;
-  utest_bool failed;
-} UtestSuiteType;
-
-typedef struct {
-  utest_string name;
-  utest_bool failed;
-} UtestCaseType;
-
-typedef struct {
-  utest_counter npass;
-  utest_counter nfail;
-  utest_counter ntotal;
-  utest_flag flag;
-} UtestStateType;
+struct ut_ctx {
+  int flags;              /* context flags */
+  atomic_size_t nextsidx; /* next suite index to dispatch */
+  atomic_bool stop;       /* stop suite flag */
+  size_t snpassed;        /* passed suites */
+  size_t snfailed;        /* failed suites */
+  size_t snskipped;       /* skipped suites */
+  size_t cnpassed;        /* passed cases */
+  size_t cnfailed;        /* failed cases */
+  size_t cnskipped;       /* skipped cases */
+  struct utsuite *suites; /* suites list */
+  size_t nsuites;         /* number of suites */
+  size_t nsuitescap;      /* capacity of suites list */
+  pthread_mutex_t lock;   /* lock for the test context */
+  struct timespec tstart; /* start time */
+  struct timespec tend;   /* end time */
+};
 
 #endif

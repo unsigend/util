@@ -51,9 +51,15 @@ endif
 UTIL_LIB_DEPS := $(UTIL_LIB_PATH)/lib$(LIB_NAME)$(UTIL_LIB_POSTFIX)
 
 # source and object files
-SRCS := $(shell find $(CASES_PATH) -name "*.c")
-OBJS := $(patsubst $(CASES_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
-DEPS := $(patsubst $(OBJ_PATH)/%.o, $(DEP_PATH)/%.d, $(OBJS))
+SRCS_CASE := $(shell find $(CASES_PATH) -name "*.c")
+SRCS_MAIN := $(CUR_DIR)/main.c
+
+OBJS_CASE := $(patsubst $(CASES_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS_CASE))
+OBJS_MAIN := $(OBJ_PATH)/main.o
+
+SRCS     := $(SRCS_CASE) $(SRCS_MAIN)
+OBJS     := $(OBJS_CASE) $(OBJS_MAIN)
+DEPS     := $(patsubst $(OBJ_PATH)/%.o, $(DEP_PATH)/%.d, $(OBJS))
 
 # tools
 CC := $(GCC)
@@ -76,6 +82,12 @@ $(OBJ_PATH)/%.o: $(CASES_PATH)/%.c
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(DEP_PATH)/$*.d)
 	@$(CC) $(CC_FLAGS) $(CC_DEPS_FLAGS) $(DEP_PATH)/$*.d -MT $@ -c $< -o $@
+	@echo "  + CC	$<"
+
+$(OBJ_PATH)/main.o: $(CUR_DIR)/main.c
+	@mkdir -p $(dir $@)
+	@mkdir -p $(DEP_PATH)
+	@$(CC) $(CC_FLAGS) $(CC_DEPS_FLAGS) $(DEP_PATH)/main.d -MT $@ -c $< -o $@
 	@echo "  + CC	$<"
 
 -include $(DEPS)
