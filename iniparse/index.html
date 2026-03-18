@@ -11,10 +11,8 @@
       
       
       
-        <link rel="prev" href="../argparse/">
+        <link rel="prev" href="../utest/">
       
-      
-        <link rel="next" href="../utest/">
       
       
         
@@ -25,7 +23,7 @@
     
     
       
-        <title>Configparse - Util Documentation</title>
+        <title>Iniparse - Util Documentation</title>
       
     
     
@@ -76,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#configparse" class="md-skip">
+        <a href="#iniparse-ini-file-parser" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Configparse
+              Iniparse
             
           </span>
         </div>
@@ -230,13 +228,13 @@
   
   
     <li class="md-tabs__item">
-      <a href="../argparse/" class="md-tabs__link">
+      <a href="../utest/" class="md-tabs__link">
         
   
   
     
   
-  Argparse
+  Utest
 
       </a>
     </li>
@@ -257,26 +255,7 @@
   
     
   
-  Configparse
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../utest/" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Utest
+  Iniparse
 
       </a>
     </li>
@@ -350,14 +329,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../argparse/" class="md-nav__link">
+      <a href="../utest/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Argparse
+    Utest
   
 
     
@@ -391,7 +370,7 @@
   <span class="md-ellipsis">
     
   
-    Configparse
+    Iniparse
   
 
     
@@ -409,7 +388,7 @@
   <span class="md-ellipsis">
     
   
-    Configparse
+    Iniparse
   
 
     
@@ -433,22 +412,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configparse" class="md-nav__link">
+  <a href="#iniparse-ini-file-parser" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configparse
+        Iniparse – INI File Parser
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configparse">
+    <nav class="md-nav" aria-label="Iniparse – INI File Parser">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#status" class="md-nav__link">
+  <a href="#including" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Status
+        Including
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public API
       
     </span>
   </a>
@@ -464,33 +465,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../utest/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Utest
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -520,22 +494,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#configparse" class="md-nav__link">
+  <a href="#iniparse-ini-file-parser" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configparse
+        Iniparse – INI File Parser
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configparse">
+    <nav class="md-nav" aria-label="Iniparse – INI File Parser">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#status" class="md-nav__link">
+  <a href="#including" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Status
+        Including
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage Workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public API
       
     </span>
   </a>
@@ -564,19 +560,42 @@
 
 
 
-  <h1>Configparse</h1>
+  <h1>Iniparse</h1>
 
-<h2 id="configparse">Configparse<a class="headerlink" href="#configparse" title="Permanent link">&para;</a></h2>
-<p><code>configparse</code> was a lightweight configuration file helper used in earlier
-iterations of this project. The current public API no longer ships this
-module, but the documentation entry remains for historical context.</p>
-<h3 id="status">Status<a class="headerlink" href="#status" title="Permanent link">&para;</a></h3>
+<h2 id="iniparse-ini-file-parser">Iniparse – INI File Parser<a class="headerlink" href="#iniparse-ini-file-parser" title="Permanent link">&para;</a></h2>
+<p><code>iniparse</code> is a small INI parser for C, exposing a minimal set of functions in <code>include/iniparse.h</code>.</p>
+<hr />
+<h3 id="including">Including<a class="headerlink" href="#including" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iniparse.h&gt;</span>
+</code></pre></div>
+<hr />
+<h3 id="usage-workflow">Usage Workflow<a class="headerlink" href="#usage-workflow" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Initialize a parsing context with <code>iniparse_init</code>.</li>
+<li>Parse the file contents with <code>iniparse_parse</code>.</li>
+<li>Query values with <code>iniparse_getvalue</code>.</li>
+<li>Release resources with <code>iniparse_fini</code>.</li>
+</ol>
+<hr />
+<h3 id="public-api">Public API<a class="headerlink" href="#public-api" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Available headers</strong>: none in this version (<code>configparse.h</code> is not installed)</li>
-<li><strong>Recommended usage</strong>: use your own configuration reader or an external library</li>
+<li>
+<p><code>iniparse_init(ctx, filename)</code><br />
+  Initialize the parser for <code>filename</code>.</p>
+</li>
+<li>
+<p><code>iniparse_parse(ctx)</code><br />
+  Parse the INI file referenced by the initialized context.</p>
+</li>
+<li>
+<p><code>iniparse_getvalue(ctx, sec, key)</code><br />
+  Return the value of <code>key</code> in section <code>sec</code>. Returns <code>NULL</code> if the key/section is not found (or if either <code>sec</code> or <code>key</code> does not exist).</p>
+</li>
+<li>
+<p><code>iniparse_fini(ctx)</code><br />
+  Finalize the parser and release any resources associated with the context.</p>
+</li>
 </ul>
-<p>If you are working with an older revision that still includes <code>configparse</code>,
-please consult that revision for the detailed API and usage examples.</p>
 
 
 

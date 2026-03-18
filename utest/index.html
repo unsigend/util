@@ -11,8 +11,10 @@
       
       
       
-        <link rel="prev" href="../configparse/">
+        <link rel="prev" href="..">
       
+      
+        <link rel="next" href="../iniparse/">
       
       
         
@@ -226,44 +228,6 @@
   
   
   
-  
-    <li class="md-tabs__item">
-      <a href="../argparse/" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Argparse
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../configparse/" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Configparse
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
     
   
   
@@ -275,6 +239,25 @@
     
   
   Utest
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../iniparse/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Iniparse
 
       </a>
     </li>
@@ -329,60 +312,6 @@
     
   
     Introduction
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../argparse/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Argparse
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../configparse/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configparse
   
 
     
@@ -461,12 +390,12 @@
   <a href="#utest-minimal-c-unit-test-framework" class="md-nav__link">
     <span class="md-ellipsis">
       
-        utest – Minimal C Unit Test Framework
+        Utest – Minimal C Unit Test Framework
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="utest – Minimal C Unit Test Framework">
+    <nav class="md-nav" aria-label="Utest – Minimal C Unit Test Framework">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -514,15 +443,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#flags-utestflagsh" class="md-nav__link">
+  <a href="#flags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Flags (utest/flags.h)
+        Flags
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Flags (utest/flags.h)">
+    <nav class="md-nav" aria-label="Flags">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -549,6 +478,17 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-flag-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Flag Control
+      
+    </span>
+  </a>
   
 </li>
         
@@ -681,6 +621,33 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../iniparse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Iniparse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -709,12 +676,12 @@
   <a href="#utest-minimal-c-unit-test-framework" class="md-nav__link">
     <span class="md-ellipsis">
       
-        utest – Minimal C Unit Test Framework
+        Utest – Minimal C Unit Test Framework
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="utest – Minimal C Unit Test Framework">
+    <nav class="md-nav" aria-label="Utest – Minimal C Unit Test Framework">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -762,15 +729,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#flags-utestflagsh" class="md-nav__link">
+  <a href="#flags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Flags (utest/flags.h)
+        Flags
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Flags (utest/flags.h)">
+    <nav class="md-nav" aria-label="Flags">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -797,6 +764,17 @@
         
       </ul>
     </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#runtime-flag-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime Flag Control
+      
+    </span>
+  </a>
   
 </li>
         
@@ -940,7 +918,7 @@
 
   <h1>Utest</h1>
 
-<h2 id="utest-minimal-c-unit-test-framework">utest – Minimal C Unit Test Framework<a class="headerlink" href="#utest-minimal-c-unit-test-framework" title="Permanent link">&para;</a></h2>
+<h2 id="utest-minimal-c-unit-test-framework">Utest – Minimal C Unit Test Framework<a class="headerlink" href="#utest-minimal-c-unit-test-framework" title="Permanent link">&para;</a></h2>
 <p><code>utest</code> is a small, macro-based unit testing framework for C. It is designed to:</p>
 <ul>
 <li><strong>Expose only one public header</strong>: <code>utest.h</code></li>
@@ -949,6 +927,7 @@
 <li><strong>Keep tests simple</strong>: no registration boilerplate beyond a few macros</li>
 </ul>
 <p>This document describes only the public API in <code>include/utest.h</code>.</p>
+<p><img alt="utest output" src="../assets/utest.png" /></p>
 <hr />
 <h3 id="including-utest">Including utest<a class="headerlink" href="#including-utest" title="Permanent link">&para;</a></h3>
 <p>Add the header and link against <code>libutil</code>:</p>
@@ -1004,12 +983,20 @@
   Register a suite by name (call this in <code>main</code>).</p>
 </li>
 <li>
+<p><strong><code>UTEST_RUNSUITE(name)</code></strong><br />
+  Run a single suite by name. Returns <code>0</code> on success, <code>-1</code> if the suite is not found.</p>
+</li>
+<li>
 <p><strong><code>UTEST_RUNSUITES()</code></strong><br />
-  Run all registered suites sequentially in single thread.</p>
+  Run all registered suites sequentially in a single thread.</p>
 </li>
 <li>
 <p><strong><code>UTEST_RUNSUITES_THREAD(nthreads)</code></strong><br />
   Run all registered suites using up to <code>nthreads</code> threads. Suites are dispatched dynamically, each suite still runs its own cases sequentially.</p>
+</li>
+<li>
+<p><strong><code>UTEST_SHOWSUITES()</code></strong><br />
+  Print all registered suite names to stdout in a grid-aligned layout (no tests are run).</p>
 </li>
 </ul>
 <p>Example:</p>
@@ -1030,7 +1017,7 @@
 <a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h3 id="flags-utestflagsh">Flags (<code>utest/flags.h</code>)<a class="headerlink" href="#flags-utestflagsh" title="Permanent link">&para;</a></h3>
+<h3 id="flags">Flags<a class="headerlink" href="#flags" title="Permanent link">&para;</a></h3>
 <p>Flags are bitmasks combined and passed to <code>UTEST_INIT(flags)</code>.</p>
 <h4 id="stop-on-failure-behavior">Stop-on-failure behavior<a class="headerlink" href="#stop-on-failure-behavior" title="Permanent link">&para;</a></h4>
 <ul>
@@ -1062,6 +1049,12 @@
 <li><code>UTF_DEFAULT</code> – <code>UTF_STOPONASS | UTF_FULLSTYLE</code></li>
 </ul>
 <hr />
+<h3 id="runtime-flag-control">Runtime Flag Control<a class="headerlink" href="#runtime-flag-control" title="Permanent link">&para;</a></h3>
+<p>Utest also provides helpers to adjust active flags after <code>UTEST_INIT</code>:</p>
+<ul>
+<li><code>UTEST_ADDFLAG(flag)</code> – enable an additional flag.</li>
+<li><code>UTEST_CLRFLAG(flag)</code> – disable an existing flag.</li>
+</ul>
 <h3 id="assertions">Assertions<a class="headerlink" href="#assertions" title="Permanent link">&para;</a></h3>
 <p>All assertions are macros that operate on the current test case and record:</p>
 <ul>

@@ -12,7 +12,7 @@
       
       
       
-        <link rel="next" href="argparse/">
+        <link rel="next" href="utest/">
       
       
         
@@ -230,44 +230,6 @@
   
   
     <li class="md-tabs__item">
-      <a href="argparse/" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Argparse
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="configparse/" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Configparse
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
       <a href="utest/" class="md-tabs__link">
         
   
@@ -275,6 +237,25 @@
     
   
   Utest
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="iniparse/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Iniparse
 
       </a>
     </li>
@@ -467,10 +448,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-build-and-install" class="md-nav__link">
+  <a href="#3-build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Build and Install
+        3. Build
       
     </span>
   </a>
@@ -574,60 +555,6 @@
   
   
     <li class="md-nav__item">
-      <a href="argparse/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Argparse
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="configparse/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Configparse
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="utest/" class="md-nav__link">
         
   
@@ -636,6 +563,33 @@
     
   
     Utest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="iniparse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Iniparse
   
 
     
@@ -763,10 +717,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-build-and-install" class="md-nav__link">
+  <a href="#3-build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Build and Install
+        3. Build
       
     </span>
   </a>
@@ -905,7 +859,7 @@
 </ul>
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <h3 id="1-clone-the-repository">1. Clone the Repository<a class="headerlink" href="#1-clone-the-repository" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/unsigend/util.git
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/unsigned/util.git
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>util
 </code></pre></div>
 <h3 id="2-configure-build">2. Configure Build<a class="headerlink" href="#2-configure-build" title="Permanent link">&para;</a></h3>
@@ -915,19 +869,17 @@
 <li><code>LIB_METHOD</code> – <code>static</code> or <code>shared</code></li>
 <li><code>DEBUG</code> – <code>0</code> for optimized builds, <code>1</code> for debug builds</li>
 </ul>
-<h3 id="3-build-and-install">3. Build and Install<a class="headerlink" href="#3-build-and-install" title="Permanent link">&para;</a></h3>
+<h3 id="3-build">3. Build<a class="headerlink" href="#3-build" title="Permanent link">&para;</a></h3>
 <p>Build the library:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>make<span class="w"> </span>all
 </code></pre></div>
-<p>Install headers to the install path:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>make<span class="w"> </span>install
-</code></pre></div>
+<p>Headers are in <code>include/</code> and the library is in <code>lib/</code>.</p>
 <h3 id="4-use-the-library">4. Use the Library<a class="headerlink" href="#4-use-the-library" title="Permanent link">&para;</a></h3>
 <p>Include the headers in your project:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span><span class="c1">   /* unit test framework */</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span><span class="c1">   /* unit test framework */</span>
 </code></pre></div>
 <p>Link against the library:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>gcc<span class="w"> </span>-I./include<span class="w"> </span>your_program.c<span class="w"> </span>-L./lib<span class="w"> </span>-lutil<span class="w"> </span>-o<span class="w"> </span>your_program
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>gcc<span class="w"> </span>-I./include<span class="w"> </span>your_program.c<span class="w"> </span>-L./lib<span class="w"> </span>-lutil<span class="w"> </span>-o<span class="w"> </span>your_program
 </code></pre></div>
 <h2 id="build-configuration">Build Configuration<a class="headerlink" href="#build-configuration" title="Permanent link">&para;</a></h2>
 <p>The build system is configured via <code>config/config.mk</code>:</p>
@@ -939,17 +891,18 @@
 </ul>
 <h2 id="available-make-targets">Available Make Targets<a class="headerlink" href="#available-make-targets" title="Permanent link">&para;</a></h2>
 <p>Everything is managed through the top-level <code>Makefile</code>. Use <code>make help</code> to see detailed commands:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="err">make</span><span class="w"> </span><span class="err">all</span><span class="w">        </span><span class="c"># Build the library</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="err">make</span><span class="w"> </span><span class="err">lib</span><span class="w">        </span><span class="c"># Build the library only</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="err">make</span><span class="w"> </span><span class="err">test</span><span class="w">       </span><span class="c"># Build the library and run all tests</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="err">make</span><span class="w"> </span><span class="err">test-NAME</span><span class="w">  </span><span class="c"># Build the library and run tests for module NAME</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="err">make</span><span class="w"> </span><span class="err">clean</span><span class="w">      </span><span class="c"># Remove build artifacts and test outputs</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="err">make</span><span class="w"> </span><span class="err">list</span><span class="w">       </span><span class="c"># List all source files</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="err">make</span><span class="w"> </span><span class="err">info</span><span class="w">       </span><span class="c"># Show current build configuration</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="err">make</span><span class="w"> </span><span class="err">docs</span><span class="w">       </span><span class="c"># Build and serve documentation</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="err">make</span><span class="w"> </span><span class="err">clang</span><span class="w">      </span><span class="c"># Generate compile_commands.json for tooling</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="err">make</span><span class="w"> </span><span class="err">format</span><span class="w">     </span><span class="c"># Run clang-format over include, src, test</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="err">make</span><span class="w"> </span><span class="err">help</span><span class="w">       </span><span class="c"># Show the Makefile help message</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="err">make</span><span class="w"> </span><span class="err">all</span><span class="w">        </span><span class="c"># Build the library</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="err">make</span><span class="w"> </span><span class="err">lib</span><span class="w">        </span><span class="c"># Build the library only</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="err">make</span><span class="w"> </span><span class="err">test</span><span class="w">       </span><span class="c"># Build the library and run all tests</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="err">make</span><span class="w"> </span><span class="err">test-NAME</span><span class="w">  </span><span class="c"># Build the library and run tests for module NAME</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="err">make</span><span class="w"> </span><span class="err">clean</span><span class="w">      </span><span class="c"># Remove build artifacts and test outputs</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="err">make</span><span class="w"> </span><span class="err">list</span><span class="w">       </span><span class="c"># List all source files</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="err">make</span><span class="w"> </span><span class="err">info</span><span class="w">       </span><span class="c"># Show current build configuration</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="err">make</span><span class="w"> </span><span class="err">docs</span><span class="w">       </span><span class="c"># Build and serve documentation</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="err">make</span><span class="w"> </span><span class="err">clang</span><span class="w">      </span><span class="c"># Generate compile_commands.json for tooling</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="err">make</span><span class="w"> </span><span class="err">format</span><span class="w">     </span><span class="c"># Run clang-format over include, src, test</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="err">make</span><span class="w"> </span><span class="err">help</span><span class="w">       </span><span class="c"># Show the Makefile help message</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="err">make</span><span class="w"> </span><span class="err">docker</span><span class="w">     </span><span class="c"># Build the docker image for util</span>
 </code></pre></div>
 <p>You can change the configuration in <code>config/config.mk</code>.</p>
 <h2 id="why-util">Why Util?<a class="headerlink" href="#why-util" title="Permanent link">&para;</a></h2>
@@ -977,7 +930,7 @@
 <h2 id="building-documentation">Building Documentation<a class="headerlink" href="#building-documentation" title="Permanent link">&para;</a></h2>
 <p>The documentation is built using MkDocs with Material theme.</p>
 <p>To build and serve the documentation locally:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>make<span class="w"> </span>docs
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>make<span class="w"> </span>docs
 </code></pre></div>
 <p>This will:</p>
 <ul>
