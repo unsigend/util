@@ -52,10 +52,9 @@ UTEST_CASE(edge)
 
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "spaces_around_equals", "loose"),
                 "val");
-  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "spaces_around_equals", "wide"),
-                "val");
-  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "spaces_around_equals", "tab_after_val"),
-                "v");
+  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "spaces_around_equals", "wide"), "val");
+  EXPECT_EQ_STR(
+      iniparse_getvalue(&ctx, "spaces_around_equals", "tab_after_val"), "v");
 
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "leading_spaces_value", "normal"),
                 "value");

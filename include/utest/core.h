@@ -39,6 +39,9 @@
 #undef UTEST_INIT
 #undef UTEST_FINI
 
+#undef UTEST_ADDFLAG
+#undef UTEST_CLRFLAG
+
 #undef UTEST_CASE
 #undef UTEST_SUITE
 
@@ -125,6 +128,9 @@ extern void ut_showsuites(void);
 
 #define UTEST_INIT(flags) ut_init(flags)
 #define UTEST_FINI() ut_fini()
+
+#define UTEST_ADDFLAG(flag) utest_ctx.flags |= (flag)
+#define UTEST_CLRFLAG(flag) utest_ctx.flags &= ~(flag)
 
 #define UTEST_CASE(name)                                                       \
   static void CONCAT(CASEPREFIX, name)(struct utcase * cas)

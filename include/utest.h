@@ -31,6 +31,9 @@
 #define UTEST_INIT(flags)
 #define UTEST_FINI()
 
+#define UTEST_ADDFLAG(flag)
+#define UTEST_CLRFLAG(flag)
+
 #define UTEST_CASE(name)
 #define UTEST_SUITE(name)
 

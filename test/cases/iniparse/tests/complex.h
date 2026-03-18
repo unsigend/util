@@ -9,7 +9,8 @@ UTEST_CASE(complex)
   iniparse_parse(&ctx);
 
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "core", "editor"), "vim");
-  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "core", "excludesfile"), "~/.gitignore");
+  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "core", "excludesfile"),
+                "~/.gitignore");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "core", "autocrlf"), "input");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "core", "safecrlf"), "warn");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "core", "quotepath"), "false");
@@ -36,8 +37,10 @@ UTEST_CASE(complex)
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color", "help"), "auto");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color", "pager"), "true");
 
-  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color \"diff\"", "meta"), "yellow bold");
-  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color \"diff\"", "frag"), "magenta bold");
+  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color \"diff\"", "meta"),
+                "yellow bold");
+  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color \"diff\"", "frag"),
+                "magenta bold");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color \"diff\"", "old"), "red bold");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color \"diff\"", "new"), "green bold");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "color \"diff\"", "whitespace"),
@@ -60,7 +63,8 @@ UTEST_CASE(complex)
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "branch \"main\"", "merge"),
                 "refs/heads/main");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "branch \"main\"", "rebase"), "true");
-  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "branch \"main\"", "autostash"), "true");
+  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "branch \"main\"", "autostash"),
+                "true");
 
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "merge", "tool"), "vimdiff");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "merge", "conflictstyle"), "diff3");
@@ -105,8 +109,9 @@ UTEST_CASE(complex)
 
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "url \"git@github.com:\"", "insteadOf"),
                 "https://github.com/");
-  EXPECT_EQ_STR(iniparse_getvalue(&ctx, "url \"git@github.com:\"", "pushInsteadOf"),
-                "git://github.com/");
+  EXPECT_EQ_STR(
+      iniparse_getvalue(&ctx, "url \"git@github.com:\"", "pushInsteadOf"),
+      "git://github.com/");
 
   EXPECT_NULL(iniparse_getvalue(&ctx, "core", "nonexistent"));
   EXPECT_NULL(iniparse_getvalue(&ctx, "nosuchsection", "key"));

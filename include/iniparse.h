@@ -25,6 +25,8 @@
 #ifndef INIPARSE_H
 #define INIPARSE_H
 
+/* INI file parser library. */
+
 #include <stddef.h>
 #include <stdio.h>
 
@@ -38,9 +40,9 @@ struct iniparse_ctx {
 };
 
 struct iniparse_entry {
-  const char *section;
+  const char *sec;
   const char *key;
-  const char *value;
+  const char *val;
 };
 
 #ifdef __cplusplus
@@ -53,8 +55,8 @@ extern void iniparse_fini(struct iniparse_ctx *ctx);
 
 /* Return the value of the key in the section, NULL if not found or key, section
    not exists. */
-extern const char *iniparse_getvalue(struct iniparse_ctx *ctx,
-                                     const char *section, const char *key);
+extern const char *iniparse_getvalue(struct iniparse_ctx *ctx, const char *sec,
+                                     const char *key);
 
 #ifdef __cplusplus
 }

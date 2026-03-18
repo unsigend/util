@@ -1,4 +1,4 @@
-## utest – Minimal C Unit Test Framework
+## Utest – Minimal C Unit Test Framework
 
 `utest` is a small, macro-based unit testing framework for C. It is designed to:
 
@@ -8,6 +8,8 @@
 - **Keep tests simple**: no registration boilerplate beyond a few macros
 
 This document describes only the public API in `include/utest.h`.
+
+![utest output](assets/utest.png)
 
 ---
 
@@ -108,7 +110,7 @@ int main(int argc, char **argv)
 
 ---
 
-### Flags (`utest/flags.h`)
+### Flags
 
 Flags are bitmasks combined and passed to `UTEST_INIT(flags)`.
 
@@ -141,6 +143,13 @@ Convenience presets:
 - `UTF_DEFAULT` – `UTF_STOPONASS | UTF_FULLSTYLE`
 
 ---
+
+### Runtime Flag Control
+
+Utest also provides helpers to adjust active flags after `UTEST_INIT`:
+
+- `UTEST_ADDFLAG(flag)` – enable an additional flag.
+- `UTEST_CLRFLAG(flag)` – disable an existing flag.
 
 ### Assertions
 

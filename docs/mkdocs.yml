@@ -26,9 +26,8 @@ theme:
 
 nav:
     - Introduction: index.md
-    - Argparse: argparse.md
-    - Configparse: configparse.md
     - Utest: utest.md
+    - Iniparse: iniparse.md
 
 markdown_extensions:
     - pymdownx.highlight:

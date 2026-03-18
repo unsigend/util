@@ -40,7 +40,7 @@ Util is a modern, lightweight C utility library that extends the standard C libr
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/unsigend/util.git
+git clone https://github.com/unsigned/util.git
 cd util
 ```
 
@@ -52,7 +52,7 @@ Configure the build in `config/config.mk`. The most important options are:
 - `LIB_METHOD` – `static` or `shared`
 - `DEBUG` – `0` for optimized builds, `1` for debug builds
 
-### 3. Build and Install
+### 3. Build
 
 Build the library:
 
@@ -60,11 +60,7 @@ Build the library:
 make all
 ```
 
-Install headers to the install path:
-
-```bash
-make install
-```
+Headers are in `include/` and the library is in `lib/`.
 
 ### 4. Use the Library
 
@@ -105,6 +101,7 @@ make docs       # Build and serve documentation
 make clang      # Generate compile_commands.json for tooling
 make format     # Run clang-format over include, src, test
 make help       # Show the Makefile help message
+make docker     # Build the docker image for util
 ```
 
 You can change the configuration in `config/config.mk`.

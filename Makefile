@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2025 QIU YIXIANG
+# Copyright (c) 2026 YIXIANG QIU 
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -141,6 +141,7 @@ help:
 	@echo "  make list      - list source files"
 	@echo "  make info      - show build configuration"
 	@echo "  make docs      - build and serve documentation"
+	@echo "  make docker    - build the docker image for util"
 	@echo "  make clang     - generate compile_commands.json"
 	@echo "  make format    - format .c and .h"
 	@echo "  make help      - this message\n"
@@ -162,13 +163,13 @@ docs:
 	@cd docs && venv/bin/mkdocs build
 	@cd docs && venv/bin/mkdocs serve
 
+# @private
 deploy:
 	@cd docs && venv/bin/mkdocs gh-deploy
 
 export GCC
 
 DOCKER_IMAGE := util
-# docker target
 docker:
 	@if [ -z "$$(docker images -q $(DOCKER_IMAGE) 2>/dev/null)" ]; then \
 		echo "Building Docker image $(DOCKER_IMAGE)..."; \

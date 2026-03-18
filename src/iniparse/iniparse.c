@@ -125,11 +125,10 @@ void iniparse_parse(struct iniparse_ctx *ctx)
   while (p < ctx->buf + ctx->bufsz) {
     p = skipspace(p);
     switch (*p) {
-    case '\n': /* blank line or EOF */
     case '\0':
-      p = skipline(p);
-      break;
-    case ';': /* comment */
+      return;
+    case '\n': /* blank line or comment */
+    case ';':
     case '#':
       p = skipline(p);
       break;
@@ -138,7 +137,7 @@ void iniparse_parse(struct iniparse_ctx *ctx)
       break;
     default: /* entry */
       p = parse_entry(p, &entry);
-      put(ctx, entry.section, entry.key, entry.value);
+      put(ctx, entry.sec, entry.key, entry.val);
       break;
     }
   }
@@ -148,9 +147,9 @@ const char *iniparse_getvalue(struct iniparse_ctx *ctx, const char *section,
                               const char *key)
 {
   for (size_t i = 0; i < ctx->nentries; i++) {
-    if (!strcmp(ctx->entries[i].section, section) &&
+    if (!strcmp(ctx->entries[i].sec, section) &&
         !strcmp(ctx->entries[i].key, key))
-      return ctx->entries[i].value;
+      return ctx->entries[i].val;
   }
   return NULL;
 }
@@ -173,9 +172,9 @@ static void put(struct iniparse_ctx *ctx, const char *section, const char *key,
         fatal();
     }
   }
-  ctx->entries[ctx->nentries].section = section;
+  ctx->entries[ctx->nentries].sec = section;
   ctx->entries[ctx->nentries].key = key;
-  ctx->entries[ctx->nentries].value = value;
+  ctx->entries[ctx->nentries].val = value;
   ctx->nentries++;
 }
 
@@ -183,46 +182,45 @@ static char *parse_section(char *p, struct iniparse_entry *entry)
 {
   ++p; /* skip [ */
   p = skipspace(p);
-  entry->section = p;
+  entry->sec = p;
+
   while (*p && *p != ']')
     p++;
   if (*p != ']')
     error("invalid section");
   char *end = p;
-  while (end > entry->section && isspace(*(end - 1)))
-    end--;
-  *end = '\0';
+
+  while (p > entry->sec && isspace(*(p - 1)))
+    --p;
+  *p = '\0';
+
   return skipline(end + 1);
 }
 
 static char *parse_entry(char *p, struct iniparse_entry *entry)
 {
-  char *key, *val, *keyend, *valend;
-  key = p;
-  val = key;
-  while (*val && *val != '=' && *val != '\n')
-    val++;
-  if (*val != '=') {
-    *val = '\0';
-    entry->key = key;
-    entry->value = NULL;
-    return skipline(val);
+  char *next, *s;
+  entry->key = p;
+  while (*p && *p != '=' && *p != '\n')
+    p++;
+
+  s = p;
+  if (*p == '=') {
+    p = skipspace(p + 1);
+    entry->val = p;
+    while (*p && *p != '\n')
+      p++;
+    char *r = p;
+    while (r > entry->val && isspace(*(r - 1)))
+      --r;
+    *r = '\0';
+    next = p + 1;
+  } else {
+    entry->val = NULL;
+    next = skipline(p + 1);
   }
-  *val = '\0'; /* replace '=' to '\0' */
-  keyend = val - 1;
-  while (keyend > key && isspace(*keyend))
-    *keyend-- = '\0';
-  entry->key = key;
-
-  val = skipspace(val + 1);
-  entry->value = val;
-  valend = val;
-
-  while (*valend && *valend != '\n')
-    valend++;
-  char *lenend = valend;
-  while (valend > val && isspace(*(valend - 1)))
-    valend--;
-  *valend = '\0';
-  return skipline(lenend);
+  while (s > entry->key && isspace(*(s - 1)))
+    --s;
+  *s = '\0';
+  return next;
 }
