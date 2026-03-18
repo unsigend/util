@@ -49,6 +49,7 @@ GCC_FLAGS := -std=c11 -Wall -Wextra -Werror -Wshadow
 GCC_FLAGS += -I$(INCLUDE_PATH)
 ifeq ($(HOST_OS), Linux)
 GCC_FLAGS += -fPIC
+GCC_FLAGS += -D_POSIX_C_SOURCE=200809L
 endif
 ifeq ($(DEBUG), 1)
 GCC_FLAGS += -g -O0
@@ -165,3 +166,15 @@ deploy:
 	@cd docs && venv/bin/mkdocs gh-deploy
 
 export GCC
+
+DOCKER_IMAGE := util
+# docker target
+docker:
+	@if [ -z "$$(docker images -q $(DOCKER_IMAGE) 2>/dev/null)" ]; then \
+		echo "Building Docker image $(DOCKER_IMAGE)..."; \
+		docker build -t $(DOCKER_IMAGE) -f Dockerfile .; \
+	fi
+	@if [ -n "$$(docker ps -aq -f name=$(DOCKER_IMAGE)-container 2>/dev/null)" ]; then \
+		docker rm -f $(DOCKER_IMAGE)-container 2>/dev/null || true; \
+	fi
+	@docker run -it --name $(DOCKER_IMAGE)-container -v $(CUR_DIR):/workspace $(DOCKER_IMAGE) /bin/bash

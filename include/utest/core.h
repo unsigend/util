@@ -311,22 +311,34 @@ extern void ut_showsuites(void);
 
 /* string */
 #define EXPECT_EQ_STR(actual, expect)                                          \
-  _UTASSERT(strcmp((actual), (expect)) == 0,                                   \
-            "expect " #actual " == " #expect ", actual was \"%s\"", (actual));
+  _UTASSERT((actual) && strcmp((actual), (expect)) == 0,                       \
+            "expect " #actual " == " #expect ", actual was %c%s%c",            \
+            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
+            (actual) ? '\"' : '\0');
 #define EXPECT_NE_STR(actual, expect)                                          \
-  _UTASSERT(strcmp((actual), (expect)) != 0,                                   \
-            "expect " #actual " != " #expect ", actual was \"%s\"", (actual));
+  _UTASSERT((actual) && strcmp((actual), (expect)) != 0,                       \
+            "expect " #actual " != " #expect ", actual was %c%s%c",            \
+            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
+            (actual) ? '\"' : '\0');
 #define EXPECT_GT_STR(actual, expect)                                          \
-  _UTASSERT(strcmp((actual), (expect)) > 0,                                    \
-            "expect " #actual " > " #expect ", actual was \"%s\"", (actual));
+  _UTASSERT((actual) && strcmp((actual), (expect)) > 0,                        \
+            "expect " #actual " > " #expect ", actual was %c%s%c",             \
+            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
+            (actual) ? '\"' : '\0');
 #define EXPECT_GE_STR(actual, expect)                                          \
-  _UTASSERT(strcmp((actual), (expect)) >= 0,                                   \
-            "expect " #actual " >= " #expect ", actual was \"%s\"", (actual));
+  _UTASSERT((actual) && strcmp((actual), (expect)) >= 0,                       \
+            "expect " #actual " >= " #expect ", actual was %c%s%c",            \
+            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
+            (actual) ? '\"' : '\0');
 #define EXPECT_LT_STR(actual, expect)                                          \
-  _UTASSERT(strcmp((actual), (expect)) < 0,                                    \
-            "expect " #actual " < " #expect ", actual was \"%s\"", (actual));
+  _UTASSERT((actual) && strcmp((actual), (expect)) < 0,                        \
+            "expect " #actual " < " #expect ", actual was %c%s%c",             \
+            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
+            (actual) ? '\"' : '\0');
 #define EXPECT_LE_STR(actual, expect)                                          \
-  _UTASSERT(strcmp((actual), (expect)) <= 0,                                   \
-            "expect " #actual " <= " #expect ", actual was \"%s\"", (actual));
+  _UTASSERT((actual) && strcmp((actual), (expect)) <= 0,                       \
+            "expect " #actual " <= " #expect ", actual was %c%s%c",            \
+            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
+            (actual) ? '\"' : '\0');
 
 #endif

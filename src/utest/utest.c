@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <utest/core.h>
 #include <utest/flags.h>
 #include <utest/print.h>
@@ -231,7 +232,7 @@ void ut_showsuites(void)
   if (ncols == 0)
     ncols = 1; /* name wider than terminal, one per line */
 
-  fprintf(stdout, "Available test suites (%zu):\n", utest_ctx.nsuites);
+  fprintf(stdout, "available test suites (%zu):\n", utest_ctx.nsuites);
 
   for (size_t i = 0; i < utest_ctx.nsuites; i++) {
     if (i % ncols == 0 && i > 0)
