@@ -5,8 +5,8 @@
 UTEST_CASE(edge)
 {
   struct iniparse_ctx ctx;
-  iniparse_init(&ctx, "cases/iniparse/INI/edge.ini");
-  iniparse_parse(&ctx);
+  EXPECT_EQ_INT(iniparse_init(&ctx, "cases/iniparse/INI/edge.ini"), 0);
+  EXPECT_EQ_INT(iniparse_parse(&ctx), 0);
 
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "space in value", "key"),
                 "value with spaces inside");

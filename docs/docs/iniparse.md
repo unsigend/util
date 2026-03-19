@@ -19,18 +19,20 @@
 3. Query values with `iniparse_getvalue`.
 4. Release resources with `iniparse_fini`.
 
+Parse once and all the rest query will be just go through a lookup table in memory.
+
 ---
 
 ### Public API
 
-- `iniparse_init(ctx, filename)`  
-  Initialize the parser for `filename`.
+- `int iniparse_init(ctx, filename)`  
+  Initialize the parser for `filename`. Return 0 on success, -1 on failure.
 
-- `iniparse_parse(ctx)`  
-  Parse the INI file referenced by the initialized context.
+- `int iniparse_parse(ctx)`  
+  Parse the INI file referenced by the initialized context. Return 0 on success, -1 on failure.
 
-- `iniparse_getvalue(ctx, sec, key)`  
+- `const char* iniparse_getvalue(ctx, sec, key)`  
   Return the value of `key` in section `sec`. Returns `NULL` if the key/section is not found (or if either `sec` or `key` does not exist).
 
-- `iniparse_fini(ctx)`  
+- `void iniparse_fini(ctx)`  
   Finalize the parser and release any resources associated with the context.

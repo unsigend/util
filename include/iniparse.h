@@ -49,8 +49,9 @@ struct iniparse_entry {
 extern "C" {
 #endif
 
-extern void iniparse_init(struct iniparse_ctx *ctx, const char *filename);
-extern void iniparse_parse(struct iniparse_ctx *ctx);
+/* Return 0 on success, -1 on error. */
+extern int iniparse_init(struct iniparse_ctx *ctx, const char *filename);
+extern int iniparse_parse(struct iniparse_ctx *ctx);
 extern void iniparse_fini(struct iniparse_ctx *ctx);
 
 /* Return the value of the key in the section, NULL if not found or key, section

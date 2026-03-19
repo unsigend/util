@@ -42,24 +42,8 @@ static char *parse_section(char *p, struct iniparse_entry *entry);
 static char *parse_entry(char *p, struct iniparse_entry *entry);
 
 /* put entry into ctx */
-static void put(struct iniparse_ctx *ctx, const char *section, const char *key,
-                const char *value);
-
-/* error handling */
-static void fatal();
-static void error(const char *msg);
-
-static void fatal()
-{
-  perror("iniparse");
-  exit(EXIT_FAILURE);
-}
-
-static void error(const char *msg)
-{
-  fprintf(stderr, "iniparse: %s\n", msg);
-  exit(EXIT_FAILURE);
-}
+static int put(struct iniparse_ctx *ctx, const char *section, const char *key,
+               const char *value);
 
 static char *skipline(char *p)
 {
@@ -77,36 +61,35 @@ static char *skipspace(char *p)
   return p;
 }
 
-void iniparse_init(struct iniparse_ctx *ctx, const char *filename)
+int iniparse_init(struct iniparse_ctx *ctx, const char *filename)
 {
   int fd;
   off_t sz;
   if (!filename || !ctx)
-    error("invalid arguments");
+    return -1;
 
   memset(ctx, 0, sizeof(*ctx));
   ctx->filename = filename;
 
   if ((fd = open(filename, O_RDONLY)) == -1)
-    fatal();
+    return -1;
 
   sz = lseek(fd, 0, SEEK_END);
-  if (sz == -1)
-    fatal();
-  if (!sz) {
+  if (sz == -1 || !sz) {
     close(fd);
-    error("empty file");
+    return -1;
   }
 
   char *buf =
       (char *)mmap(NULL, sz + 1, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
-  if (buf == MAP_FAILED)
-    fatal();
   close(fd);
+  if (buf == MAP_FAILED)
+    return -1;
   buf[sz] = '\0'; /* EOF guard */
 
   ctx->buf = buf;
   ctx->bufsz = (size_t)sz;
+  return 0;
 }
 
 void iniparse_fini(struct iniparse_ctx *ctx)
@@ -117,7 +100,7 @@ void iniparse_fini(struct iniparse_ctx *ctx)
     free(ctx->entries);
 }
 
-void iniparse_parse(struct iniparse_ctx *ctx)
+int iniparse_parse(struct iniparse_ctx *ctx)
 {
   char *p = ctx->buf;
   struct iniparse_entry entry = {0};
@@ -126,7 +109,7 @@ void iniparse_parse(struct iniparse_ctx *ctx)
     p = skipspace(p);
     switch (*p) {
     case '\0':
-      return;
+      return 0;
     case '\n': /* blank line or comment */
     case ';':
     case '#':
@@ -137,10 +120,12 @@ void iniparse_parse(struct iniparse_ctx *ctx)
       break;
     default: /* entry */
       p = parse_entry(p, &entry);
-      put(ctx, entry.sec, entry.key, entry.val);
+      if (put(ctx, entry.sec, entry.key, entry.val) == -1)
+        return -1;
       break;
     }
   }
+  return 0;
 }
 
 const char *iniparse_getvalue(struct iniparse_ctx *ctx, const char *section,
@@ -154,28 +139,30 @@ const char *iniparse_getvalue(struct iniparse_ctx *ctx, const char *section,
   return NULL;
 }
 
-static void put(struct iniparse_ctx *ctx, const char *section, const char *key,
-                const char *value)
+static int put(struct iniparse_ctx *ctx, const char *section, const char *key,
+               const char *value)
 {
   if (ctx->nentries >= ctx->nentriescap) {
     if (ctx->entries) {
       ctx->nentriescap *= SCALE_FACTOR;
-      ctx->entries =
+      struct iniparse_entry *newentries =
           realloc(ctx->entries, ctx->nentriescap * sizeof(*ctx->entries));
-      if (!ctx->entries)
-        fatal();
+      if (!newentries)
+        return -1;
+      ctx->entries = newentries;
     } else {
       /* first allocation */
       ctx->nentriescap = MAX_ENTRIES;
       ctx->entries = calloc(ctx->nentriescap, sizeof(*ctx->entries));
       if (!ctx->entries)
-        fatal();
+        return -1;
     }
   }
   ctx->entries[ctx->nentries].sec = section;
   ctx->entries[ctx->nentries].key = key;
   ctx->entries[ctx->nentries].val = value;
   ctx->nentries++;
+  return 0;
 }
 
 static char *parse_section(char *p, struct iniparse_entry *entry)
@@ -184,10 +171,12 @@ static char *parse_section(char *p, struct iniparse_entry *entry)
   p = skipspace(p);
   entry->sec = p;
 
-  while (*p && *p != ']')
+  while (*p && *p != ']' && *p != '\n')
     p++;
-  if (*p != ']')
-    error("invalid section");
+  if (*p != ']') {
+    entry->sec = NULL;
+    return p + 1;
+  }
   char *end = p;
 
   while (p > entry->sec && isspace(*(p - 1)))

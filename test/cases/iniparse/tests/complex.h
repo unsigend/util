@@ -5,8 +5,8 @@
 UTEST_CASE(complex)
 {
   struct iniparse_ctx ctx;
-  iniparse_init(&ctx, "cases/iniparse/INI/complex.ini");
-  iniparse_parse(&ctx);
+  EXPECT_EQ_INT(iniparse_init(&ctx, "cases/iniparse/INI/complex.ini"), 0);
+  EXPECT_EQ_INT(iniparse_parse(&ctx), 0);
 
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "core", "editor"), "vim");
   EXPECT_EQ_STR(iniparse_getvalue(&ctx, "core", "excludesfile"),
