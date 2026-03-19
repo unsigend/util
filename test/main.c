@@ -11,6 +11,7 @@
 
 /* test suites */
 extern UTEST_SUITE(iniparse);
+extern UTEST_SUITE(argparse);
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +22,7 @@ int main(int argc, char *argv[])
 
   /* add test suites */
   UTEST_ADDSUITE(iniparse);
+  UTEST_ADDSUITE(argparse);
 
   for (int i = 1; i < argc; i++) {
     if (strncmp(argv[i], "-j", 2) == 0) {
