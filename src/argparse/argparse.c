@@ -23,6 +23,9 @@
  */
 
 #include <argparse.h>
+#include <ctype.h>
+#include <errno.h>
+#include <limits.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -35,6 +38,59 @@
 #define NLIST 8
 #define FACTOR 2
 #define BUFSZ 256
+
+/* If dest is NULL dry run the value */
+static int dumpvalue(void *dest, int type, const char *arg)
+{
+  errno = 0;
+  switch (type) {
+  case _OPT_BOOL:
+    if (dest)
+      *(bool *)dest = true;
+    break;
+  case _OPT_INT: {
+    if (!arg || !*arg)
+      return -1;
+    char *endptr = NULL;
+    long v = strtol(arg, &endptr, 0);
+    if (errno == ERANGE || errno == EINVAL || *endptr != '\0' || v > INT_MAX ||
+        v < INT_MIN) /* integer overflow or underflow */
+      return -1;
+    if (dest)
+      *(int *)dest = (int)v;
+    break;
+  }
+  case _OPT_STR:
+    if (dest)
+      *(char **)dest = (char *)arg;
+    break;
+  case _OPT_LONG: {
+    if (!arg || !*arg)
+      return -1;
+    char *endptr = NULL;
+    long v = strtol(arg, &endptr, 0);
+    if (errno == ERANGE || errno == EINVAL || *endptr != '\0')
+      return -1;
+    if (dest)
+      *(long *)dest = v;
+    break;
+  }
+  case _OPT_DOUBLE: {
+    if (!arg || !*arg)
+      return -1;
+    char *endptr = NULL;
+    double v = strtod(arg, &endptr);
+    if (errno == ERANGE || errno == EINVAL || *endptr != '\0')
+      return -1;
+    if (dest)
+      *(double *)dest = v;
+    break;
+  }
+  default:
+    return -1;
+  }
+  return 0;
+}
 
 #define clrerror(ctx) (ctx->errstr[0] = '\0')
 static int dumperror(struct argparse *ctx, const char *fmt, ...)
@@ -131,8 +187,7 @@ void argparse_fini(struct argparse *ctx)
     free(ctx->errstr);
 }
 
-static struct argparse_opt *find_opt(struct argparse *ctx, char s,
-                                     const char *l)
+static struct argparse_opt *findopt(struct argparse *ctx, char s, const char *l)
 {
   struct argparse_opt *opt = ctx->opts;
   while (opt->type != _OPT_END) {
@@ -142,13 +197,14 @@ static struct argparse_opt *find_opt(struct argparse *ctx, char s,
   }
   return NULL;
 }
+
 /* parse short option */
 static char **parse_short(struct argparse *ctx, char **p)
 {
   const char *s = *p + 1;
   /* short opt might be -abc which is combined option */
   while (*s) {
-    struct argparse_opt *opt = find_opt(ctx, *s, NULL);
+    struct argparse_opt *opt = findopt(ctx, *s, NULL);
     if (!opt) {
       if (!(ctx->flags & ARG_IGNORE)) {
         dumperror(ctx, "unknown option: '-%c'", *s);
@@ -157,10 +213,41 @@ static char **parse_short(struct argparse *ctx, char **p)
       s++;
       continue;
     }
-    if (opt->type == _OPT_BOOL && opt->dest)
-      *(bool *)opt->dest = true;
-    else {
-      if (opt->flags & OPT_REQUIRED) {
+
+    if (opt->dest) {
+      if (opt->type == _OPT_BOOL)
+        dumpvalue(opt->dest, _OPT_BOOL, NULL);
+      else {
+        if (!(opt->flags & OPT_NONE)) {
+          const char *vp = NULL;
+          int usenext = 0;
+
+          if (*(s + 1)) { /* -j6 */
+            vp = s + 1;
+            s += strlen(s) - 1;
+          } else if (*(p + 1)) { /* -j 6 */
+            vp = *(p + 1);
+            p++;
+            usenext = 1;
+          }
+
+          int r = dumpvalue(NULL, opt->type, vp);
+          if (opt->flags & OPT_REQUIRED) {
+            if (r == -1) {
+              if (!vp)
+                dumperror(ctx, "missing value for option: '-%c'", *s);
+              else
+                dumperror(ctx, "invalid value for option: '-%c'", *s);
+              return NULL;
+            }
+            dumpvalue(opt->dest, opt->type, vp);
+          } else if (opt->flags & OPT_OPTIONAL) {
+            if (r != -1)
+              dumpvalue(opt->dest, opt->type, vp);
+            else if (usenext)
+              --p;
+          }
+        }
       }
     }
     s++;
@@ -173,7 +260,13 @@ static char **parse_short(struct argparse *ctx, char **p)
 static char **parse_long(struct argparse *ctx, char **p)
 {
   const char *s = *p + 2;
-  struct argparse_opt *opt = find_opt(ctx, 0, s);
+  char *eq = strchr(s, '=');
+  char buf[BUFSZ];
+  if (eq) {
+    memcpy(buf, s, eq - s);
+    buf[eq - s] = '\0';
+  }
+  struct argparse_opt *opt = findopt(ctx, 0, eq ? buf : s);
   if (!opt) {
     if (!(ctx->flags & ARG_IGNORE)) {
       dumperror(ctx, "unknown option: '--%s'", s);
@@ -181,15 +274,49 @@ static char **parse_long(struct argparse *ctx, char **p)
     }
     return p + 1; /* skip the unknown option */
   }
-  if (opt->type == _OPT_BOOL && opt->dest)
-    *(bool *)opt->dest = true;
+
+  if (opt->dest) {
+    if (opt->type == _OPT_BOOL)
+      dumpvalue(opt->dest, _OPT_BOOL, NULL);
+    else {
+      if (!(opt->flags & OPT_NONE)) {
+        const char *vp = NULL;
+        int usenext = 0;
+        if (eq && eq[1]) /* --opt=value */
+          vp = eq + 1;
+        else if (*(p + 1)) /* --opt value */
+        {
+          vp = *(p + 1);
+          p++;
+          usenext = 1;
+        }
+
+        int r = dumpvalue(NULL, opt->type, vp);
+        if (opt->flags & OPT_REQUIRED) {
+          if (r == -1) {
+            if (!vp) {
+              dumperror(ctx, "missing value for option: '--%s'", s);
+              return NULL;
+            } else
+              dumperror(ctx, "invalid value for option: '--%s'", s);
+            return NULL;
+          }
+          dumpvalue(opt->dest, opt->type, vp);
+        } else if (opt->flags & OPT_OPTIONAL) {
+          if (r != -1)
+            dumpvalue(opt->dest, opt->type, vp);
+          else if (usenext)
+            --p;
+        }
+      }
+    }
+  }
 
   if (opt->cb)
     opt->cb(ctx, opt);
 
   return p + 1;
 }
-
 #define getstate(s) (s[0] == '-' ? OPT : ARG)
 
 int argparse_parse(struct argparse *ctx, int argc, char **argv)
