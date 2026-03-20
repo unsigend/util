@@ -25,7 +25,7 @@
     
     
       
-        <title>Utest - Util Documentation</title>
+        <title>utest - Util Documentation</title>
       
     
     
@@ -50,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -76,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#utest-minimal-c-unit-test-framework" class="md-skip">
+        <a href="#utest" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Utest
+              utest
             
           </span>
         </div>
@@ -238,7 +240,7 @@
   
     
   
-  Utest
+  utest
 
       </a>
     </li>
@@ -257,7 +259,26 @@
   
     
   
-  Iniparse
+  iniparse
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../argparse/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  argparse
 
       </a>
     </li>
@@ -337,6 +358,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -345,7 +368,7 @@
   <span class="md-ellipsis">
     
   
-    Utest
+    utest
   
 
     
@@ -363,7 +386,7 @@
   <span class="md-ellipsis">
     
   
-    Utest
+    utest
   
 
     
@@ -379,6 +402,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -387,62 +412,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#utest-minimal-c-unit-test-framework" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Utest – Minimal C Unit Test Framework
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Utest – Minimal C Unit Test Framework">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#including-utest" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Including utest
+        Overview
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#test-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
       
-        Test Lifecycle
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#defining-cases-and-suites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Defining Cases and Suites
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#registering-and-running-suites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Registering and Running Suites
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
+        <li class="md-nav__item">
   <a href="#flags" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -451,14 +431,37 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Flags">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Macros">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#stop-on-failure-behavior" class="md-nav__link">
+  <a href="#lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Stop-on-failure behavior
+        Lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#utest_initflags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_INIT(flags)
       
     </span>
   </a>
@@ -466,10 +469,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#output-style" class="md-nav__link">
+  <a href="#utest_fini" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output style
+        UTEST_FINI()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_addflagflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_ADDFLAG(flag)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_clrflagflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_CLRFLAG(flag)
       
     </span>
   </a>
@@ -482,13 +507,124 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#runtime-flag-control" class="md-nav__link">
+  <a href="#defining-suites-and-cases" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Runtime Flag Control
+        Defining suites and cases
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Defining suites and cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#utest_suitename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_SUITE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_casename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_CASE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registration-and-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registration and execution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Registration and execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#utest_addsuitename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_ADDSUITE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_runcasename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_RUNCASE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_runsuitename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_RUNSUITE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_runsuites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_RUNSUITES()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_runsuites_threadnthreads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_RUNSUITES_THREAD(nthreads)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_showsuites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_SHOWSUITES()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -501,115 +637,21 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Assertions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#booleans" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Booleans
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pointers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pointers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#integers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Integers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unsigned-integers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unsigned Integers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#characters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Characters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unsigned-characters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unsigned Characters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#doubles" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Doubles
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#strings-const-char" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Strings (const char *)
-      
-    </span>
-  </a>
-  
 </li>
         
       </ul>
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#design-summary" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Design Summary
+        Example
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -635,7 +677,34 @@
   <span class="md-ellipsis">
     
   
-    Iniparse
+    iniparse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../argparse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    argparse
   
 
     
@@ -665,6 +734,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -673,62 +744,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#utest-minimal-c-unit-test-framework" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Utest – Minimal C Unit Test Framework
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Utest – Minimal C Unit Test Framework">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#including-utest" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Including utest
+        Overview
       
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#test-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
       
-        Test Lifecycle
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#defining-cases-and-suites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Defining Cases and Suites
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#registering-and-running-suites" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Registering and Running Suites
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
+        <li class="md-nav__item">
   <a href="#flags" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -737,14 +763,37 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Flags">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#macros" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Macros
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Macros">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#stop-on-failure-behavior" class="md-nav__link">
+  <a href="#lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Stop-on-failure behavior
+        Lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#utest_initflags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_INIT(flags)
       
     </span>
   </a>
@@ -752,10 +801,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#output-style" class="md-nav__link">
+  <a href="#utest_fini" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Output style
+        UTEST_FINI()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_addflagflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_ADDFLAG(flag)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_clrflagflag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_CLRFLAG(flag)
       
     </span>
   </a>
@@ -768,13 +839,124 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#runtime-flag-control" class="md-nav__link">
+  <a href="#defining-suites-and-cases" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Runtime Flag Control
+        Defining suites and cases
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Defining suites and cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#utest_suitename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_SUITE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_casename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_CASE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registration-and-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registration and execution
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Registration and execution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#utest_addsuitename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_ADDSUITE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_runcasename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_RUNCASE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_runsuitename" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_RUNSUITE(name)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_runsuites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_RUNSUITES()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_runsuites_threadnthreads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_RUNSUITES_THREAD(nthreads)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utest_showsuites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UTEST_SHOWSUITES()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -787,115 +969,21 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Assertions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#booleans" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Booleans
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pointers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pointers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#integers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Integers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unsigned-integers" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unsigned Integers
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#characters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Characters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unsigned-characters" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unsigned Characters
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#doubles" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Doubles
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#strings-const-char" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Strings (const char *)
-      
-    </span>
-  </a>
-  
 </li>
         
       </ul>
     </nav>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#design-summary" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Design Summary
+        Example
       
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -916,231 +1004,155 @@
 
 
 
-  <h1>Utest</h1>
-
-<h2 id="utest-minimal-c-unit-test-framework">Utest – Minimal C Unit Test Framework<a class="headerlink" href="#utest-minimal-c-unit-test-framework" title="Permanent link">&para;</a></h2>
-<p><code>utest</code> is a small, macro-based unit testing framework for C. It is designed to:</p>
-<ul>
-<li><strong>Expose only one public header</strong>: <code>utest.h</code></li>
-<li><strong>Run tests in parallel at suite level</strong> with <code>UTEST_RUNSUITES_THREAD</code></li>
-<li><strong>Be thread-safe by design</strong>: global statistics and output are synchronized</li>
-<li><strong>Keep tests simple</strong>: no registration boilerplate beyond a few macros</li>
-</ul>
-<p>This document describes only the public API in <code>include/utest.h</code>.</p>
+<h1 id="utest">utest<a class="headerlink" href="#utest" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p><code>utest</code> is a macro-based unit testing framework with built-in multi-threading support. The single include needed is <code>utest.h</code>, all other headers are pulled in transitively.</p>
+<p>Tests are organized in a two-level hierarchy: suites contain cases. A suite is a function that registers and runs cases; cases are functions that execute assertions. The framework collects results across all suites and prints a final summary.</p>
+<p>Suites can be run sequentially or in parallel across a thread pool, where each thread pulls the next unstarted suite from a shared queue.</p>
 <p><img alt="utest output" src="../assets/utest.png" /></p>
+<h2 id="flags">Flags<a class="headerlink" href="#flags" title="Permanent link">&para;</a></h2>
+<p>Flags control output verbosity and failure behavior. Pass them to <code>UTEST_INIT</code> or toggle them at runtime with <code>UTEST_ADDFLAG</code> / <code>UTEST_CLRFLAG</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UTF_SHOWSUITE</code></td>
+<td>Print suite begin/end markers</td>
+</tr>
+<tr>
+<td><code>UTF_SHOWCASE</code></td>
+<td>Print case begin/end markers</td>
+</tr>
+<tr>
+<td><code>UTF_STOPONSUITE</code></td>
+<td>Stop dispatching new suites after the first suite failure</td>
+</tr>
+<tr>
+<td><code>UTF_STOPONCASE</code></td>
+<td>Skip remaining cases in a suite after the first case failure</td>
+</tr>
+<tr>
+<td><code>UTF_DEFAULT</code></td>
+<td>Default flag set applied when 0 is passed to <code>UTEST_INIT</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="macros">Macros<a class="headerlink" href="#macros" title="Permanent link">&para;</a></h2>
+<h3 id="lifecycle">Lifecycle<a class="headerlink" href="#lifecycle" title="Permanent link">&para;</a></h3>
+<h4 id="utest_initflags"><code>UTEST_INIT(flags)</code><a class="headerlink" href="#utest_initflags" title="Permanent link">&para;</a></h4>
+<p>Initializes the framework. Must be called before any other macro. Pass 0 to use <code>UTF_DEFAULT</code>.</p>
+<h4 id="utest_fini"><code>UTEST_FINI()</code><a class="headerlink" href="#utest_fini" title="Permanent link">&para;</a></h4>
+<p>Finalizes the framework, prints the summary, and releases all resources. Must be called after all suites have run.</p>
+<h4 id="utest_addflagflag"><code>UTEST_ADDFLAG(flag)</code><a class="headerlink" href="#utest_addflagflag" title="Permanent link">&para;</a></h4>
+<p>Adds a flag to the active flag set.</p>
+<h4 id="utest_clrflagflag"><code>UTEST_CLRFLAG(flag)</code><a class="headerlink" href="#utest_clrflagflag" title="Permanent link">&para;</a></h4>
+<p>Clears a flag from the active flag set.</p>
 <hr />
-<h3 id="including-utest">Including utest<a class="headerlink" href="#including-utest" title="Permanent link">&para;</a></h3>
-<p>Add the header and link against <code>libutil</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span>
+<h3 id="defining-suites-and-cases">Defining suites and cases<a class="headerlink" href="#defining-suites-and-cases" title="Permanent link">&para;</a></h3>
+<h4 id="utest_suitename"><code>UTEST_SUITE(name)</code><a class="headerlink" href="#utest_suitename" title="Permanent link">&para;</a></h4>
+<p>Defines a suite function. The body registers and runs cases via <code>UTEST_RUNCASE</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">UTEST_SUITE</span><span class="p">(</span><span class="n">my_suite</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n">UTEST_RUNCASE</span><span class="p">(</span><span class="n">my_case</span><span class="p">);</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="utest_casename"><code>UTEST_CASE(name)</code><a class="headerlink" href="#utest_casename" title="Permanent link">&para;</a></h4>
+<p>Defines a case function. The body contains assertions.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">UTEST_CASE</span><span class="p">(</span><span class="n">my_case</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="n">EXPECT_EQ_INT</span><span class="p">(</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
-<h3 id="test-lifecycle">Test Lifecycle<a class="headerlink" href="#test-lifecycle" title="Permanent link">&para;</a></h3>
-<ul>
-<li>
-<p><strong><code>UTEST_INIT(flags)</code></strong><br />
-  Initialize the testing framework. <code>flags</code> control reporting and stop-on-failure behavior.</p>
-</li>
-<li>
-<p><strong><code>UTEST_FINI()</code></strong><br />
-  Finalize the framework, print a summary, and release internal resources.</p>
-</li>
-</ul>
-<p>You normally call these once in <code>main</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">{</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="n">UTEST_INIT</span><span class="p">(</span><span class="n">UTF_DEFAULT</span><span class="p">);</span><span class="w">  </span><span class="cm">/* or custom flags */</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="cm">/* add suites and run them */</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="n">UTEST_FINI</span><span class="p">();</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
-</code></pre></div>
+<h3 id="registration-and-execution">Registration and execution<a class="headerlink" href="#registration-and-execution" title="Permanent link">&para;</a></h3>
+<h4 id="utest_addsuitename"><code>UTEST_ADDSUITE(name)</code><a class="headerlink" href="#utest_addsuitename" title="Permanent link">&para;</a></h4>
+<p>Registers a suite with the framework. Must be called after <code>UTEST_INIT</code> and before any run macro.</p>
+<h4 id="utest_runcasename"><code>UTEST_RUNCASE(name)</code><a class="headerlink" href="#utest_runcasename" title="Permanent link">&para;</a></h4>
+<p>Runs a case inside a suite body. Must be called from within a <code>UTEST_SUITE</code> block.</p>
+<h4 id="utest_runsuitename"><code>UTEST_RUNSUITE(name)</code><a class="headerlink" href="#utest_runsuitename" title="Permanent link">&para;</a></h4>
+<p>Runs a single registered suite by name. Returns 0 on success, -1 if the suite is not found.</p>
+<h4 id="utest_runsuites"><code>UTEST_RUNSUITES()</code><a class="headerlink" href="#utest_runsuites" title="Permanent link">&para;</a></h4>
+<p>Runs all registered suites sequentially.</p>
+<h4 id="utest_runsuites_threadnthreads"><code>UTEST_RUNSUITES_THREAD(nthreads)</code><a class="headerlink" href="#utest_runsuites_threadnthreads" title="Permanent link">&para;</a></h4>
+<p>Runs all registered suites in parallel using a thread pool of <code>nthreads</code> threads. Each thread pulls the next unstarted suite from a shared work queue, so suites are distributed dynamically. Suite-level output is buffered per suite and flushed atomically to avoid interleaving.</p>
+<h4 id="utest_showsuites"><code>UTEST_SHOWSUITES()</code><a class="headerlink" href="#utest_showsuites" title="Permanent link">&para;</a></h4>
+<p>Prints the names of all registered suites to stdout.</p>
 <hr />
-<h3 id="defining-cases-and-suites">Defining Cases and Suites<a class="headerlink" href="#defining-cases-and-suites" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong><code>UTEST_CASE(name)</code></strong><br />
-  Define a test case function:</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">UTEST_CASE</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">{</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="n">EXPECT_TRUE</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">}</span>
-</code></pre></div>
-<ul>
-<li><strong><code>UTEST_SUITE(name)</code></strong><br />
-  Define a suite that calls <code>UTEST_RUNCASE</code> for its cases:</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">UTEST_SUITE</span><span class="p">(</span><span class="n">math</span><span class="p">)</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="p">{</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="n">UTEST_RUNCASE</span><span class="p">(</span><span class="n">example</span><span class="p">);</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
-</code></pre></div>
-<p>Suites are the <strong>unit of parallelism</strong>: each suite can be run on a different thread.</p>
-<hr />
-<h3 id="registering-and-running-suites">Registering and Running Suites<a class="headerlink" href="#registering-and-running-suites" title="Permanent link">&para;</a></h3>
-<ul>
-<li>
-<p><strong><code>UTEST_ADDSUITE(name)</code></strong><br />
-  Register a suite by name (call this in <code>main</code>).</p>
-</li>
-<li>
-<p><strong><code>UTEST_RUNSUITE(name)</code></strong><br />
-  Run a single suite by name. Returns <code>0</code> on success, <code>-1</code> if the suite is not found.</p>
-</li>
-<li>
-<p><strong><code>UTEST_RUNSUITES()</code></strong><br />
-  Run all registered suites sequentially in a single thread.</p>
-</li>
-<li>
-<p><strong><code>UTEST_RUNSUITES_THREAD(nthreads)</code></strong><br />
-  Run all registered suites using up to <code>nthreads</code> threads. Suites are dispatched dynamically, each suite still runs its own cases sequentially.</p>
-</li>
-<li>
-<p><strong><code>UTEST_SHOWSUITES()</code></strong><br />
-  Print all registered suite names to stdout in a grid-aligned layout (no tests are run).</p>
-</li>
-</ul>
-<p>Example:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">**</span><span class="n">argv</span><span class="p">)</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">nthreads</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">argc</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="n">UTEST_INIT</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="n">UTEST_ADDSUITE</span><span class="p">(</span><span class="n">math</span><span class="p">);</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nthreads</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="n">UTEST_RUNSUITES</span><span class="p">();</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="k">else</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="n">UTEST_RUNSUITES_THREAD</span><span class="p">(</span><span class="n">nthreads</span><span class="p">);</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">  </span><span class="n">UTEST_FINI</span><span class="p">();</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="p">}</span>
-</code></pre></div>
-<hr />
-<h3 id="flags">Flags<a class="headerlink" href="#flags" title="Permanent link">&para;</a></h3>
-<p>Flags are bitmasks combined and passed to <code>UTEST_INIT(flags)</code>.</p>
-<h4 id="stop-on-failure-behavior">Stop-on-failure behavior<a class="headerlink" href="#stop-on-failure-behavior" title="Permanent link">&para;</a></h4>
-<ul>
-<li>
-<p><code>UTF_STOPONASS</code><br />
-  On first failed assertion <strong>within a case</strong>, stop executing the rest of that case body.</p>
-</li>
-<li>
-<p><code>UTF_STOPONCASE</code><br />
-  On first failed case <strong>within a suite</strong>, skip the remaining cases in that suite.</p>
-</li>
-<li>
-<p><code>UTF_STOPONSUITE</code><br />
-  On first failed suite, skip the remaining suites.</p>
-</li>
-</ul>
-<p>You can combine these:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">UTEST_INIT</span><span class="p">(</span><span class="n">UTF_STOPONASS</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">UTF_STOPONCASE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">UTF_STOPONSUITE</span><span class="p">);</span>
-</code></pre></div>
-<h4 id="output-style">Output style<a class="headerlink" href="#output-style" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>UTF_SHOWCASE</code> – print per-case begin/end lines.</li>
-<li><code>UTF_SHOWSUITE</code> – print per-suite begin/end lines.</li>
-</ul>
-<p>Convenience presets:</p>
-<ul>
-<li><code>UTF_FULLSTYLE</code> – <code>UTF_SHOWCASE | UTF_SHOWSUITE</code></li>
-<li><code>UTF_BRIEFSTYLE</code> – <code>UTF_SHOWSUITE</code></li>
-<li><code>UTF_DEFAULT</code> – <code>UTF_STOPONASS | UTF_FULLSTYLE</code></li>
-</ul>
-<hr />
-<h3 id="runtime-flag-control">Runtime Flag Control<a class="headerlink" href="#runtime-flag-control" title="Permanent link">&para;</a></h3>
-<p>Utest also provides helpers to adjust active flags after <code>UTEST_INIT</code>:</p>
-<ul>
-<li><code>UTEST_ADDFLAG(flag)</code> – enable an additional flag.</li>
-<li><code>UTEST_CLRFLAG(flag)</code> – disable an existing flag.</li>
-</ul>
 <h3 id="assertions">Assertions<a class="headerlink" href="#assertions" title="Permanent link">&para;</a></h3>
-<p>All assertions are macros that operate on the current test case and record:</p>
+<p>All assertion macros follow the naming convention <code>EXPECT_&lt;OP&gt;_&lt;TYPE&gt;(actual, expect)</code>. A failing assertion marks the current case as failed and logs the failure, but does not abort the case.</p>
+<p><strong>Boolean</strong></p>
 <ul>
-<li>pass / fail status for the case</li>
-<li>a detailed message on failure</li>
+<li><code>EXPECT_TRUE(expr)</code>, <code>EXPECT_FALSE(expr)</code></li>
 </ul>
-<p>Assertions are <strong>thread-safe</strong> when used inside <code>UTEST_CASE</code> bodies, because each case writes into a per-suite output buffer and global stats are updated under internal synchronization.</p>
-<h4 id="booleans">Booleans<a class="headerlink" href="#booleans" title="Permanent link">&para;</a></h4>
+<p><strong>Pointer</strong></p>
 <ul>
-<li><code>EXPECT_TRUE(expr)</code></li>
-<li><code>EXPECT_FALSE(expr)</code></li>
+<li><code>EXPECT_NULL(ptr)</code>, <code>EXPECT_NOTNULL(ptr)</code></li>
+<li><code>EXPECT_EQ_PTR</code>, <code>EXPECT_NE_PTR</code>, <code>EXPECT_GT_PTR</code>, <code>EXPECT_GE_PTR</code>, <code>EXPECT_LT_PTR</code>, <code>EXPECT_LE_PTR</code></li>
 </ul>
-<h4 id="pointers">Pointers<a class="headerlink" href="#pointers" title="Permanent link">&para;</a></h4>
+<p><strong>Integer</strong></p>
 <ul>
-<li><code>EXPECT_NULL(ptr)</code></li>
-<li><code>EXPECT_NOTNULL(ptr)</code></li>
-<li><code>EXPECT_EQ_PTR(actual, expect)</code></li>
-<li><code>EXPECT_NE_PTR(actual, expect)</code></li>
-<li><code>EXPECT_GT_PTR(actual, expect)</code></li>
-<li><code>EXPECT_GE_PTR(actual, expect)</code></li>
-<li><code>EXPECT_LT_PTR(actual, expect)</code></li>
-<li><code>EXPECT_LE_PTR(actual, expect)</code></li>
+<li><code>EXPECT_EQ_INT</code>, <code>EXPECT_NE_INT</code>, <code>EXPECT_GT_INT</code>, <code>EXPECT_GE_INT</code>, <code>EXPECT_LT_INT</code>, <code>EXPECT_LE_INT</code></li>
 </ul>
-<h4 id="integers">Integers<a class="headerlink" href="#integers" title="Permanent link">&para;</a></h4>
+<p><strong>Unsigned integer</strong></p>
 <ul>
-<li><code>EXPECT_EQ_INT(actual, expect)</code></li>
-<li><code>EXPECT_NE_INT(actual, expect)</code></li>
-<li><code>EXPECT_GT_INT(actual, expect)</code></li>
-<li><code>EXPECT_GE_INT(actual, expect)</code></li>
-<li><code>EXPECT_LT_INT(actual, expect)</code></li>
-<li><code>EXPECT_LE_INT(actual, expect)</code></li>
+<li><code>EXPECT_EQ_UINT</code>, <code>EXPECT_NE_UINT</code>, <code>EXPECT_GT_UINT</code>, <code>EXPECT_GE_UINT</code>, <code>EXPECT_LT_UINT</code>, <code>EXPECT_LE_UINT</code></li>
 </ul>
-<h4 id="unsigned-integers">Unsigned Integers<a class="headerlink" href="#unsigned-integers" title="Permanent link">&para;</a></h4>
+<p><strong>Character</strong></p>
 <ul>
-<li><code>EXPECT_EQ_UINT(actual, expect)</code></li>
-<li><code>EXPECT_NE_UINT(actual, expect)</code></li>
-<li><code>EXPECT_GT_UINT(actual, expect)</code></li>
-<li><code>EXPECT_GE_UINT(actual, expect)</code></li>
-<li><code>EXPECT_LT_UINT(actual, expect)</code></li>
-<li><code>EXPECT_LE_UINT(actual, expect)</code></li>
+<li><code>EXPECT_EQ_CHAR</code>, <code>EXPECT_NE_CHAR</code>, <code>EXPECT_GT_CHAR</code>, <code>EXPECT_GE_CHAR</code>, <code>EXPECT_LT_CHAR</code>, <code>EXPECT_LE_CHAR</code></li>
 </ul>
-<h4 id="characters">Characters<a class="headerlink" href="#characters" title="Permanent link">&para;</a></h4>
+<p><strong>Unsigned character</strong></p>
 <ul>
-<li><code>EXPECT_EQ_CHAR(actual, expect)</code></li>
-<li><code>EXPECT_NE_CHAR(actual, expect)</code></li>
-<li><code>EXPECT_GT_CHAR(actual, expect)</code></li>
-<li><code>EXPECT_GE_CHAR(actual, expect)</code></li>
-<li><code>EXPECT_LT_CHAR(actual, expect)</code></li>
-<li><code>EXPECT_LE_CHAR(actual, expect)</code></li>
+<li><code>EXPECT_EQ_UCHAR</code>, <code>EXPECT_NE_UCHAR</code>, <code>EXPECT_GT_UCHAR</code>, <code>EXPECT_GE_UCHAR</code>, <code>EXPECT_LT_UCHAR</code>, <code>EXPECT_LE_UCHAR</code></li>
 </ul>
-<h4 id="unsigned-characters">Unsigned Characters<a class="headerlink" href="#unsigned-characters" title="Permanent link">&para;</a></h4>
+<p><strong>Double</strong></p>
 <ul>
-<li><code>EXPECT_EQ_UCHAR(actual, expect)</code></li>
-<li><code>EXPECT_NE_UCHAR(actual, expect)</code></li>
-<li><code>EXPECT_GT_UCHAR(actual, expect)</code></li>
-<li><code>EXPECT_GE_UCHAR(actual, expect)</code></li>
-<li><code>EXPECT_LT_UCHAR(actual, expect)</code></li>
-<li><code>EXPECT_LE_UCHAR(actual, expect)</code></li>
+<li><code>EXPECT_EQ_DOUBLE</code>, <code>EXPECT_NE_DOUBLE</code>, <code>EXPECT_GT_DOUBLE</code>, <code>EXPECT_GE_DOUBLE</code>, <code>EXPECT_LT_DOUBLE</code>, <code>EXPECT_LE_DOUBLE</code></li>
 </ul>
-<h4 id="doubles">Doubles<a class="headerlink" href="#doubles" title="Permanent link">&para;</a></h4>
+<p><strong>String</strong></p>
 <ul>
-<li><code>EXPECT_EQ_DOUBLE(actual, expect)</code></li>
-<li><code>EXPECT_NE_DOUBLE(actual, expect)</code></li>
-<li><code>EXPECT_GT_DOUBLE(actual, expect)</code></li>
-<li><code>EXPECT_GE_DOUBLE(actual, expect)</code></li>
-<li><code>EXPECT_LT_DOUBLE(actual, expect)</code></li>
-<li><code>EXPECT_LE_DOUBLE(actual, expect)</code></li>
+<li><code>EXPECT_EQ_STR</code>, <code>EXPECT_NE_STR</code>, <code>EXPECT_GT_STR</code>, <code>EXPECT_GE_STR</code>, <code>EXPECT_LT_STR</code>, <code>EXPECT_LE_STR</code></li>
 </ul>
-<h4 id="strings-const-char">Strings (<code>const char *</code>)<a class="headerlink" href="#strings-const-char" title="Permanent link">&para;</a></h4>
-<ul>
-<li><code>EXPECT_EQ_STR(actual, expect)</code></li>
-<li><code>EXPECT_NE_STR(actual, expect)</code></li>
-<li><code>EXPECT_GT_STR(actual, expect)</code></li>
-<li><code>EXPECT_GE_STR(actual, expect)</code></li>
-<li><code>EXPECT_LT_STR(actual, expect)</code></li>
-<li><code>EXPECT_LE_STR(actual, expect)</code></li>
-</ul>
-<hr />
-<h3 id="design-summary">Design Summary<a class="headerlink" href="#design-summary" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Single public header</strong>: <code>utest.h</code> is the only header you need to include.</li>
-<li><strong>Macro-based</strong>: Cases and suites are declared via macros, compiled as normal C functions.</li>
-<li><strong>Suite-based parallelism</strong>: Parallel execution happens at the suite level with <code>UTEST_RUNSUITES_THREAD</code>.</li>
-<li><strong>Thread-safe core</strong>: Internal state and statistics are synchronized, suites do not share mutable state.</li>
-<li><strong>Structured output</strong>: Each suite accumulates its own output and flushes once, minimizing interleaving even in multi-threaded runs.</li>
-</ul>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;utest.h&gt;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="cm">/* test cases */</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">UTEST_CASE</span><span class="p">(</span><span class="n">test_add</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="n">EXPECT_EQ_INT</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="n">EXPECT_NE_INT</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">UTEST_CASE</span><span class="p">(</span><span class="n">test_str</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="n">EXPECT_EQ_STR</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">);</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="n">EXPECT_NULL</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">}</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="cm">/* suite groups related cases */</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="n">UTEST_SUITE</span><span class="p">(</span><span class="n">math_suite</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="n">UTEST_RUNCASE</span><span class="p">(</span><span class="n">test_add</span><span class="p">);</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="p">}</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="n">UTEST_SUITE</span><span class="p">(</span><span class="n">str_suite</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">    </span><span class="n">UTEST_RUNCASE</span><span class="p">(</span><span class="n">test_str</span><span class="p">);</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="p">}</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="p">{</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">    </span><span class="n">UTEST_INIT</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="cm">/* use default flags */</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="n">UTEST_ADDSUITE</span><span class="p">(</span><span class="n">math_suite</span><span class="p">);</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="n">UTEST_ADDSUITE</span><span class="p">(</span><span class="n">str_suite</span><span class="p">);</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">    </span><span class="cm">/* run all suites across 4 threads */</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">    </span><span class="n">UTEST_RUNSUITES_THREAD</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">    </span><span class="n">UTEST_FINI</span><span class="p">();</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="p">}</span>
+</code></pre></div>
 
 
 

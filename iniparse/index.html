@@ -14,6 +14,8 @@
         <link rel="prev" href="../utest/">
       
       
+        <link rel="next" href="../argparse/">
+      
       
         
       
@@ -23,7 +25,7 @@
     
     
       
-        <title>Iniparse - Util Documentation</title>
+        <title>iniparse - Util Documentation</title>
       
     
     
@@ -48,6 +50,8 @@
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -74,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#iniparse-ini-file-parser" class="md-skip">
+        <a href="#iniparse" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Iniparse
+              iniparse
             
           </span>
         </div>
@@ -234,7 +238,7 @@
   
     
   
-  Utest
+  utest
 
       </a>
     </li>
@@ -255,7 +259,26 @@
   
     
   
-  Iniparse
+  iniparse
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../argparse/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  argparse
 
       </a>
     </li>
@@ -336,7 +359,7 @@
   <span class="md-ellipsis">
     
   
-    Utest
+    utest
   
 
     
@@ -362,6 +385,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -370,7 +395,7 @@
   <span class="md-ellipsis">
     
   
-    Iniparse
+    iniparse
   
 
     
@@ -388,7 +413,7 @@
   <span class="md-ellipsis">
     
   
-    Iniparse
+    iniparse
   
 
     
@@ -404,6 +429,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -412,22 +439,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#iniparse-ini-file-parser" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Iniparse – INI File Parser
+        Overview
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Iniparse – INI File Parser">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conventions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structs">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#including" class="md-nav__link">
+  <a href="#iniparse_ctx" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Including
+        iniparse_ctx
       
     </span>
   </a>
@@ -435,21 +484,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#usage-workflow" class="md-nav__link">
+  <a href="#iniparse_entry" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Usage Workflow
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#public-api" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public API
+        iniparse_entry
       
     </span>
   </a>
@@ -461,10 +499,109 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_init" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_init
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_parse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_parse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_fini" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_fini
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_getvalue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_getvalue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../argparse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    argparse
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -486,6 +623,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -494,22 +633,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#iniparse-ini-file-parser" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Iniparse – INI File Parser
+        Overview
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Iniparse – INI File Parser">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conventions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conventions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structs">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#including" class="md-nav__link">
+  <a href="#iniparse_ctx" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Including
+        iniparse_ctx
       
     </span>
   </a>
@@ -517,21 +678,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#usage-workflow" class="md-nav__link">
+  <a href="#iniparse_entry" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Usage Workflow
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#public-api" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Public API
+        iniparse_entry
       
     </span>
   </a>
@@ -540,6 +690,78 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_init" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_init
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_parse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_parse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_fini" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_fini
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_getvalue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_getvalue
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
   
 </li>
       
@@ -560,42 +782,110 @@
 
 
 
-  <h1>Iniparse</h1>
-
-<h2 id="iniparse-ini-file-parser">Iniparse – INI File Parser<a class="headerlink" href="#iniparse-ini-file-parser" title="Permanent link">&para;</a></h2>
-<p><code>iniparse</code> is a small INI parser for C, exposing a minimal set of functions in <code>include/iniparse.h</code>.</p>
-<hr />
-<h3 id="including">Including<a class="headerlink" href="#including" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iniparse.h&gt;</span>
-</code></pre></div>
-<hr />
-<h3 id="usage-workflow">Usage Workflow<a class="headerlink" href="#usage-workflow" title="Permanent link">&para;</a></h3>
-<ol>
-<li>Initialize a parsing context with <code>iniparse_init</code>.</li>
-<li>Parse the file contents with <code>iniparse_parse</code>.</li>
-<li>Query values with <code>iniparse_getvalue</code>.</li>
-<li>Release resources with <code>iniparse_fini</code>.</li>
-</ol>
-<hr />
-<h3 id="public-api">Public API<a class="headerlink" href="#public-api" title="Permanent link">&para;</a></h3>
+<h1 id="iniparse">iniparse<a class="headerlink" href="#iniparse" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p><code>iniparse</code> is a minimal INI file parser, it maps section/key pairs to their values and provides a simple lookup interface, the header is <code>iniparse.h</code>.</p>
+<p>Two structs form the public surface: <code>iniparse_ctx</code> holds the parse state for a file, <code>iniparse_entry</code> represents a single key/value pair under a section. Both are stack-allocatable, and the context must be passed to every API call.</p>
+<h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Permanent link">&para;</a></h2>
+<p>INI files follow standard conventions:</p>
 <ul>
-<li>
-<p><code>iniparse_init(ctx, filename)</code><br />
-  Initialize the parser for <code>filename</code>.</p>
-</li>
-<li>
-<p><code>iniparse_parse(ctx)</code><br />
-  Parse the INI file referenced by the initialized context.</p>
-</li>
-<li>
-<p><code>iniparse_getvalue(ctx, sec, key)</code><br />
-  Return the value of <code>key</code> in section <code>sec</code>. Returns <code>NULL</code> if the key/section is not found (or if either <code>sec</code> or <code>key</code> does not exist).</p>
-</li>
-<li>
-<p><code>iniparse_fini(ctx)</code><br />
-  Finalize the parser and release any resources associated with the context.</p>
-</li>
+<li>Lines beginning with <code>;</code> or <code>#</code> are comments and are ignored</li>
+<li>Sections are declared as <code>[section_name]</code></li>
+<li>Entries have the form <code>key = value</code></li>
+<li>Whitespace around section names, keys, and values is stripped</li>
+<li>Entries outside any section are not supported, every key must belong to a section</li>
 </ul>
+<h2 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h2>
+<h3 id="iniparse_ctx"><code>iniparse_ctx</code><a class="headerlink" href="#iniparse_ctx" title="Permanent link">&para;</a></h3>
+<p>Holds all state associated with a parsed file. Fields are managed internally and should not be modified directly.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">filename</span><span class="p">;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kt">char</span><span class="w">       </span><span class="o">*</span><span class="n">buf</span><span class="p">;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kt">size_t</span><span class="w">      </span><span class="n">bufsz</span><span class="p">;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kt">size_t</span><span class="w">      </span><span class="n">nentries</span><span class="p">;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kt">size_t</span><span class="w">      </span><span class="n">nentriescap</span><span class="p">;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_entry</span><span class="w"> </span><span class="o">*</span><span class="n">entries</span><span class="p">;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">};</span>
+</code></pre></div>
+<h3 id="iniparse_entry"><code>iniparse_entry</code><a class="headerlink" href="#iniparse_entry" title="Permanent link">&para;</a></h3>
+<p>Represents a single parsed entry. Pointers point into the memory-mapped file buffer owned by the context, so they are valid only while the context is live.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_entry</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">sec</span><span class="p">;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">val</span><span class="p">;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">};</span>
+</code></pre></div>
+<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
+<h3 id="iniparse_init"><code>iniparse_init</code><a class="headerlink" href="#iniparse_init" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_init</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">filename</span><span class="p">);</span>
+</code></pre></div>
+<p>Initializes a context and memory-maps the given file for parsing. Must be called before any other function. Returns 0 on success, -1 on error.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>ctx</code> — pointer to an uninitialized context struct</li>
+<li><code>filename</code> — path to the INI file to open</li>
+</ul>
+<h3 id="iniparse_parse"><code>iniparse_parse</code><a class="headerlink" href="#iniparse_parse" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_parse</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+</code></pre></div>
+<p>Parses the file associated with the context and populates its entry list. Must be called after <code>iniparse_init</code>. Returns 0 on success, -1 on error.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>ctx</code> — an initialized context</li>
+</ul>
+<h3 id="iniparse_fini"><code>iniparse_fini</code><a class="headerlink" href="#iniparse_fini" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">iniparse_fini</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+</code></pre></div>
+<p>Releases all resources held by the context, including the memory-mapped buffer and the entry list. Must be called when the context is no longer needed.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>ctx</code> — an initialized context</li>
+</ul>
+<h3 id="iniparse_getvalue"><code>iniparse_getvalue</code><a class="headerlink" href="#iniparse_getvalue" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">iniparse_getvalue</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">sec</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">);</span>
+</code></pre></div>
+<p>Looks up the value for a given section and key. Returns a pointer into the internal buffer on success, NULL if the section or key is not found. The returned pointer is valid only while the context is live and <code>iniparse_fini</code> has not been called.</p>
+<p><strong>Parameters</strong></p>
+<ul>
+<li><code>ctx</code> — a parsed context</li>
+<li><code>sec</code> — section name to search</li>
+<li><code>key</code> — key name to search within that section</li>
+</ul>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iniparse.h&gt;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">{</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="n">ctx</span><span class="p">;</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">val</span><span class="p">;</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="cm">/* initialize and parse */</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iniparse_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;config.ini&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iniparse_parse</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="n">iniparse_fini</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">);</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="cm">/* lookup a value */</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iniparse_getvalue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;database&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;host&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;host = %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">);</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">    </span><span class="cm">/* release resources */</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">    </span><span class="n">iniparse_fini</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">);</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="p">}</span>
+</code></pre></div>
+<p>Given a file <code>config.ini</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">[database]</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="na">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="na">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5432</span>
+</code></pre></div>
+<p>The output would be:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>host = localhost
+</code></pre></div>
 
 
 
