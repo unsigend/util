@@ -1,6 +1,6 @@
 #include <argparse.h>
-#include <utest.h>
 #include <stdbool.h>
+#include <utest.h>
 
 UTEST_CASE(gcc)
 {
@@ -193,6 +193,7 @@ UTEST_CASE(gcc)
 
     argv[argc++] = "-cg";
     argv[argc++] = "Xjunk";
+    exprem[expc++] = argv[argc - 1];
     argv[argc++] = "-O3";
     argv[argc++] = "-n";
     argv[argc++] = "8";
@@ -466,7 +467,7 @@ UTEST_CASE(as)
     argv[argc++] = "2";
     argv[argc++] = "-O";
     argv[argc++] = "asout2.o";
-    argv[argc++] = "--target" ;
+    argv[argc++] = "--target";
     argv[argc++] = "x86_64-linux-gnu";
     argv[argc++] = "--offset=8192";
     argv[argc++] = "--scale=1.25";

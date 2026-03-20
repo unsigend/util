@@ -2,39 +2,40 @@ site_name: Util Documentation
 site_description: Modern, lightweight C utility library documentation
 
 theme:
-    name: material
-    palette:
-        - scheme: default
-          primary: black
-          accent: grey
-          toggle:
-              icon: material/brightness-7
-              name: Switch to dark mode
-        - scheme: slate
-          primary: grey
-          accent: grey
-          toggle:
-              icon: material/brightness-4
-              name: Switch to light mode
-    features:
-        - navigation.tabs
-        - navigation.sections
-        - navigation.expand
-        - navigation.toc.integrate
-        - search.suggest
-        - search.highlight
+  name: material
+  palette:
+    - scheme: default
+      primary: black
+      accent: grey
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: grey
+      accent: grey
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.toc.integrate
+    - search.suggest
+    - search.highlight
 
 nav:
-    - Introduction: index.md
-    - Utest: utest.md
-    - Iniparse: iniparse.md
+  - Introduction: index.md
+  - Utest: utest.md
+  - Iniparse: iniparse.md
+  - Argparse: argparse.md
 
 markdown_extensions:
-    - pymdownx.highlight:
-          anchor_linenums: true
-    - pymdownx.inlinehilite
-    - pymdownx.snippets
-    - pymdownx.superfences
-    - tables
-    - toc:
-          permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - tables
+  - toc:
+      permalink: true

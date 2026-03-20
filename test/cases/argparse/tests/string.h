@@ -263,6 +263,41 @@ UTEST_CASE(string)
 
   {
     struct argparse ctx;
+    char *def = NULL;
+    struct argparse_opt opts[] = {
+        OPT_STR('D', "define", "", &def, OPT_REQUIRED),
+        OPT_END(),
+    };
+    char empty[] = "";
+    char *argv[] = {"-D", empty};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 2, argv), 0);
+    EXPECT_NOTNULL(def);
+    EXPECT_EQ_STR(def, "");
+    EXPECT_EQ_PTR(def, empty);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    char *def = (char *)"prior";
+    struct argparse_opt opts[] = {
+        OPT_STR('D', "define", "", &def, OPT_REQUIRED),
+        OPT_END(),
+    };
+    char *argv[] = {"--define="};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv), 0);
+    EXPECT_NULL(def);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
     char *name = NULL;
     struct argparse_opt opts[] = {
         OPT_STR('n', "name", "", &name, OPT_REQUIRED),
@@ -274,6 +309,23 @@ UTEST_CASE(string)
     EXPECT_EQ_INT(argparse_parse(&ctx, 3, argv), -1);
     EXPECT_NULL(name);
     EXPECT_NE_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    char *out = (char *)"keep";
+    struct argparse_opt opts[] = {
+        OPT_STR('o', "output", "", &out, OPT_REQUIRED),
+        OPT_END(),
+    };
+    char *argv[] = {"-o"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv), 0);
+    EXPECT_NULL(out);
+    EXPECT_EQ_UINT(argparse_getremargc(&ctx), 0);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
     argparse_fini(&ctx);
   }
 

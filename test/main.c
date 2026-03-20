@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
   int nthreads = NTHREADS;
   const char *suite = "all";
 
-  UTEST_INIT(UTF_STOPONASS | UTF_STOPONCASE | UTF_SHOWSUITE);
+  UTEST_INIT(UTF_STOPONASS | UTF_SHOWSUITE);
 
   /* add test suites */
   UTEST_ADDSUITE(iniparse);

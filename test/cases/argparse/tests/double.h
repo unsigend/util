@@ -440,4 +440,22 @@ UTEST_CASE(double)
     EXPECT_EQ_STR(argparse_strerror(&ctx), "");
     argparse_fini(&ctx);
   }
+
+  {
+    struct argparse ctx;
+    double x = 2.5;
+    struct argparse_opt opts[] = {
+        OPT_DOUBLE('d', "depth", "", &x, OPT_OPTIONAL),
+        OPT_END(),
+    };
+    char *argv[] = {"-d"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv), 0);
+    EXPECT_EQ_DOUBLE(x, 2.5);
+    EXPECT_EQ_UINT(argparse_getremargc(&ctx), 0);
+    EXPECT_EQ_PTR(argparse_getremargv(&ctx), NULL);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
 }

@@ -214,6 +214,24 @@ UTEST_CASE(long)
 
   {
     struct argparse ctx;
+    long v = 13;
+    struct argparse_opt opts[] = {
+        OPT_LONG('z', "zzz", "", &v, OPT_OPTIONAL),
+        OPT_END(),
+    };
+    char *argv[] = {"-z"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv), 0);
+    EXPECT_TRUE(v == 13L);
+    EXPECT_EQ_UINT(argparse_getremargc(&ctx), 0);
+    EXPECT_EQ_PTR(argparse_getremargv(&ctx), NULL);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
     long v = 0;
     struct argparse_opt opts[] = {
         OPT_LONG('l', "level", "", &v, OPT_REQUIRED),
@@ -325,6 +343,22 @@ UTEST_CASE(long)
 
     EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
     EXPECT_EQ_INT(argparse_parse(&ctx, 3, argv), -1);
+    EXPECT_TRUE(v == 0L);
+    EXPECT_NE_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    long v = 0;
+    struct argparse_opt opts[] = {
+        OPT_LONG('l', "level", "", &v, OPT_REQUIRED),
+        OPT_END(),
+    };
+    char *argv[] = {"--lev", "9"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 2, argv), -1);
     EXPECT_TRUE(v == 0L);
     EXPECT_NE_STR(argparse_strerror(&ctx), "");
     argparse_fini(&ctx);

@@ -13,6 +13,16 @@ static void int_cb(struct argparse *ctx, struct argparse_opt *opt)
     int_cb_seen_dest = *(int *)opt->dest;
 }
 
+static char int_order_seq[8];
+static int int_order_seq_n;
+
+static void int_order_cb(struct argparse *ctx, struct argparse_opt *opt)
+{
+  (void)ctx;
+  if (opt && int_order_seq_n < 8)
+    int_order_seq[int_order_seq_n++] = opt->sname;
+}
+
 UTEST_CASE(int)
 {
   {
@@ -431,6 +441,100 @@ UTEST_CASE(int)
     EXPECT_EQ_INT(argparse_parse(&ctx, 4, argv), 0);
     EXPECT_EQ_INT(minv, INT_MIN);
     EXPECT_EQ_INT(maxv, INT_MAX);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    int value = 11;
+    struct argparse_opt opts[] = {
+        OPT_INT('n', "number", "", &value, OPT_OPTIONAL),
+        OPT_END(),
+    };
+    char *argv[] = {"-n"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv), 0);
+    EXPECT_EQ_INT(value, 11);
+    EXPECT_EQ_UINT(argparse_getremargc(&ctx), 0);
+    EXPECT_EQ_PTR(argparse_getremargv(&ctx), NULL);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    int n = 0;
+    struct argparse_opt opts[] = {
+        OPT_INT('n', "num", "", &n, OPT_REQUIRED),
+        OPT_END(),
+    };
+    char *argv[] = {"-n", "1", "-n", "2"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 4, argv), 0);
+    EXPECT_EQ_INT(n, 2);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    int level = 42;
+    struct argparse_opt opts[] = {
+        OPT_INT('O', "opt-level", "", &level, OPT_REQUIRED),
+        OPT_END(),
+    };
+    char *argv[] = {"main.c"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv), 0);
+    EXPECT_EQ_INT(level, 42);
+    EXPECT_EQ_UINT(argparse_getremargc(&ctx), 1);
+    EXPECT_EQ_STR(argparse_getremargv(&ctx)[0], "main.c");
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    int a = 0;
+    int b = 0;
+    struct argparse_opt opts[] = {
+        OPT_DECL(_OPT_INT, 'a', "aa", "", &a, OPT_REQUIRED, int_order_cb),
+        OPT_DECL(_OPT_INT, 'b', "bb", "", &b, OPT_REQUIRED, int_order_cb),
+        OPT_END(),
+    };
+    char *argv[] = {"-a", "1", "--bb", "2"};
+
+    int_order_seq_n = 0;
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 4, argv), 0);
+    EXPECT_EQ_INT(int_order_seq_n, 2);
+    EXPECT_EQ_CHAR(int_order_seq[0], 'a');
+    EXPECT_EQ_CHAR(int_order_seq[1], 'b');
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    int a = 0;
+    int b = 0;
+    struct argparse_opt opts[] = {
+        OPT_DECL(_OPT_INT, 'a', "aa", "", &a, OPT_REQUIRED, int_order_cb),
+        OPT_DECL(_OPT_INT, 'b', "bb", "", &b, OPT_REQUIRED, int_order_cb),
+        OPT_END(),
+    };
+    char *argv[] = {"--bb", "2", "-a", "1"};
+
+    int_order_seq_n = 0;
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 4, argv), 0);
+    EXPECT_EQ_INT(int_order_seq_n, 2);
+    EXPECT_EQ_CHAR(int_order_seq[0], 'b');
+    EXPECT_EQ_CHAR(int_order_seq[1], 'a');
     EXPECT_EQ_STR(argparse_strerror(&ctx), "");
     argparse_fini(&ctx);
   }

@@ -527,4 +527,86 @@ UTEST_CASE(edge)
     EXPECT_EQ_STR(argparse_strerror(&ctx), "");
     argparse_fini(&ctx);
   }
+
+  {
+    bool dummy = false;
+    struct argparse_opt opts[] = {
+        OPT_BOOL('a', "all", "", &dummy),
+        OPT_END(),
+    };
+    EXPECT_EQ_INT(argparse_init(NULL, opts, NULL), -1);
+  }
+
+  {
+    struct argparse ctx;
+    EXPECT_EQ_INT(argparse_init(&ctx, NULL, NULL), -1);
+  }
+
+  {
+    argparse_fini(NULL);
+  }
+
+  {
+    struct argparse ctx;
+    bool aflag = false;
+    struct argparse_opt opts[] = {
+        OPT_BOOL('a', "all", "", &aflag),
+        OPT_END(),
+    };
+    char *argv[] = {"-z", "-a"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    argparse_setflags(&ctx, ARG_IGNORE);
+    argparse_clrflags(&ctx, ARG_IGNORE);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 2, argv), -1);
+    EXPECT_FALSE(aflag);
+    EXPECT_NE_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    bool aflag = false;
+    struct argparse_opt opts[] = {
+        OPT_GROUP("group"),
+        OPT_BOOL('a', "all", "", &aflag),
+        OPT_END(),
+    };
+    char *argv[] = {"-a"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv), 0);
+    EXPECT_TRUE(aflag);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    struct argparse_opt opts[] = {OPT_END()};
+    char *argv1[] = {"--", "first"};
+    char *argv2[] = {"second"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 2, argv1), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv2), 0);
+    EXPECT_EQ_UINT(argparse_getremargc(&ctx), 2);
+    EXPECT_EQ_STR(argparse_getremargv(&ctx)[0], "first");
+    EXPECT_EQ_STR(argparse_getremargv(&ctx)[1], "second");
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
+
+  {
+    struct argparse ctx;
+    struct argparse_opt opts[] = {OPT_END()};
+    char *argv[] = {"--"};
+
+    EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 1, argv), 0);
+    EXPECT_EQ_UINT(argparse_getremargc(&ctx), 0);
+    EXPECT_EQ_PTR(argparse_getremargv(&ctx), NULL);
+    EXPECT_EQ_STR(argparse_strerror(&ctx), "");
+    argparse_fini(&ctx);
+  }
 }
