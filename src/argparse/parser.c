@@ -157,7 +157,8 @@ static struct argparse_opt *findopt(struct argparse *ctx, char s, const char *l)
 {
   struct argparse_opt *opt = ctx->opts;
   while (opt->type != _OPT_END) {
-    if (opt->sname == s || (l && opt->lname && strcmp(opt->lname, l) == 0))
+    if ((s && opt->sname == s) ||
+        (l && opt->lname && strcmp(opt->lname, l) == 0))
       return opt;
     opt++;
   }
@@ -307,6 +308,7 @@ static char **parse_short(struct argparse *ctx, char **p, char **end)
         if (!IS_NONARG(opt->flags)) {
           const char *vp = NULL;
           int usenext = 0;
+          char optchar = *s;
 
           if (*(s + 1)) { /* -j6 */
             vp = s + 1;
@@ -319,7 +321,7 @@ static char **parse_short(struct argparse *ctx, char **p, char **end)
 
           if (opt->type == _OPT_LIST) {
             if (!vp) {
-              dumperror(ctx, "missing value for option: '-%c'", *s);
+              dumperror(ctx, "missing value for option: '-%c'", optchar);
               return NULL;
             }
             if (push(ctx, opt->dest, (char *)vp) == -1)
@@ -329,9 +331,9 @@ static char **parse_short(struct argparse *ctx, char **p, char **end)
             if (IS_REQARG(opt->flags)) {
               if (r == -1) {
                 if (!vp)
-                  dumperror(ctx, "missing value for option: '-%c'", *s);
+                  dumperror(ctx, "missing value for option: '-%c'", optchar);
                 else
-                  dumperror(ctx, "invalid value for option: '-%c'", *s);
+                  dumperror(ctx, "invalid value for option: '-%c'", optchar);
                 return NULL;
               }
               dumpvalue(opt->dest, opt->type, vp);
@@ -357,6 +359,7 @@ static char **parse_long(struct argparse *ctx, char **p, char **end)
   const char *s = *p + 2;
   char *eq = strchr(s, '=');
   char buf[BUFSZ];
+  buf[0] = '\0';
   if (eq) {
     memcpy(buf, s, eq - s);
     buf[eq - s] = '\0';
@@ -388,7 +391,8 @@ static char **parse_long(struct argparse *ctx, char **p, char **end)
 
         if (opt->type == _OPT_LIST) {
           if (!vp) {
-            dumperror(ctx, "missing value for option: '--%s'", s);
+            dumperror(ctx, "missing value for option: '--%s'",
+                      buf[0] ? buf : s);
             return NULL;
           }
           if (push(ctx, opt->dest, (char *)vp) == -1)
@@ -398,9 +402,11 @@ static char **parse_long(struct argparse *ctx, char **p, char **end)
           if (IS_REQARG(opt->flags)) {
             if (r == -1) {
               if (!vp)
-                dumperror(ctx, "missing value for option: '--%s'", s);
+                dumperror(ctx, "missing value for option: '--%s'",
+                          buf[0] ? buf : s);
               else
-                dumperror(ctx, "invalid value for option: '--%s'", s);
+                dumperror(ctx, "invalid value for option: '--%s'",
+                          buf[0] ? buf : s);
               return NULL;
             }
             dumpvalue(opt->dest, opt->type, vp);

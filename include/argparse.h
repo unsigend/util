@@ -54,6 +54,7 @@
 #define _OPT_DOUBLE 5
 #define _OPT_LIST 6
 #define _OPT_GROUP 7
+#define _OPT_GROUP_END 8
 
 #define OPT_REQUIRED 0x01 /* require argument */
 #define OPT_OPTIONAL 0x02 /* optional argument */
@@ -77,6 +78,9 @@ struct argparse_list;
 #define OPT_LIST(s, l, h, d) OPT_DECL(_OPT_LIST, s, l, h, d, OPT_REQUIRED, NULL)
 #define OPT_GROUP(h) OPT_DECL(_OPT_GROUP, '\0', NULL, h, NULL, 0, NULL)
 #define OPT_END() OPT_DECL(_OPT_END, '\0', NULL, NULL, NULL, 0, NULL)
+#define OPT_GROUP_END()                                                        \
+  OPT_DECL(_OPT_GROUP_END, '\0', NULL, NULL, NULL, 0,                          \
+           NULL) /* group end '\n' no-op */
 #define OPT_HELP()                                                             \
   OPT_DECL(_OPT_BOOL, 'h', "help", "show this help message ", NULL, OPT_NONE,  \
            argparse_cb_help)
