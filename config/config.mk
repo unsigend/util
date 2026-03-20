@@ -21,7 +21,7 @@
 # SOFTWARE.
 
 # Configure for debug mode
-DEBUG 		:= 		1
+DEBUG 		:= 		0
 
 # Configure for Modules (default : all)
 # MODULES		:= 		

@@ -31,20 +31,15 @@
    option parsing style.
 
    Single value parsing:
-                -f --flag <value> | -f=<value>
-                -abc | -a -b -c (only for BOOL type)
-                -Werror | -W error
+                -f<value> | -f <value> | -abc (for BOOL type)
+                --flag<value> | --flag=<value>
 
-   Multiple values parsing are based on LIST type, separated by spaces
-   or flags:
-                -I ./include -Werror -I ./arch -I ./src
+   Multiple values parsing:
                 -I./include -I./arch -I./src
-
-   Parse ["./include", "./arch", "./src"] to -I list
 
    flag -- stops option parsing, all following arguments are treated as
    positional arguments. For numeric types, the parser will parse the value and
-   write the result to the destination pointer. If error occurs, if ARG_IGNORE
+   write the result to the destination pointer. If error occurs, when ARG_IGNORE
    flag is not set, set errstr and exit.
 
    Note: For LIST type, caller should initialize the list pointer to NULL, and
@@ -86,8 +81,6 @@ struct argparse_list;
   OPT_DECL(_OPT_BOOL, 'h', "help", "show this help message ", NULL, OPT_NONE,  \
            argparse_cb_help)
 
-/* Wrapper Macros: try to avoid direct access to the internal data structures
-   for forward compatibility */
 #define argparse_setflags(ctx, flag) ((ctx)->flags |= (flag)) /* Set flags */
 #define argparse_clrflags(ctx, flag)                                           \
   ((ctx)->flags &= ~(flag)) /* Clear flags                                     \
