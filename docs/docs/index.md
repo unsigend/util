@@ -9,19 +9,16 @@ description: Modern, lightweight C utility library
 
 <p align="center">
   <img src="https://img.shields.io/badge/license-MIT-green" />
-  <img src="https://img.shields.io/badge/version-0.1-blue" />
+  <img src="https://img.shields.io/badge/version-1.0.0-blue" />
   <img src="https://img.shields.io/badge/language-C-red" />
 </p>
 
 ## Overview
 
-Util is a modern, lightweight C utility library that extends the standard C library by providing additional essential modules. Designed with simplicity and modularity in mind, it offers a collection of reusable components that can be easily integrated into any C project.
-
-### Key Features
+Util is a modern, lightweight C utility library that extends the standard C library with a collection of independent, reusable modules. Each module can be used on its own with no external dependencies.
 
 - **Modular Design**: Each module is independent and can be used separately
-- **Header-Only**: Most modules are header-only, making integration simple
-- **Cross-Platform**: Works on Linux, macOS, and Windows
+- **Cross-Platform**: Works Unix System like Linux, macOS.
 - **C++ Compatible**: All modules are compatible with C++ code
 - **MIT Licensed**: Free to use in both open-source and commercial projects
 - **Zero Dependencies**: No external dependencies required
@@ -29,124 +26,61 @@ Util is a modern, lightweight C utility library that extends the standard C libr
 
 ## Requirements
 
-### Build Dependencies
-
-- **C Compiler**: GCC or Clang with C11 support
-- **Make**: GNU Make 3.81 or later
-- **Standard C Library**: glibc or compatible
+- GCC or Clang with C11 support
+- GNU Make 3.81 or later
+- glibc or compatible standard C library
 
 ## Quick Start
 
-### 1. Clone the Repository
+### 1. Clone
 
 ```bash
 git clone https://github.com/unsigned/util.git
 cd util
 ```
 
-### 2. Configure Build
+### 2. Configure
 
-Configure the build in `config/config.mk`. The most important options are:
+Edit `config/config.mk`. The key options are:
 
-- `LIB_NAME` – library name (default: `util`)
-- `LIB_METHOD` – `static` or `shared`
-- `DEBUG` – `0` for optimized builds, `1` for debug builds
+- `LIB_NAME` — library name, default `util`
+- `LIB_METHOD` — `static` or `shared`
+- `DEBUG` — `0` for release, `1` for debug with sanitizers
 
 ### 3. Build
-
-Build the library:
 
 ```bash
 make all
 ```
 
-Headers are in `include/` and the library is in `lib/`.
+Headers are in `include/`, the built library is in `lib/`.
 
-### 4. Use the Library
-
-Include the headers in your project:
-
-```c
-#include <utest.h>   /* unit test framework */
-```
-
-Link against the library:
+### 4. Link
 
 ```bash
 gcc -I./include your_program.c -L./lib -lutil -o your_program
 ```
 
-## Build Configuration
-
-The build system is configured via `config/config.mk`:
-
-- **C Standard**: C11
-- **Build Method**: `static` or `shared`
-- **Library Name**: `util`
-- **Debug Mode**: `DEBUG=0` (release) or `DEBUG=1` (debug)
-
-## Available Make Targets
-
-Everything is managed through the top-level `Makefile`. Use `make help` to see detailed commands:
+## Make Targets
 
 ```makefile
-make all        # Build the library
-make lib        # Build the library only
-make test       # Build the library and run all tests
-make test-NAME  # Build the library and run tests for module NAME
-make clean      # Remove build artifacts and test outputs
-make list       # List all source files
-make info       # Show current build configuration
-make docs       # Build and serve documentation
-make clang      # Generate compile_commands.json for tooling
-make format     # Run clang-format over include, src, test
-make help       # Show the Makefile help message
-make docker     # Build the docker image for util
+make all        # build the library
+make test       # build and run all tests
+make test-NAME  # build and run tests for module NAME
+make clean      # remove build artifacts and lib output
+make list       # list all source files
+make info       # show current build configuration
+make docs       # build and serve documentation locally
+make clang      # generate compile_commands.json for tooling
+make format     # run clang-format over include, src, test
+make docker     # build and enter the Docker container
+make help       # show the help message
 ```
 
-You can change the configuration in `config/config.mk`.
+## Documentation
 
-## Why Util?
-
-- **Simplicity**: Each module is designed to be simple to use while providing powerful features
-- **Modularity**: Use only what you need, reducing code bloat
-- **Maintainability**: Clean, well-documented code that's easy to understand and modify
-- **Reliability**: Thoroughly tested with comprehensive unit tests
-- **Community**: Open to contributions and improvements
-
-## Contributing
-
-Contributions are welcome! Whether it's:
-
-- Bug reports
-- Feature requests
-- Documentation improvements
-- Code contributions
-
-Please feel free to:
-
-1. Open an issue to discuss proposed changes
-2. Fork the repository
-3. Submit a pull request
-
-## Building Documentation
-
-The documentation is built using MkDocs with Material theme.
-
-To build and serve the documentation locally:
-
-```bash
-make docs
-```
-
-This will:
-
-- Create a Python virtual environment if needed
-- Install dependencies automatically
-- Build the documentation
-- Start a local server at `http://127.0.0.1:8000`
+Documentation is built with MkDocs Material. Running `make docs` will create a virtual environment if needed, install dependencies, build the site, and start a local server at `http://127.0.0.1:8000`.
 
 ## License
 
-This project is licensed under the MIT License.
-Copyright (C) 2025 - 2026 QIU YIXIANG
+MIT License, Copyright (C) 2025 - 2026 Yixiang Qiu

@@ -31,8 +31,8 @@
 #include <utest/print.h>
 #include <utest/types.h>
 
-#define MAX_SUITES 64  /* initial capacity of suites list */
-#define SCALE_FACTOR 2 /* scale factor for suites list */
+#define NSUITES 64
+#define FACTOR 2
 #define BUFSZ 1024
 
 #define LOCK(lock)                                                             \
@@ -70,7 +70,7 @@ void ut_init(int flags)
   if (pthread_mutex_init(&utest_ctx.lock, NULL))
     fatal();
   /* lazy allocate until first suite is added */
-  utest_ctx.nsuitescap = MAX_SUITES;
+  utest_ctx.nsuitescap = NSUITES;
 }
 
 void ut_fini(void)
@@ -107,14 +107,14 @@ void ut_addsuite(const char *name, utsuite_func func)
 {
   if (utest_ctx.suites) {
     if (utest_ctx.nsuites >= utest_ctx.nsuitescap) {
-      utest_ctx.nsuitescap *= SCALE_FACTOR;
+      utest_ctx.nsuitescap *= FACTOR;
       utest_ctx.suites = realloc(utest_ctx.suites,
                                  utest_ctx.nsuitescap * sizeof(struct utsuite));
       if (!utest_ctx.suites)
         fatal();
     }
   } else {
-    utest_ctx.suites = calloc(MAX_SUITES, sizeof(struct utsuite));
+    utest_ctx.suites = calloc(NSUITES, sizeof(struct utsuite));
     if (!utest_ctx.suites)
       fatal();
   }

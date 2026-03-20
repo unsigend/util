@@ -24,11 +24,14 @@ theme:
     - search.suggest
     - search.highlight
 
+extra_css:
+  - stylesheets/extra.css
+
 nav:
   - Introduction: index.md
-  - Utest: utest.md
-  - Iniparse: iniparse.md
-  - Argparse: argparse.md
+  - utest: utest.md
+  - iniparse: iniparse.md
+  - argparse: argparse.md
 
 markdown_extensions:
   - pymdownx.highlight:

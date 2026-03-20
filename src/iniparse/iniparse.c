@@ -30,8 +30,8 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-#define MAX_ENTRIES 64 /* initial capacity of entries list */
-#define SCALE_FACTOR 2 /* scale factor for entries list */
+#define NLIST 64
+#define FACTOR 2
 
 /* utility functions */
 static char *skipline(char *p);
@@ -144,7 +144,7 @@ static int put(struct iniparse_ctx *ctx, const char *section, const char *key,
 {
   if (ctx->nentries >= ctx->nentriescap) {
     if (ctx->entries) {
-      ctx->nentriescap *= SCALE_FACTOR;
+      ctx->nentriescap *= FACTOR;
       struct iniparse_entry *newentries =
           realloc(ctx->entries, ctx->nentriescap * sizeof(*ctx->entries));
       if (!newentries)
@@ -152,7 +152,7 @@ static int put(struct iniparse_ctx *ctx, const char *section, const char *key,
       ctx->entries = newentries;
     } else {
       /* first allocation */
-      ctx->nentriescap = MAX_ENTRIES;
+      ctx->nentriescap = NLIST;
       ctx->entries = calloc(ctx->nentriescap, sizeof(*ctx->entries));
       if (!ctx->entries)
         return -1;

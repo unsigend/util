@@ -1,187 +1,212 @@
-## Argparse
+# argparse
 
-Lightweight **table-driven** CLI parser for C. Follows **POSIX Utility Syntax Guidelines**: short and long options, optional **`=`** values, **`--`** to end option scanning, and a **remainder** for operands.
+## Overview
 
-Quick facts:
+`argparse` is a lightweight command line argument parser compatible with GNU/POSIX option style. The single header is `argparse.h`.
 
-- **Header**: `#include <argparse.h>`
-- **`argv`**: pass **only** user arguments, omit `argv[0]`
-- **Model**: one option table, one **`argparse_parse`** per parse
-- **API**: use documented **macros** and **functions**, keep the context opaque aside from **`init`**, **`parse`**, **`fini`**, and accessors
+Options are declared as a null-terminated array of `argparse_opt` structs, built with the `OPT_*` helper macros. The parser writes values directly into caller-provided destination pointers, so no post-parse extraction step is needed for most types.
 
----
+## Conventions
 
-## 1. Conventions
+Short options take the form `-f`, `-f value`, or `-f<value>`. Multiple boolean short options may be combined as `-abc`. Long options take the form `--flag`, `--flag value`, or `--flag=value`. The sentinel `--` stops option parsing, all following tokens are collected as positional arguments regardless of their prefix.
 
-- **Option table**: **`struct argparse_opt[]`** built with **`OPT_*`** (or **`OPT_DECL`**), terminated with **`OPT_END()`**.
-- **Short names**: one dash and one letter, defined in each macro. **`-abc`** clustering is allowed **only** for **`OPT_BOOL`**.
-- **Long names**: two dashes and a name, value as **`--opt=value`**, or **`--opt`** with the value in the next argv element.
-- **Attached values**: a value may share the argv element with the flag or sit in the next one, depending on type and flags (e.g. **`-I./dir`** vs **`-I` `./dir`**).
-- **Operands**: any argv token that is not an option or its value, **plus** every token after **`--`**. A lone **`-`** counts as an operand. Exposed as the **remainder** via **`argparse_getremargc`** / **`argparse_getremargv`**.
-- **`OPT_LIST`**: each occurrence supplies **one** value, order matches the command line.
-- **Parsing**: left to right over the **`argv`** you pass to **`argparse_parse`** (no program name in that slice).
-- **Errors**: **`argparse_parse`** returns **`-1`**, use **`argparse_strerror`**, and set **`ARG_IGNORE`** via **`argparse_setflags`** to skip unknown options instead of failing.
+For `LIST` type, the destination pointer must be initialized to `NULL` before parsing. The parser allocates the list on first use.
 
----
+Positional arguments: anything not consumed as an option or its value are collected into the remainder list and accessible via `argparse_getremargc` and `argparse_getremargv`.
 
-## 2. Tokens and argv shapes
+When a parse error occurs and `ARG_IGNORE` is not set, the error message is written to `ctx->errstr` and the function returns -1.
 
-**Option vs operand** — An **option** starts with **`-`** and is parsed as short or long. Everything else in the scan (and all tokens after **`--`**) is an **operand** once options/values are resolved.
+## Flags
 
-**Short** — **`-x`** (boolean **`x`** if registered as bool). **`-xyz`**: booleans only, same as **`-x -y -z`**. **`-xvalue`**: **`x`** with value in the same token. **`-x`** then **`value`**: next token is the value.
+### Option argument flags
 
-**Long** — **`--flag`** (boolean). **`--opt`** then **`value`**: separate token. **`--opt=value`**: value after **`=`**.
+Passed as the `f` argument to value-typed `OPT_*` macros, controlling how the parser treats the option's argument.
 
-**`--`** — Ends option scanning, following tokens are operands even if they start with **`-`**.
+| Flag           | Meaning                                                       |
+| -------------- | ------------------------------------------------------------- |
+| `OPT_REQUIRED` | Option argument is required, parse fails if absent or invalid |
+| `OPT_OPTIONAL` | Option argument is optional, skipped if absent or invalid     |
+| `OPT_NONE`     | Option takes no argument, used for `OPT_BOOL`                 |
 
-**Scan order** — Options and values are consumed from **`argv`** in order, whatever is left, plus everything after **`--`**, forms the **remainder** list.
+### Context flags
 
----
+Set on the `argparse` context via `argparse_setflags` / `argparse_clrflags`.
 
-## 3. Functions
+| Flag         | Meaning                                                     |
+| ------------ | ----------------------------------------------------------- |
+| `ARG_IGNORE` | Silently skip unknown options instead of returning an error |
 
-Signatures match **`argparse.h`**.
+## Macros
+
+### Option declaration
+
+Options are declared using the helper macros below and terminated with `OPT_END()`.
+
+| Macro                       | Description                                                          |
+| --------------------------- | -------------------------------------------------------------------- |
+| `OPT_BOOL(s, l, h, d)`      | Boolean flag, set to `true` when present                             |
+| `OPT_INT(s, l, h, d, f)`    | Signed integer option                                                |
+| `OPT_STR(s, l, h, d, f)`    | String option, dest receives a pointer into `argv`                   |
+| `OPT_LONG(s, l, h, d, f)`   | Long integer option                                                  |
+| `OPT_DOUBLE(s, l, h, d, f)` | Double option                                                        |
+| `OPT_LIST(s, l, h, d)`      | Repeatable string option, values accumulated into a list             |
+| `OPT_GROUP(h)`              | Visual grouping header for help output, no-op during parsing         |
+| `OPT_GROUP_END()`           | Closes a group                                                       |
+| `OPT_HELP()`                | Adds a built-in `-h`/`--help` option that invokes `argparse_cb_help` |
+| `OPT_END()`                 | Required sentinel, marks end of option array                         |
+
+Parameters: `s` = short name char, `l` = long name string, `h` = help string, `d` = destination pointer, `f` = argument flag.
+
+### Context macros
+
+| Macro                          | Description                                         |
+| ------------------------------ | --------------------------------------------------- |
+| `argparse_setflags(ctx, flag)` | Sets a flag on the context                          |
+| `argparse_clrflags(ctx, flag)` | Clears a flag on the context                        |
+| `argparse_strerror(ctx)`       | Returns the last error string, or NULL if none      |
+| `argparse_getremargc(ctx)`     | Returns the count of remaining positional arguments |
+| `argparse_getremargv(ctx)`     | Returns the `char **` array of positional arguments |
+| `argparse_getlist(list)`       | Returns the `char **` items of an `argparse_list`   |
+| `argparse_getlistsz(list)`     | Returns the item count of an `argparse_list`        |
+
+## Structs
+
+### `argparse_opt`
+
+Describes a single option. Populate via the `OPT_*` macros rather than directly.
+
+- `sname` — short option character, `'\0'` if none
+- `lname` — long option string, NULL if none
+- `type` — one of the `_OPT_*` type constants
+- `dest` — pointer to the variable receiving the parsed value
+- `help` — help string shown in usage output
+- `cb` — optional callback invoked after the option is parsed
+- `flags` — `OPT_REQUIRED`, `OPT_OPTIONAL`, or `OPT_NONE`
+
+### `argparse_desc`
+
+Optional program metadata used by help output.
+
+- `prog` — program name
+- `desc` — short description shown before option list
+- `usage` — usage line
+- `epilog` — text shown after option list
+
+### `argparse_list`
+
+Holds values collected by a `LIST` option. Access via `argparse_getlist` and `argparse_getlistsz`.
+
+## Functions
+
+### `argparse_init`
 
 ```c
-int  argparse_init(struct argparse *ctx, struct argparse_opt *opts,
-                   struct argparse_desc *desc);
-int  argparse_parse(struct argparse *ctx, int argc, char **argv);
+int argparse_init(struct argparse *ctx, struct argparse_opt *opts,
+                  struct argparse_desc *desc);
+```
+
+Initializes the context with an option array and optional description. Must be called before `argparse_parse`. Returns 0 on success, -1 on error.
+
+**Parameters**
+
+- `ctx` — pointer to an uninitialized context struct
+- `opts` — null-terminated array of option descriptors, must end with `OPT_END()`
+- `desc` — optional program description, may be NULL
+
+### `argparse_parse`
+
+```c
+int argparse_parse(struct argparse *ctx, int argc, char **argv);
+```
+
+Parses the argument array. The program name should not be included; pass `argc - 1` and `argv + 1` from `main`. Returns 0 on success, -1 on error. On error the message is available via `argparse_strerror`.
+
+**Parameters**
+
+- `ctx` — an initialized context
+- `argc` — number of arguments
+- `argv` — argument strings
+
+### `argparse_fini`
+
+```c
 void argparse_fini(struct argparse *ctx);
 ```
 
-- **`argparse_init`**: wire **`ctx`**, **`opts`** (must end with **`OPT_END()`**), optional **`desc`**. Returns **`0`** or **`-1`**.
-- **`argparse_parse`**: parse **`argc` / `argv`** without the program name. **`0`** on success, **`-1`** on error.
-- **`argparse_fini`**: free resources held by that **`ctx`**.
+Releases all resources held by the context. Must be called when the context is no longer needed.
 
-Help callback (library implementation, declared in the header, use **`OPT_HELP()`**):
+**Parameters**
 
-```c
-void argparse_cb_help(struct argparse *ctx, struct argparse_opt *opt);
-```
+- `ctx` — an initialized context
 
----
-
-## 4. Types
-
-**Callback** — Runs after the value is bound, unless parsing stops on error.
+### `argparse_cb_help`
 
 ```c
-typedef void (*argparse_cb)(struct argparse *ctx, struct argparse_opt *opt);
+void argparse_cb_help(struct argparse *, struct argparse_opt *);
 ```
 
-**Program description** — Pass **`NULL`** for **`desc`** at **`argparse_init`** if unused.
+Built-in callback that prints formatted help to stdout and exits. Used automatically by `OPT_HELP()`.
 
-```c
-struct argparse_desc {
-  const char *prog;
-  const char *desc;
-  const char *usage;
-  const char *epilog;
-};
-```
-
-**Option rows** — Normally built only with **`OPT_*`** / **`OPT_DECL`**. Each row has short name, long name, type, destination, help, flags **`OPT_NONE` / `OPT_REQUIRED` / `OPT_OPTIONAL`**, and optional callback.
-
-**Lists** — After parse, use **`argparse_getlist`** and **`argparse_getlistsz`**. Set the `struct argparse_list *` for **`OPT_LIST`** to **`NULL`** before **`argparse_parse`**.
-
----
-
-## 5. Macros
-
-**Context flags**
-
-- **`ARG_IGNORE`**: when set via **`argparse_setflags`**, unknown options are skipped instead of an error.
-- **`argparse_setflags`**: OR bits into the context flags.
-- **`argparse_clrflags`**: clear flag bits.
-
-**Argument mode**
-
-- **`OPT_NONE`**: no separate argument (booleans). Lists still take a value internally.
-- **`OPT_REQUIRED`**: a value is required, string rules depend on type.
-- **`OPT_OPTIONAL`**: value may be omitted or come from the next token, per type rules.
-
-**Option builders** — Letters **`s`** (short or **`'\0'`**), **`l`** (long or **`NULL`**), **`h`** (help), **`d`** (destination), **`f`** (flags) where the macro shows **`f`**.
-
-- **`OPT_BOOL`**: destination **`bool *`**, no **`f`**.
-- **`OPT_INT`**: **`int *`**, **`f`** supported.
-- **`OPT_LONG`**: **`long *`**, **`f`** supported.
-- **`OPT_DOUBLE`**: **`double *`**, **`f`** supported.
-- **`OPT_STR`**: destination `char *`, **`f`** supported.
-- **`OPT_LIST`**: destination `struct argparse_list *`, no **`f`**.
-
-**Special**
-
-- **`OPT_GROUP`**: help section label only.
-- **`OPT_END()`**: required table terminator.
-- **`OPT_HELP()`**: **`-h` / `--help`**, uses **`argparse_cb_help`**.
-- **`OPT_DECL`**: full control (**`_OPT_*`** type, callback or **`NULL`**).
-
----
-
-## 6. After parse
-
-**Accessors** (valid after **`argparse_parse`**, **`argparse_strerror`** also after failure)
-
-- **`argparse_getremargc`**: operand count.
-- **`argparse_getremargv`**: operand `char **` array (argv-style), or **`NULL`** if the count is zero.
-- **`argparse_strerror`**: message string, empty if there is no error.
-- **`argparse_getlist`**: list of `char *` items.
-- **`argparse_getlistsz`**: list length.
-
-**Behavior**
-
-- **Failure**: return **`-1`**, read **`argparse_strerror`**. **`ARG_IGNORE`** affects **unknown** options only.
-- **Callbacks** (**`OPT_DECL`**): invocation order follows **argv**.
-- **Duplicate option**: last wins for scalars, **lists** append.
-
----
-
-## 7. Example
+## Example
 
 ```c
 #include <argparse.h>
-#include <stdbool.h>
 #include <stdio.h>
 
 int main(int argc, char **argv)
 {
-  bool verbose = false;
-  int jobs = 1;
-  char *out = NULL;
-  struct argparse_list *includes = NULL;
+    int verbose = 0;
+    int jobs = 1;
+    const char *output = NULL;
+    struct argparse_list *includes = NULL; /* must be NULL for LIST */
 
-  struct argparse_opt opts[] = {
-      OPT_BOOL('v', "verbose", "verbose output", &verbose),
-      OPT_INT('j', "jobs', "parallel jobs", &jobs, OPT_REQUIRED),
-      OPT_STR('o', "output", "output file", &out, OPT_REQUIRED),
-      OPT_LIST('I', "include", "include path", &includes),
-      OPT_END(),
-  };
+    struct argparse_opt opts[] = {
+        OPT_HELP(),
+        OPT_BOOL('v', "verbose", "enable verbose output", &verbose),
+        OPT_INT('j', "jobs", "number of jobs", &jobs, OPT_OPTIONAL),
+        OPT_STR('o', "output", "output file", &output, OPT_REQUIRED),
+        OPT_LIST('I', "include", "include path", &includes),
+        OPT_END(),
+    };
 
-  struct argparse ctx;
-  if (argparse_init(&ctx, opts, NULL) != 0)
-    return 1;
+    struct argparse_desc desc = {
+        .prog  = "build",
+        .usage = "build [options] <files>",
+    };
 
-  int pn = argc - 1;
-  char **pv = (pn > 0) ? argv + 1 : NULL;
-  if (argparse_parse(&ctx, pn, pv) != 0) {
-    fprintf(stderr, "%s\n", argparse_strerror(&ctx));
+    struct argparse ctx;
+    argparse_init(&ctx, opts, &desc);
+
+    if (argparse_parse(&ctx, argc - 1, argv + 1) == -1) {
+        fprintf(stderr, "error: %s\n", argparse_strerror(&ctx));
+        argparse_fini(&ctx);
+        return 1;
+    }
+
+    /* positional arguments */
+    char **files = argparse_getremargv(&ctx);
+    size_t nfiles = argparse_getremargc(&ctx);
+
+    /* list option values */
+    if (includes) {
+        char **paths = argparse_getlist(includes);
+        size_t n = argparse_getlistsz(includes);
+        for (size_t i = 0; i < n; i++)
+            printf("include: %s\n", paths[i]);
+    }
+
+    printf("output=%s jobs=%d verbose=%d files=%zu\n",
+           output, jobs, verbose, nfiles);
+
     argparse_fini(&ctx);
-    return 1;
-  }
-
-  printf("jobs=%d operands=%zu\n", jobs,
-         (size_t)argparse_getremargc(&ctx));
-  argparse_fini(&ctx);
-  return 0;
+    return 0;
 }
 ```
 
----
+Invoking as `build -v -j4 -o out -I./inc -I./src file1.c file2.c` would produce:
 
-## 8. Summary
-
-- **POSIX-shaped** argv: short, long, **`=`**, bool clusters where allowed, **`--`**, operands in the remainder.
-- **Declarative** **`struct argparse_opt[]`** instead of hand-rolled parsing.
-- **Extended** behavior with **`OPT_DECL`** and **`argparse_cb`**.
-- **Remainder and lists** via accessors, **`argparse_fini`** releases parser-owned memory for **`ctx`**.
+```
+include: ./inc
+include: ./src
+output=out jobs=4 verbose=1 files=2
+```

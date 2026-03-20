@@ -1,241 +1,174 @@
-## Utest – Minimal C Unit Test Framework
+# utest
 
-`utest` is a small, macro-based unit testing framework for C. It is designed to:
+## Overview
 
-- **Expose only one public header**: `utest.h`
-- **Run tests in parallel at suite level** with `UTEST_RUNSUITES_THREAD`
-- **Be thread-safe by design**: global statistics and output are synchronized
-- **Keep tests simple**: no registration boilerplate beyond a few macros
+`utest` is a macro-based unit testing framework with built-in multi-threading support. The single include needed is `utest.h`, all other headers are pulled in transitively.
 
-This document describes only the public API in `include/utest.h`.
+Tests are organized in a two-level hierarchy: suites contain cases. A suite is a function that registers and runs cases; cases are functions that execute assertions. The framework collects results across all suites and prints a final summary.
+
+Suites can be run sequentially or in parallel across a thread pool, where each thread pulls the next unstarted suite from a shared queue.
 
 ![utest output](assets/utest.png)
 
+## Flags
+
+Flags control output verbosity and failure behavior. Pass them to `UTEST_INIT` or toggle them at runtime with `UTEST_ADDFLAG` / `UTEST_CLRFLAG`.
+
+| Flag              | Effect                                                       |
+| ----------------- | ------------------------------------------------------------ |
+| `UTF_SHOWSUITE`   | Print suite begin/end markers                                |
+| `UTF_SHOWCASE`    | Print case begin/end markers                                 |
+| `UTF_STOPONSUITE` | Stop dispatching new suites after the first suite failure    |
+| `UTF_STOPONCASE`  | Skip remaining cases in a suite after the first case failure |
+| `UTF_DEFAULT`     | Default flag set applied when 0 is passed to `UTEST_INIT`    |
+
+## Macros
+
+### Lifecycle
+
+#### `UTEST_INIT(flags)`
+
+Initializes the framework. Must be called before any other macro. Pass 0 to use `UTF_DEFAULT`.
+
+#### `UTEST_FINI()`
+
+Finalizes the framework, prints the summary, and releases all resources. Must be called after all suites have run.
+
+#### `UTEST_ADDFLAG(flag)`
+
+Adds a flag to the active flag set.
+
+#### `UTEST_CLRFLAG(flag)`
+
+Clears a flag from the active flag set.
+
 ---
 
-### Including utest
+### Defining suites and cases
 
-Add the header and link against `libutil`:
+#### `UTEST_SUITE(name)`
+
+Defines a suite function. The body registers and runs cases via `UTEST_RUNCASE`.
 
 ```c
-#include <utest.h>
+UTEST_SUITE(my_suite) {
+    UTEST_RUNCASE(my_case);
+}
 ```
 
----
+#### `UTEST_CASE(name)`
 
-### Test Lifecycle
-
-- **`UTEST_INIT(flags)`**  
-  Initialize the testing framework. `flags` control reporting and stop-on-failure behavior.
-
-- **`UTEST_FINI()`**  
-  Finalize the framework, print a summary, and release internal resources.
-
-You normally call these once in `main`:
+Defines a case function. The body contains assertions.
 
 ```c
-int main(void)
-{
-  UTEST_INIT(UTF_DEFAULT);  /* or custom flags */
-  /* add suites and run them */
-  UTEST_FINI();
-  return 0;
+UTEST_CASE(my_case) {
+    EXPECT_EQ_INT(add(1, 2), 3);
 }
 ```
 
 ---
 
-### Defining Cases and Suites
+### Registration and execution
 
-- **`UTEST_CASE(name)`**  
-  Define a test case function:
+#### `UTEST_ADDSUITE(name)`
 
-```c
-UTEST_CASE(example)
-{
-  EXPECT_TRUE(1 == 1);
-}
-```
+Registers a suite with the framework. Must be called after `UTEST_INIT` and before any run macro.
 
-- **`UTEST_SUITE(name)`**  
-  Define a suite that calls `UTEST_RUNCASE` for its cases:
+#### `UTEST_RUNCASE(name)`
 
-```c
-UTEST_SUITE(math)
-{
-  UTEST_RUNCASE(example);
-}
-```
+Runs a case inside a suite body. Must be called from within a `UTEST_SUITE` block.
 
-Suites are the **unit of parallelism**: each suite can be run on a different thread.
+#### `UTEST_RUNSUITE(name)`
 
----
+Runs a single registered suite by name. Returns 0 on success, -1 if the suite is not found.
 
-### Registering and Running Suites
+#### `UTEST_RUNSUITES()`
 
-- **`UTEST_ADDSUITE(name)`**  
-  Register a suite by name (call this in `main`).
+Runs all registered suites sequentially.
 
-- **`UTEST_RUNSUITE(name)`**  
-  Run a single suite by name. Returns `0` on success, `-1` if the suite is not found.
+#### `UTEST_RUNSUITES_THREAD(nthreads)`
 
-- **`UTEST_RUNSUITES()`**  
-  Run all registered suites sequentially in a single thread.
+Runs all registered suites in parallel using a thread pool of `nthreads` threads. Each thread pulls the next unstarted suite from a shared work queue, so suites are distributed dynamically. Suite-level output is buffered per suite and flushed atomically to avoid interleaving.
 
-- **`UTEST_RUNSUITES_THREAD(nthreads)`**  
-  Run all registered suites using up to `nthreads` threads. Suites are dispatched dynamically, each suite still runs its own cases sequentially.
+#### `UTEST_SHOWSUITES()`
 
-- **`UTEST_SHOWSUITES()`**  
-  Print all registered suite names to stdout in a grid-aligned layout (no tests are run).
-
-Example:
-
-```c
-int main(int argc, char **argv)
-{
-  int nthreads = (argc > 1) ? atoi(argv[1]) : 1;
-
-  UTEST_INIT(0);
-  UTEST_ADDSUITE(math);
-
-  if (nthreads <= 1)
-    UTEST_RUNSUITES();
-  else
-    UTEST_RUNSUITES_THREAD(nthreads);
-
-  UTEST_FINI();
-  return 0;
-}
-```
+Prints the names of all registered suites to stdout.
 
 ---
-
-### Flags
-
-Flags are bitmasks combined and passed to `UTEST_INIT(flags)`.
-
-#### Stop-on-failure behavior
-
-- `UTF_STOPONASS`  
-  On first failed assertion **within a case**, stop executing the rest of that case body.
-
-- `UTF_STOPONCASE`  
-  On first failed case **within a suite**, skip the remaining cases in that suite.
-
-- `UTF_STOPONSUITE`  
-  On first failed suite, skip the remaining suites.
-
-You can combine these:
-
-```c
-UTEST_INIT(UTF_STOPONASS | UTF_STOPONCASE | UTF_STOPONSUITE);
-```
-
-#### Output style
-
-- `UTF_SHOWCASE` – print per-case begin/end lines.
-- `UTF_SHOWSUITE` – print per-suite begin/end lines.
-
-Convenience presets:
-
-- `UTF_FULLSTYLE` – `UTF_SHOWCASE | UTF_SHOWSUITE`
-- `UTF_BRIEFSTYLE` – `UTF_SHOWSUITE`
-- `UTF_DEFAULT` – `UTF_STOPONASS | UTF_FULLSTYLE`
-
----
-
-### Runtime Flag Control
-
-Utest also provides helpers to adjust active flags after `UTEST_INIT`:
-
-- `UTEST_ADDFLAG(flag)` – enable an additional flag.
-- `UTEST_CLRFLAG(flag)` – disable an existing flag.
 
 ### Assertions
 
-All assertions are macros that operate on the current test case and record:
+All assertion macros follow the naming convention `EXPECT_<OP>_<TYPE>(actual, expect)`. A failing assertion marks the current case as failed and logs the failure, but does not abort the case.
 
-- pass / fail status for the case
-- a detailed message on failure
+**Boolean**
 
-Assertions are **thread-safe** when used inside `UTEST_CASE` bodies, because each case writes into a per-suite output buffer and global stats are updated under internal synchronization.
+- `EXPECT_TRUE(expr)`, `EXPECT_FALSE(expr)`
 
-#### Booleans
+**Pointer**
 
-- `EXPECT_TRUE(expr)`
-- `EXPECT_FALSE(expr)`
+- `EXPECT_NULL(ptr)`, `EXPECT_NOTNULL(ptr)`
+- `EXPECT_EQ_PTR`, `EXPECT_NE_PTR`, `EXPECT_GT_PTR`, `EXPECT_GE_PTR`, `EXPECT_LT_PTR`, `EXPECT_LE_PTR`
 
-#### Pointers
+**Integer**
 
-- `EXPECT_NULL(ptr)`
-- `EXPECT_NOTNULL(ptr)`
-- `EXPECT_EQ_PTR(actual, expect)`
-- `EXPECT_NE_PTR(actual, expect)`
-- `EXPECT_GT_PTR(actual, expect)`
-- `EXPECT_GE_PTR(actual, expect)`
-- `EXPECT_LT_PTR(actual, expect)`
-- `EXPECT_LE_PTR(actual, expect)`
+- `EXPECT_EQ_INT`, `EXPECT_NE_INT`, `EXPECT_GT_INT`, `EXPECT_GE_INT`, `EXPECT_LT_INT`, `EXPECT_LE_INT`
 
-#### Integers
+**Unsigned integer**
 
-- `EXPECT_EQ_INT(actual, expect)`
-- `EXPECT_NE_INT(actual, expect)`
-- `EXPECT_GT_INT(actual, expect)`
-- `EXPECT_GE_INT(actual, expect)`
-- `EXPECT_LT_INT(actual, expect)`
-- `EXPECT_LE_INT(actual, expect)`
+- `EXPECT_EQ_UINT`, `EXPECT_NE_UINT`, `EXPECT_GT_UINT`, `EXPECT_GE_UINT`, `EXPECT_LT_UINT`, `EXPECT_LE_UINT`
 
-#### Unsigned Integers
+**Character**
 
-- `EXPECT_EQ_UINT(actual, expect)`
-- `EXPECT_NE_UINT(actual, expect)`
-- `EXPECT_GT_UINT(actual, expect)`
-- `EXPECT_GE_UINT(actual, expect)`
-- `EXPECT_LT_UINT(actual, expect)`
-- `EXPECT_LE_UINT(actual, expect)`
+- `EXPECT_EQ_CHAR`, `EXPECT_NE_CHAR`, `EXPECT_GT_CHAR`, `EXPECT_GE_CHAR`, `EXPECT_LT_CHAR`, `EXPECT_LE_CHAR`
 
-#### Characters
+**Unsigned character**
 
-- `EXPECT_EQ_CHAR(actual, expect)`
-- `EXPECT_NE_CHAR(actual, expect)`
-- `EXPECT_GT_CHAR(actual, expect)`
-- `EXPECT_GE_CHAR(actual, expect)`
-- `EXPECT_LT_CHAR(actual, expect)`
-- `EXPECT_LE_CHAR(actual, expect)`
+- `EXPECT_EQ_UCHAR`, `EXPECT_NE_UCHAR`, `EXPECT_GT_UCHAR`, `EXPECT_GE_UCHAR`, `EXPECT_LT_UCHAR`, `EXPECT_LE_UCHAR`
 
-#### Unsigned Characters
+**Double**
 
-- `EXPECT_EQ_UCHAR(actual, expect)`
-- `EXPECT_NE_UCHAR(actual, expect)`
-- `EXPECT_GT_UCHAR(actual, expect)`
-- `EXPECT_GE_UCHAR(actual, expect)`
-- `EXPECT_LT_UCHAR(actual, expect)`
-- `EXPECT_LE_UCHAR(actual, expect)`
+- `EXPECT_EQ_DOUBLE`, `EXPECT_NE_DOUBLE`, `EXPECT_GT_DOUBLE`, `EXPECT_GE_DOUBLE`, `EXPECT_LT_DOUBLE`, `EXPECT_LE_DOUBLE`
 
-#### Doubles
+**String**
 
-- `EXPECT_EQ_DOUBLE(actual, expect)`
-- `EXPECT_NE_DOUBLE(actual, expect)`
-- `EXPECT_GT_DOUBLE(actual, expect)`
-- `EXPECT_GE_DOUBLE(actual, expect)`
-- `EXPECT_LT_DOUBLE(actual, expect)`
-- `EXPECT_LE_DOUBLE(actual, expect)`
+- `EXPECT_EQ_STR`, `EXPECT_NE_STR`, `EXPECT_GT_STR`, `EXPECT_GE_STR`, `EXPECT_LT_STR`, `EXPECT_LE_STR`
 
-#### Strings (`const char *`)
+## Example
 
-- `EXPECT_EQ_STR(actual, expect)`
-- `EXPECT_NE_STR(actual, expect)`
-- `EXPECT_GT_STR(actual, expect)`
-- `EXPECT_GE_STR(actual, expect)`
-- `EXPECT_LT_STR(actual, expect)`
-- `EXPECT_LE_STR(actual, expect)`
+```c
+#include <utest.h>
 
----
+/* test cases */
+UTEST_CASE(test_add) {
+    EXPECT_EQ_INT(1 + 1, 2);
+    EXPECT_NE_INT(1 + 1, 3);
+}
 
-### Design Summary
+UTEST_CASE(test_str) {
+    EXPECT_EQ_STR("hello", "hello");
+    EXPECT_NULL(NULL);
+}
 
-- **Single public header**: `utest.h` is the only header you need to include.
-- **Macro-based**: Cases and suites are declared via macros, compiled as normal C functions.
-- **Suite-based parallelism**: Parallel execution happens at the suite level with `UTEST_RUNSUITES_THREAD`.
-- **Thread-safe core**: Internal state and statistics are synchronized, suites do not share mutable state.
-- **Structured output**: Each suite accumulates its own output and flushes once, minimizing interleaving even in multi-threaded runs.
+/* suite groups related cases */
+UTEST_SUITE(math_suite) {
+    UTEST_RUNCASE(test_add);
+}
+
+UTEST_SUITE(str_suite) {
+    UTEST_RUNCASE(test_str);
+}
+
+int main(void)
+{
+    UTEST_INIT(0); /* use default flags */
+
+    UTEST_ADDSUITE(math_suite);
+    UTEST_ADDSUITE(str_suite);
+
+    /* run all suites across 4 threads */
+    UTEST_RUNSUITES_THREAD(4);
+
+    UTEST_FINI();
+    return 0;
+}
+```
