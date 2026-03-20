@@ -121,7 +121,7 @@ UTEST_CASE(long)
     char *argv[] = {"-x0x40", "-o", "0100", "--neg=-7", "--plus", "+15"};
 
     EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
-    EXPECT_EQ_INT(argparse_parse(&ctx, 5, argv), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 6, argv), 0);
     EXPECT_TRUE(hexv == 64L && octv == 64L && negv == -7L && plusv == 15L);
     EXPECT_EQ_STR(argparse_strerror(&ctx), "");
     argparse_fini(&ctx);

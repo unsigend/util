@@ -131,27 +131,27 @@ static int arglist_add(struct argparse_list *list, char *arg)
 }
 
 /* Get or allocate one slot in the list array */
-// static struct argparse_list *getslot(struct argparse *ctx)
-// {
-//   if (!ctx->lists) {
-//     ctx->lists = calloc(NLIST, sizeof(struct argparse_list *));
-//     if (!ctx->lists)
-//       return NULL;
-//     ctx->nlistscap = NLIST;
-//   } else if (ctx->nlists >= ctx->nlistscap) {
-//     size_t newsz = ctx->nlistscap * FACTOR;
-//     void *p = realloc(ctx->lists, newsz * sizeof(struct argparse_list *));
-//     if (!p)
-//       return NULL;
-//     ctx->lists = p;
-//     ctx->nlistscap = newsz;
-//   }
-//   struct argparse_list *slot = calloc(1, sizeof(struct argparse_list));
-//   if (!slot)
-//     return NULL;
-//   ctx->lists[ctx->nlists++] = slot;
-//   return slot;
-// }
+static struct argparse_list *getslot(struct argparse *ctx)
+{
+  if (!ctx->lists) {
+    ctx->lists = calloc(NLIST, sizeof(struct argparse_list *));
+    if (!ctx->lists)
+      return NULL;
+    ctx->nlistscap = NLIST;
+  } else if (ctx->nlists >= ctx->nlistscap) {
+    size_t newsz = ctx->nlistscap * FACTOR;
+    void *p = realloc(ctx->lists, newsz * sizeof(struct argparse_list *));
+    if (!p)
+      return NULL;
+    ctx->lists = p;
+    ctx->nlistscap = newsz;
+  }
+  struct argparse_list *slot = calloc(1, sizeof(struct argparse_list));
+  if (!slot)
+    return NULL;
+  ctx->lists[ctx->nlists++] = slot;
+  return slot;
+}
 
 int argparse_init(struct argparse *ctx, struct argparse_opt *opts,
                   struct argparse_desc *desc)
@@ -199,7 +199,7 @@ static struct argparse_opt *findopt(struct argparse *ctx, char s, const char *l)
 }
 
 /* parse short option */
-static char **parse_short(struct argparse *ctx, char **p)
+static char **parse_short(struct argparse *ctx, char **p, char **end)
 {
   const char *s = *p + 1;
   /* short opt might be -abc which is combined option */
@@ -225,27 +225,42 @@ static char **parse_short(struct argparse *ctx, char **p)
           if (*(s + 1)) { /* -j6 */
             vp = s + 1;
             s += strlen(s) - 1;
-          } else if (*(p + 1)) { /* -j 6 */
+          } else if (p + 1 < end && *(p + 1)) { /* -j 6 */
             vp = *(p + 1);
             p++;
             usenext = 1;
           }
 
-          int r = dumpvalue(NULL, opt->type, vp);
-          if (opt->flags & OPT_REQUIRED) {
-            if (r == -1) {
-              if (!vp)
-                dumperror(ctx, "missing value for option: '-%c'", *s);
-              else
-                dumperror(ctx, "invalid value for option: '-%c'", *s);
+          if (opt->type == _OPT_LIST) {
+            if (!vp) {
+              dumperror(ctx, "missing value for option: '-%c'", *s);
               return NULL;
             }
-            dumpvalue(opt->dest, opt->type, vp);
-          } else if (opt->flags & OPT_OPTIONAL) {
-            if (r != -1)
+            struct argparse_list **list = (struct argparse_list **)opt->dest;
+            if (!*list) {
+              *list = getslot(ctx);
+              if (!*list)
+                return NULL;
+            }
+            if (arglist_add(*list, (char *)vp) == -1)
+              return NULL;
+          } else {
+            int r = dumpvalue(NULL, opt->type, vp);
+            if (opt->flags & OPT_REQUIRED) {
+              if (r == -1) {
+                if (!vp)
+                  dumperror(ctx, "missing value for option: '-%c'", *s);
+                else
+                  dumperror(ctx, "invalid value for option: '-%c'", *s);
+                return NULL;
+              }
               dumpvalue(opt->dest, opt->type, vp);
-            else if (usenext)
-              --p;
+            } else if (opt->flags & OPT_OPTIONAL) {
+              if (r != -1)
+                dumpvalue(opt->dest, opt->type, vp);
+              else if (usenext)
+                --p;
+            }
           }
         }
       }
@@ -257,7 +272,7 @@ static char **parse_short(struct argparse *ctx, char **p)
   return p + 1;
 }
 /* parse long option */
-static char **parse_long(struct argparse *ctx, char **p)
+static char **parse_long(struct argparse *ctx, char **p, char **end)
 {
   const char *s = *p + 2;
   char *eq = strchr(s, '=');
@@ -284,29 +299,43 @@ static char **parse_long(struct argparse *ctx, char **p)
         int usenext = 0;
         if (eq && eq[1]) /* --opt=value */
           vp = eq + 1;
-        else if (*(p + 1)) /* --opt value */
+        else if (p + 1 < end && *(p + 1)) /* --opt value */
         {
           vp = *(p + 1);
           p++;
           usenext = 1;
         }
 
-        int r = dumpvalue(NULL, opt->type, vp);
-        if (opt->flags & OPT_REQUIRED) {
-          if (r == -1) {
-            if (!vp) {
-              dumperror(ctx, "missing value for option: '--%s'", s);
-              return NULL;
-            } else
-              dumperror(ctx, "invalid value for option: '--%s'", s);
+        if (opt->type == _OPT_LIST) {
+          if (!vp) {
+            dumperror(ctx, "missing value for option: '--%s'", s);
             return NULL;
           }
-          dumpvalue(opt->dest, opt->type, vp);
-        } else if (opt->flags & OPT_OPTIONAL) {
-          if (r != -1)
+          struct argparse_list **list = (struct argparse_list **)opt->dest;
+          if (!*list) {
+            *list = getslot(ctx);
+            if (!*list)
+              return NULL;
+          }
+          if (arglist_add(*list, (char *)vp) == -1)
+            return NULL;
+        } else {
+          int r = dumpvalue(NULL, opt->type, vp);
+          if (opt->flags & OPT_REQUIRED) {
+            if (r == -1) {
+              if (!vp)
+                dumperror(ctx, "missing value for option: '--%s'", s);
+              else
+                dumperror(ctx, "invalid value for option: '--%s'", s);
+              return NULL;
+            }
             dumpvalue(opt->dest, opt->type, vp);
-          else if (usenext)
-            --p;
+          } else if (opt->flags & OPT_OPTIONAL) {
+            if (r != -1)
+              dumpvalue(opt->dest, opt->type, vp);
+            else if (usenext)
+              --p;
+          }
         }
       }
     }
@@ -329,8 +358,9 @@ int argparse_parse(struct argparse *ctx, int argc, char **argv)
   char **p = argv;
   int stop = 0;
   int state = getstate(*p);
+  char **end = argv + argc;
 
-  while (p < argv + argc) {
+  while (p < end) {
     switch (state) {
     case OPT:
       if ((*p)[1] == '-') {
@@ -341,18 +371,18 @@ int argparse_parse(struct argparse *ctx, int argc, char **argv)
           stop = 1;
         } else {
           /* long option */
-          p = parse_long(ctx, p);
+          p = parse_long(ctx, p, end);
           if (!p)
             return -1;
-          if (p < argv + argc)
+          if (p < end)
             state = getstate(*p);
         }
       } else {
         /* short option */
-        p = parse_short(ctx, p);
+        p = parse_short(ctx, p, end);
         if (!p)
           return -1;
-        if (p < argv + argc)
+        if (p < end)
           state = getstate(*p);
       }
       break;
@@ -360,7 +390,7 @@ int argparse_parse(struct argparse *ctx, int argc, char **argv)
       if (arglist_add(&ctx->remlist, *p) == -1)
         return -1;
       p++;
-      if (!stop && p < argv + argc)
+      if (!stop && p < end)
         state = getstate(*p);
       break;
     }

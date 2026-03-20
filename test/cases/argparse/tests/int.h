@@ -226,7 +226,7 @@ UTEST_CASE(int)
     char *argv[] = {"-x0x20", "-o", "077", "--neg=-9", "--plus", "+12"};
 
     EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
-    EXPECT_EQ_INT(argparse_parse(&ctx, 5, argv), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 6, argv), 0);
     EXPECT_EQ_INT(hexx, 32);
     EXPECT_EQ_INT(octv, 63);
     EXPECT_EQ_INT(negv, -9);

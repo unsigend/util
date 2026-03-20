@@ -121,7 +121,7 @@ UTEST_CASE(double)
     char *argv[] = {"-s", "1e2", "--exp", "2.5e-1", "--plus", "+3.0"};
 
     EXPECT_EQ_INT(argparse_init(&ctx, opts, NULL), 0);
-    EXPECT_EQ_INT(argparse_parse(&ctx, 5, argv), 0);
+    EXPECT_EQ_INT(argparse_parse(&ctx, 6, argv), 0);
     EXPECT_EQ_DOUBLE(sci, 100.0);
     EXPECT_EQ_DOUBLE(expv, 0.25);
     EXPECT_EQ_DOUBLE(plus, 3.0);

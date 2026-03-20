@@ -35,7 +35,7 @@
                 -abc | -a -b -c (only for BOOL type)
                 -Werror | -W error
 
-   Multiple values parsing are based on APPEND type, separated by spaces
+   Multiple values parsing are based on LIST type, separated by spaces
    or flags:
                 -I ./include -Werror -I ./arch -I ./src
                 -I./include -I./arch -I./src
@@ -46,6 +46,9 @@
    positional arguments. For numeric types, the parser will parse the value and
    write the result to the destination pointer. If error occurs, if ARG_IGNORE
    flag is not set, set errstr and exit.
+
+   Note: For LIST type, caller should initialize the list pointer to NULL, and
+   the parser will allocate memory for the list if it is not NULL.
 */
 
 #define _OPT_END 0
@@ -54,7 +57,7 @@
 #define _OPT_BOOL 3
 #define _OPT_LONG 4
 #define _OPT_DOUBLE 5
-#define _OPT_APPEND 6
+#define _OPT_LIST 6
 #define _OPT_GROUP 7
 
 #define OPT_REQUIRED 0x01 /* require argument */
@@ -76,18 +79,26 @@ struct argparse_list;
 #define OPT_STR(s, l, h, d, f) OPT_DECL(_OPT_STR, s, l, h, d, f, NULL)
 #define OPT_LONG(s, l, h, d, f) OPT_DECL(_OPT_LONG, s, l, h, d, f, NULL)
 #define OPT_DOUBLE(s, l, h, d, f) OPT_DECL(_OPT_DOUBLE, s, l, h, d, f, NULL)
-#define OPT_APPEND(s, l, h, d, f) OPT_DECL(_OPT_APPEND, s, l, h, d, f, NULL)
+#define OPT_LIST(s, l, h, d) OPT_DECL(_OPT_LIST, s, l, h, d, OPT_REQUIRED, NULL)
 #define OPT_GROUP(h) OPT_DECL(_OPT_GROUP, '\0', NULL, h, NULL, 0, NULL)
 #define OPT_END() OPT_DECL(_OPT_END, '\0', NULL, NULL, NULL, 0, NULL)
 #define OPT_HELP()                                                             \
   OPT_DECL(_OPT_BOOL, 'h', "help", "show this help message ", NULL, OPT_NONE,  \
            argparse_cb_help)
 
-#define argparse_setflags(ctx, flag) ((ctx)->flags |= (flag))
-#define argparse_clrflags(ctx, flag) ((ctx)->flags &= ~(flag))
-#define argparse_getremargc(ctx) ((ctx)->remlist.sz)
-#define argparse_getremargv(ctx) ((ctx)->remlist.items)
-#define argparse_strerror(ctx) ((ctx)->errstr)
+/* Wrapper Macros: try to avoid direct access to the internal data structures
+   for forward compatibility */
+#define argparse_setflags(ctx, flag) ((ctx)->flags |= (flag)) /* Set flags */
+#define argparse_clrflags(ctx, flag)                                           \
+  ((ctx)->flags &= ~(flag)) /* Clear flags                                     \
+                             */
+#define argparse_getremargc(ctx)                                               \
+  ((ctx)->remlist.sz) /* Get positional arguments count */
+#define argparse_getremargv(ctx)                                               \
+  ((ctx)->remlist.items)                       /* Get positional arguments */
+#define argparse_strerror(ctx) ((ctx)->errstr) /* Get error string */
+#define argparse_getlist(list) ((list)->items) /* Get list items */
+#define argparse_getlistsz(list) ((list)->sz)  /* Get list size */
 
 /* callback function */
 typedef void (*argparse_cb)(struct argparse *, struct argparse_opt *);
@@ -99,8 +110,9 @@ extern "C" {
 /* Return 0 on success, -1 on error. */
 extern int argparse_init(struct argparse *ctx, struct argparse_opt *opts,
                          struct argparse_desc *desc);
+
 /* Parse the command line arguments, no program name is needed. Return 0 on
-   success, -1 on error. */
+   success, -1 on error. And set error string to ctx->errstr. */
 extern int argparse_parse(struct argparse *ctx, int argc, char **argv);
 
 extern void argparse_fini(struct argparse *ctx);

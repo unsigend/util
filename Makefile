@@ -53,6 +53,7 @@ GCC_FLAGS += -D_POSIX_C_SOURCE=200809L
 endif
 ifeq ($(DEBUG), 1)
 GCC_FLAGS += -g -O0
+GCC_FLAGS += -fsanitize=address,undefined
 else
 GCC_FLAGS += -O2
 endif

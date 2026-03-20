@@ -70,12 +70,16 @@ CC_FLAGS := -std=c11 -Wall -Wextra -Werror
 CC_FLAGS += -I$(UTIL_INCLUDE)
 ifeq ($(DEBUG), 1)
 CC_FLAGS += -g -O0
+CC_FLAGS += -fsanitize=address,undefined
 else
 CC_FLAGS += -O2
 endif
 
 CC_DEPS_FLAGS := -MMD -MP -MF
 LD_FLAGS      := -L$(UTIL_LIB_PATH) -l$(LIB_NAME)
+ifeq ($(DEBUG), 1)
+LD_FLAGS += -fsanitize=address,undefined
+endif
 
 # .C
 $(OBJ_PATH)/%.o: $(CASES_PATH)/%.c
