@@ -25,6 +25,7 @@
 #include <argparse.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define LPAD 2
@@ -199,4 +200,5 @@ void argparse_cb_help(struct argparse *ctx, struct argparse_opt *opt)
     if (desc->epilog)
       printwrap(desc->epilog, 0, MAXW);
   }
+  exit(EXIT_SUCCESS);
 }
