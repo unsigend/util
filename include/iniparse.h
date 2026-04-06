@@ -34,13 +34,19 @@ struct iniparse_ctx {
   const char *filename;
   char *buf;
   size_t bufsz;
+  size_t nsecs;
+  size_t nsecscap;
+  struct iniparse_sec *secs;
+};
+
+struct iniparse_sec {
+  const char *sec;
   size_t nentries;
   size_t nentriescap;
   struct iniparse_entry *entries;
 };
 
 struct iniparse_entry {
-  const char *sec;
   const char *key;
   const char *val;
 };
