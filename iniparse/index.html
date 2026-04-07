@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -473,10 +473,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#iniparse_ctx" class="md-nav__link">
+  <a href="#inifile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_ctx
+        iniFILE
       
     </span>
   </a>
@@ -484,10 +484,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iniparse_entry" class="md-nav__link">
+  <a href="#ini_sec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_entry
+        ini_sec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ini_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ini_entry
       
     </span>
   </a>
@@ -512,10 +523,33 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#iniparse_init" class="md-nav__link">
+  <a href="#lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_init
+        Lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_open
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_create
       
     </span>
   </a>
@@ -534,10 +568,38 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iniparse_fini" class="md-nav__link">
+  <a href="#iniparse_close" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_fini
+        iniparse_close
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read / Write
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Read / Write">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_get" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_get
       
     </span>
   </a>
@@ -545,13 +607,118 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iniparse_getvalue" class="md-nav__link">
+  <a href="#iniparse_set" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_getvalue
+        iniparse_set
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_unset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_unset
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Persist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_write
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_writeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_writeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#print" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Print
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Print">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_fprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_fprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_snprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_snprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -667,10 +834,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#iniparse_ctx" class="md-nav__link">
+  <a href="#inifile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_ctx
+        iniFILE
       
     </span>
   </a>
@@ -678,10 +845,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iniparse_entry" class="md-nav__link">
+  <a href="#ini_sec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_entry
+        ini_sec
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ini_entry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ini_entry
       
     </span>
   </a>
@@ -706,10 +884,33 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#iniparse_init" class="md-nav__link">
+  <a href="#lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_init
+        Lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_open
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_create
       
     </span>
   </a>
@@ -728,10 +929,38 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iniparse_fini" class="md-nav__link">
+  <a href="#iniparse_close" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_fini
+        iniparse_close
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Read / Write
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Read / Write">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_get" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_get
       
     </span>
   </a>
@@ -739,13 +968,118 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#iniparse_getvalue" class="md-nav__link">
+  <a href="#iniparse_set" class="md-nav__link">
     <span class="md-ellipsis">
       
-        iniparse_getvalue
+        iniparse_set
       
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_unset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_unset
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Persist
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Persist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_write" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_write
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_writeto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_writeto
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#print" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Print
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Print">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_fprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_fprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_sprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iniparse_snprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        iniparse_snprint
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -784,107 +1118,125 @@
 
 <h1 id="iniparse">iniparse<a class="headerlink" href="#iniparse" title="Permanent link">&para;</a></h1>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p><code>iniparse</code> is a minimal INI file parser, it maps section/key pairs to their values and provides a simple lookup interface, the header is <code>iniparse.h</code>.</p>
-<p>Two structs form the public surface: <code>iniparse_ctx</code> holds the parse state for a file, <code>iniparse_entry</code> represents a single key/value pair under a section. Both are stack-allocatable, and the context must be passed to every API call.</p>
+<p><code>iniparse</code> is a minimal INI file parser and writer with a <code>FILE</code>-like interface. It supports reading, modifying, and writing INI files. The single header is <code>iniparse.h</code>.</p>
+<p>An <code>iniFILE</code> handle is obtained via <code>iniparse_open</code> or <code>iniparse_create</code> and must be released with <code>iniparse_close</code>. All strings stored in the handle are heap-allocated and valid for the lifetime of the handle.</p>
 <h2 id="conventions">Conventions<a class="headerlink" href="#conventions" title="Permanent link">&para;</a></h2>
-<p>INI files follow standard conventions:</p>
 <ul>
 <li>Lines beginning with <code>;</code> or <code>#</code> are comments and are ignored</li>
-<li>Sections are declared as <code>[section_name]</code></li>
+<li>Sections are declared as <code>[section name]</code></li>
 <li>Entries have the form <code>key = value</code></li>
 <li>Whitespace around section names, keys, and values is stripped</li>
-<li>Entries outside any section are not supported, every key must belong to a section</li>
+<li>Entries outside any section are not supported</li>
 </ul>
 <h2 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h2>
-<h3 id="iniparse_ctx"><code>iniparse_ctx</code><a class="headerlink" href="#iniparse_ctx" title="Permanent link">&para;</a></h3>
-<p>Holds all state associated with a parsed file. Fields are managed internally and should not be modified directly.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">filename</span><span class="p">;</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kt">char</span><span class="w">       </span><span class="o">*</span><span class="n">buf</span><span class="p">;</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kt">size_t</span><span class="w">      </span><span class="n">bufsz</span><span class="p">;</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="kt">size_t</span><span class="w">      </span><span class="n">nentries</span><span class="p">;</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kt">size_t</span><span class="w">      </span><span class="n">nentriescap</span><span class="p">;</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_entry</span><span class="w"> </span><span class="o">*</span><span class="n">entries</span><span class="p">;</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">};</span>
-</code></pre></div>
-<h3 id="iniparse_entry"><code>iniparse_entry</code><a class="headerlink" href="#iniparse_entry" title="Permanent link">&para;</a></h3>
-<p>Represents a single parsed entry. Pointers point into the memory-mapped file buffer owned by the context, so they are valid only while the context is live.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_entry</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">sec</span><span class="p">;</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">;</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">val</span><span class="p">;</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">};</span>
-</code></pre></div>
+<h3 id="inifile"><code>iniFILE</code><a class="headerlink" href="#inifile" title="Permanent link">&para;</a></h3>
+<p>Opaque handle representing an open INI file. Fields are managed internally and should not be modified directly.</p>
+<h3 id="ini_sec"><code>ini_sec</code><a class="headerlink" href="#ini_sec" title="Permanent link">&para;</a></h3>
+<p>Represents a section. Contains the section name and its associated entries. Managed internally.</p>
+<h3 id="ini_entry"><code>ini_entry</code><a class="headerlink" href="#ini_entry" title="Permanent link">&para;</a></h3>
+<p>Represents a single key/value pair within a section. Managed internally.</p>
 <h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
-<h3 id="iniparse_init"><code>iniparse_init</code><a class="headerlink" href="#iniparse_init" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_init</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">filename</span><span class="p">);</span>
+<h3 id="lifecycle">Lifecycle<a class="headerlink" href="#lifecycle" title="Permanent link">&para;</a></h3>
+<h4 id="iniparse_open"><code>iniparse_open</code><a class="headerlink" href="#iniparse_open" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">iniparse_open</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">filename</span><span class="p">);</span>
 </code></pre></div>
-<p>Initializes a context and memory-maps the given file for parsing. Must be called before any other function. Returns 0 on success, -1 on error.</p>
+<p>Opens and memory-maps an existing INI file. Returns a heap-allocated handle on success, NULL on error. The file must exist and be non-empty. Call <code>iniparse_parse</code> before any get/set operations.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>ctx</code> — pointer to an uninitialized context struct</li>
 <li><code>filename</code> — path to the INI file to open</li>
 </ul>
-<h3 id="iniparse_parse"><code>iniparse_parse</code><a class="headerlink" href="#iniparse_parse" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_parse</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+<h4 id="iniparse_create"><code>iniparse_create</code><a class="headerlink" href="#iniparse_create" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">iniparse_create</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">filename</span><span class="p">);</span>
 </code></pre></div>
-<p>Parses the file associated with the context and populates its entry list. Must be called after <code>iniparse_init</code>. Returns 0 on success, -1 on error.</p>
+<p>Creates an empty in-memory INI handle associated with the given filename. No file is opened or created on disk. Use <code>iniparse_set</code> to populate it, then <code>iniparse_write</code> to persist. Returns NULL on error.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>ctx</code> — an initialized context</li>
+<li><code>filename</code> — path that will be used when <code>iniparse_write</code> is called</li>
 </ul>
-<h3 id="iniparse_fini"><code>iniparse_fini</code><a class="headerlink" href="#iniparse_fini" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">iniparse_fini</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">);</span>
+<h4 id="iniparse_parse"><code>iniparse_parse</code><a class="headerlink" href="#iniparse_parse" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_parse</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">);</span>
 </code></pre></div>
-<p>Releases all resources held by the context, including the memory-mapped buffer and the entry list. Must be called when the context is no longer needed.</p>
+<p>Parses the file content into the in-memory structure. Must be called after <code>iniparse_open</code> before any get/set operations. On a handle from <code>iniparse_create</code> this is a no-op and returns 0. Returns 0 on success, -1 on error.</p>
+<h4 id="iniparse_close"><code>iniparse_close</code><a class="headerlink" href="#iniparse_close" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">iniparse_close</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">);</span>
+</code></pre></div>
+<p>Releases all resources held by the handle including all heap-allocated strings. Must be called when the handle is no longer needed.</p>
+<h3 id="read-write">Read / Write<a class="headerlink" href="#read-write" title="Permanent link">&para;</a></h3>
+<h4 id="iniparse_get"><code>iniparse_get</code><a class="headerlink" href="#iniparse_get" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">iniparse_get</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">sec</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">);</span>
+</code></pre></div>
+<p>Returns the value for the given section and key, or NULL if not found. The returned pointer is valid for the lifetime of the handle.</p>
 <p><strong>Parameters</strong></p>
 <ul>
-<li><code>ctx</code> — an initialized context</li>
+<li><code>sec</code> — section name</li>
+<li><code>key</code> — key name within that section</li>
 </ul>
-<h3 id="iniparse_getvalue"><code>iniparse_getvalue</code><a class="headerlink" href="#iniparse_getvalue" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="nf">iniparse_getvalue</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="o">*</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">sec</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">);</span>
+<h4 id="iniparse_set"><code>iniparse_set</code><a class="headerlink" href="#iniparse_set" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_set</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">sec</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">,</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">                 </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">val</span><span class="p">);</span>
 </code></pre></div>
-<p>Looks up the value for a given section and key. Returns a pointer into the internal buffer on success, NULL if the section or key is not found. The returned pointer is valid only while the context is live and <code>iniparse_fini</code> has not been called.</p>
-<p><strong>Parameters</strong></p>
-<ul>
-<li><code>ctx</code> — a parsed context</li>
-<li><code>sec</code> — section name to search</li>
-<li><code>key</code> — key name to search within that section</li>
-</ul>
+<p>Sets the value for a key. If the key exists it is updated in place. If the key or section does not exist they are created. <code>val</code> may be NULL to store a key with no value. Returns 0 on success, -1 on error.</p>
+<h4 id="iniparse_unset"><code>iniparse_unset</code><a class="headerlink" href="#iniparse_unset" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_unset</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">sec</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">key</span><span class="p">);</span>
+</code></pre></div>
+<p>Removes a key/value pair from the section. The entry is omitted from all subsequent output. Returns 0 on success, -1 if the key is not found.</p>
+<h3 id="persist">Persist<a class="headerlink" href="#persist" title="Permanent link">&para;</a></h3>
+<h4 id="iniparse_write"><code>iniparse_write</code><a class="headerlink" href="#iniparse_write" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_write</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">);</span>
+</code></pre></div>
+<p>Writes the in-memory state back to <code>fp-&gt;filename</code> atomically using a lockfile and rename. Returns the number of bytes written on success, -1 on error.</p>
+<h4 id="iniparse_writeto"><code>iniparse_writeto</code><a class="headerlink" href="#iniparse_writeto" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_writeto</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">filename</span><span class="p">);</span>
+</code></pre></div>
+<p>Writes the in-memory state to the given file atomically. The original <code>fp-&gt;filename</code> is not affected. Returns the number of bytes written on success, -1 on error.</p>
+<h3 id="print">Print<a class="headerlink" href="#print" title="Permanent link">&para;</a></h3>
+<h4 id="iniparse_fprint"><code>iniparse_fprint</code><a class="headerlink" href="#iniparse_fprint" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_fprint</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">stream</span><span class="p">);</span>
+</code></pre></div>
+<p>Writes all entries to <code>stream</code> in the format <code>section.key=value</code>. Returns the number of bytes written.</p>
+<h4 id="iniparse_sprint"><code>iniparse_sprint</code><a class="headerlink" href="#iniparse_sprint" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_sprint</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">);</span>
+</code></pre></div>
+<p>Writes all entries to <code>buf</code> in the format <code>section.key=value</code>. No bounds checking. Returns the number of bytes written.</p>
+<h4 id="iniparse_snprint"><code>iniparse_snprint</code><a class="headerlink" href="#iniparse_snprint" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">iniparse_snprint</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">bufsz</span><span class="p">);</span>
+</code></pre></div>
+<p>Same as <code>iniparse_sprint</code> but writes at most <code>bufsz</code> bytes. Always returns the number of bytes that would have been written regardless of truncation, consistent with <code>snprintf</code> semantics.</p>
 <h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iniparse.h&gt;</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">{</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">iniparse_ctx</span><span class="w"> </span><span class="n">ctx</span><span class="p">;</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">val</span><span class="p">;</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="cm">/* initialize and parse */</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iniparse_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;config.ini&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iniparse_parse</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="n">iniparse_fini</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">);</span>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="cm">/* lookup a value */</span>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">    </span><span class="n">val</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iniparse_getvalue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;database&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;host&quot;</span><span class="p">);</span>
-<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;host = %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">val</span><span class="p">);</span>
-<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
-<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">    </span><span class="cm">/* release resources */</span>
-<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">    </span><span class="n">iniparse_fini</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ctx</span><span class="p">);</span>
-<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="p">}</span>
-</code></pre></div>
-<p>Given a file <code>config.ini</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">[database]</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="na">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="na">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">5432</span>
-</code></pre></div>
-<p>The output would be:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>host = localhost
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iniparse.h&gt;</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">{</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="cm">/* read and modify an existing file */</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iniparse_open</span><span class="p">(</span><span class="s">&quot;.git/config&quot;</span><span class="p">);</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">fp</span><span class="p">)</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">iniparse_parse</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">        </span><span class="n">iniparse_close</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iniparse_get</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;user&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">);</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;user.name = %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">);</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="w">    </span><span class="n">iniparse_set</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;core&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bare&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="p">);</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="w">    </span><span class="n">iniparse_unset</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;core&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ignoreCase&quot;</span><span class="p">);</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">    </span><span class="n">iniparse_write</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">    </span><span class="n">iniparse_close</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="w">    </span><span class="cm">/* create a new file from scratch */</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">iniFILE</span><span class="w"> </span><span class="o">*</span><span class="n">cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">iniparse_create</span><span class="p">(</span><span class="s">&quot;.qgit/config&quot;</span><span class="p">);</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">cfg</span><span class="p">)</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="w">    </span><span class="n">iniparse_set</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;core&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;repositoryFormat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p">);</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a><span class="w">    </span><span class="n">iniparse_set</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;core&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bare&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="p">);</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="w">    </span><span class="n">iniparse_write</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="w">    </span><span class="n">iniparse_close</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="p">}</span>
 </code></pre></div>
 
 
