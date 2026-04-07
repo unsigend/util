@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/license-MIT-green" />
-  <img src="https://img.shields.io/badge/version-1.0.0-blue" />
+  <img src="https://img.shields.io/badge/version-1.1.0-blue" />
   <img src="https://img.shields.io/badge/language-C-red" />
 </p>
 
