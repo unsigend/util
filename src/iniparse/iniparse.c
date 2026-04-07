@@ -91,6 +91,20 @@ struct iniFILE *iniparse_open(const char *filename)
   return fp;
 }
 
+struct iniFILE *iniparse_create(const char *filename)
+{
+  if (!filename)
+    return NULL;
+
+  struct iniFILE *fp = malloc(sizeof(*fp));
+  if (!fp)
+    return NULL;
+  memset(fp, 0, sizeof(*fp));
+  fp->filename = filename;
+
+  return fp;
+}
+
 void iniparse_close(struct iniFILE *fp)
 {
   if (!fp)

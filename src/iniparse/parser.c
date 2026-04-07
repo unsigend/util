@@ -162,8 +162,28 @@ static char *parse_entry(char *p, char **key, char **val)
   return next;
 }
 
+static struct ini_entry *getentry(struct iniFILE *fp, const char *sec,
+                                  const char *key)
+{
+  for (size_t i = 0; i < fp->nsecs; i++) {
+    if (!strcmp(fp->secs[i].sec, sec)) {
+      for (size_t j = 0; j < fp->secs[i].nentries; j++) {
+        struct ini_entry *entry = &fp->secs[i].entries[j];
+        if (entry->key && !strcmp(entry->key, key))
+          return entry;
+      }
+      break;
+    }
+  }
+  return NULL;
+}
+
 int iniparse_parse(struct iniFILE *fp)
 {
+  if (!fp)
+    return -1;
+  if (!fp->buf)
+    return 0;
   char *p = fp->buf;
   char *sec = NULL, *key = NULL, *val = NULL;
 
@@ -188,4 +208,40 @@ int iniparse_parse(struct iniFILE *fp)
     }
   }
   return 0;
+}
+
+const char *iniparse_get(struct iniFILE *fp, const char *sec, const char *key)
+{
+  struct ini_entry *entry = getentry(fp, sec, key);
+  return entry ? entry->val : NULL;
+}
+
+int iniparse_set(struct iniFILE *fp, const char *sec, const char *key,
+                 const char *val)
+{
+  struct ini_entry *entry = getentry(fp, sec, key);
+  if (entry) {
+    free((void *)entry->val);
+    entry->val = val ? strdup(val) : NULL;
+    if (val && !entry->val)
+      return -1;
+    return 0;
+  } else
+    return put(fp, (char *)sec, (char *)key, (char *)val);
+}
+
+int iniparse_unset(struct iniFILE *fp, const char *sec, const char *key)
+{
+  /* lazy delete */
+  struct ini_entry *entry = getentry(fp, sec, key);
+  if (entry) {
+    if (entry->val)
+      free((void *)entry->val);
+    if (entry->key)
+      free((void *)entry->key);
+    entry->val = NULL;
+    entry->key = NULL;
+    return 0;
+  }
+  return -1;
 }

@@ -56,6 +56,7 @@ extern "C" {
 #endif
 
 extern struct iniFILE *iniparse_open(const char *filename);
+extern struct iniFILE *iniparse_create(const char *filename);
 extern void iniparse_close(struct iniFILE *fp);
 extern int iniparse_parse(struct iniFILE *fp);
 
@@ -67,9 +68,9 @@ extern int iniparse_set(struct iniFILE *fp, const char *sec, const char *key,
                         const char *val);
 extern int iniparse_unset(struct iniFILE *fp, const char *sec, const char *key);
 
-/* Dump the the INI parsed content with the format of [section].[key]=[value] to
-   the output stream or a buffer. Return the number of bytes written on success,
-   -1 on error. */
+/* Print the INI parsed content with the format of [section].[key]=[value]
+   to the output stream or a buffer. Return the number of bytes written on
+   success, -1 on error. */
 extern int iniparse_fprint(struct iniFILE *fp, FILE *stream);
 extern int iniparse_sprint(struct iniFILE *fp, char *buf);
 extern int iniparse_snprint(struct iniFILE *fp, char *buf, size_t bufsz);
@@ -77,7 +78,7 @@ extern int iniparse_snprint(struct iniFILE *fp, char *buf, size_t bufsz);
 /* Write the file content to the current INI file or a new file. Return 0 on
    success, -1 on error. */
 extern int iniparse_write(struct iniFILE *fp);
-extern int iniparse_writeto(struct iniFILE *fp, FILE *stream);
+extern int iniparse_writeto(struct iniFILE *fp, const char *filename);
 
 #ifdef __cplusplus
 }
