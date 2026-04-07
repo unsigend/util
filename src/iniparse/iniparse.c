@@ -63,17 +63,22 @@ struct iniFILE *iniparse_open(const char *filename)
   if (!fp)
     return NULL;
   memset(fp, 0, sizeof(*fp));
-  fp->filename = filename;
+
+  fp->filename = strdup(filename);
+  if (!fp->filename) {
+    iniparse_close(fp);
+    return NULL;
+  }
 
   if ((fd = open(filename, O_RDONLY)) == -1) {
-    free(fp);
+    iniparse_close(fp);
     return NULL;
   }
 
   sz = lseek(fd, 0, SEEK_END);
   if (sz == -1 || !sz) {
     close(fd);
-    free(fp);
+    iniparse_close(fp);
     return NULL;
   }
 
@@ -81,7 +86,7 @@ struct iniFILE *iniparse_open(const char *filename)
       (char *)mmap(NULL, sz + 1, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
   close(fd);
   if (buf == MAP_FAILED) {
-    free(fp);
+    iniparse_close(fp);
     return NULL;
   }
   buf[sz] = '\0'; /* EOF guard */
@@ -100,7 +105,12 @@ struct iniFILE *iniparse_create(const char *filename)
   if (!fp)
     return NULL;
   memset(fp, 0, sizeof(*fp));
-  fp->filename = filename;
+
+  fp->filename = strdup(filename);
+  if (!fp->filename) {
+    free(fp);
+    return NULL;
+  }
 
   return fp;
 }
@@ -118,5 +128,7 @@ void iniparse_close(struct iniFILE *fp)
       freesec(&fp->secs[i]);
     free(fp->secs);
   }
+  if (fp->filename)
+    free((void *)fp->filename);
   free(fp);
 }
