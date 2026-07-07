@@ -9,18 +9,18 @@
 
 UTEST_SUITE(argparse)
 {
-  /* basic tests */
-  UTEST_RUNCASE(bool);
-  UTEST_RUNCASE(int);
-  UTEST_RUNCASE(long);
-  UTEST_RUNCASE(string);
-  UTEST_RUNCASE(double);
-  UTEST_RUNCASE(list);
-  UTEST_RUNCASE(edge);
+    /* basic tests */
+    UTEST_RUNCASE(bool);
+    UTEST_RUNCASE(int);
+    UTEST_RUNCASE(long);
+    UTEST_RUNCASE(string);
+    UTEST_RUNCASE(double);
+    UTEST_RUNCASE(list);
+    UTEST_RUNCASE(edge);
 
-  /* integration tests */
-  UTEST_RUNCASE(gcc);
-  UTEST_RUNCASE(as);
-  UTEST_RUNCASE(ld);
-  UTEST_RUNCASE(readelf);
+    /* integration tests */
+    UTEST_RUNCASE(gcc);
+    UTEST_RUNCASE(as);
+    UTEST_RUNCASE(ld);
+    UTEST_RUNCASE(readelf);
 }

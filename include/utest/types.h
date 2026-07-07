@@ -38,38 +38,38 @@ typedef void (*utcase_func)(struct utcase *);
 typedef void (*utsuite_func)(struct utsuite *);
 
 struct utsuite {
-  const char *name;  /* suite name */
-  utsuite_func func; /* function ptr */
-  size_t cntotal;    /* total cases */
-  size_t cnpassed;   /* passed cases */
-  size_t cnfailed;   /* failed cases */
-  size_t cnskipped;  /* skipped cases */
-  struct utbuf buf;  /* buffer for suite output */
+    const char *name;  /* suite name */
+    utsuite_func func; /* function ptr */
+    size_t cntotal;    /* total cases */
+    size_t cnpassed;   /* passed cases */
+    size_t cnfailed;   /* failed cases */
+    size_t cnskipped;  /* skipped cases */
+    struct utbuf buf;  /* buffer for suite output */
 };
 
 struct utcase {
-  const char *name;  /* case name */
-  utcase_func func;  /* function ptr */
-  int status;        /* case status */
-  struct utbuf *buf; /* buffer for case output */
+    const char *name;  /* case name */
+    utcase_func func;  /* function ptr */
+    int status;        /* case status */
+    struct utbuf *buf; /* buffer for case output */
 };
 
 struct ut_ctx {
-  int flags;              /* context flags */
-  atomic_size_t nextsidx; /* next suite index to dispatch */
-  atomic_bool stop;       /* stop suite flag */
-  size_t snpassed;        /* passed suites */
-  size_t snfailed;        /* failed suites */
-  size_t snskipped;       /* skipped suites */
-  size_t cnpassed;        /* passed cases */
-  size_t cnfailed;        /* failed cases */
-  size_t cnskipped;       /* skipped cases */
-  struct utsuite *suites; /* suites list */
-  size_t nsuites;         /* number of suites */
-  size_t nsuitescap;      /* capacity of suites list */
-  pthread_mutex_t lock;   /* lock for the test context */
-  struct timespec tstart; /* start time */
-  struct timespec tend;   /* end time */
+    int flags;              /* context flags */
+    atomic_size_t nextsidx; /* next suite index to dispatch */
+    atomic_bool stop;       /* stop suite flag */
+    size_t snpassed;        /* passed suites */
+    size_t snfailed;        /* failed suites */
+    size_t snskipped;       /* skipped suites */
+    size_t cnpassed;        /* passed cases */
+    size_t cnfailed;        /* failed cases */
+    size_t cnskipped;       /* skipped cases */
+    struct utsuite *suites; /* suites list */
+    size_t nsuites;         /* number of suites */
+    size_t nsuitescap;      /* capacity of suites list */
+    pthread_mutex_t lock;   /* lock for the test context */
+    struct timespec tstart; /* start time */
+    struct timespec tend;   /* end time */
 };
 
 #endif

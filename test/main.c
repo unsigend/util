@@ -15,38 +15,38 @@ extern UTEST_SUITE(argparse);
 
 int main(int argc, char *argv[])
 {
-  int nthreads = NTHREADS;
-  const char *suite = "all";
+    int nthreads = NTHREADS;
+    const char *suite = "all";
 
-  UTEST_INIT(UTF_STOPONASS | UTF_SHOWSUITE);
+    UTEST_INIT(UTF_STOPONASS | UTF_SHOWSUITE);
 
-  /* add test suites */
-  UTEST_ADDSUITE(iniparse);
-  UTEST_ADDSUITE(argparse);
+    /* add test suites */
+    UTEST_ADDSUITE(iniparse);
+    UTEST_ADDSUITE(argparse);
 
-  for (int i = 1; i < argc; i++) {
-    if (strncmp(argv[i], "-j", 2) == 0) {
-      nthreads = atoi(argv[i] + 2);
-      if (nthreads <= 0 || nthreads > NTHREADMAX) {
-        fprintf(stderr, "invalid number of threads: %s\n", argv[i] + 2);
-        return EXIT_FAILURE;
-      }
-    } else
-      suite = argv[i];
-  }
-
-  if (!strcmp(suite, "all")) {
-    fprintf(stdout, "Util: running all test suites with %d threads\n",
-            nthreads);
-    UTEST_RUNSUITES_THREAD(nthreads);
-  } else {
-    UTEST_ADDFLAG(UTF_SHOWCASE);
-    if (UTEST_RUNSUITE(suite) == -1) {
-      UTEST_SHOWSUITES();
-      return EXIT_FAILURE;
+    for (int i = 1; i < argc; i++) {
+        if (strncmp(argv[i], "-j", 2) == 0) {
+            nthreads = atoi(argv[i] + 2);
+            if (nthreads <= 0 || nthreads > NTHREADMAX) {
+                fprintf(stderr, "invalid number of threads: %s\n", argv[i] + 2);
+                return EXIT_FAILURE;
+            }
+        } else
+            suite = argv[i];
     }
-  }
 
-  UTEST_FINI();
-  return EXIT_SUCCESS;
+    if (!strcmp(suite, "all")) {
+        fprintf(stdout, "Util: running all test suites with %d threads\n",
+                nthreads);
+        UTEST_RUNSUITES_THREAD(nthreads);
+    } else {
+        UTEST_ADDFLAG(UTF_SHOWCASE);
+        if (UTEST_RUNSUITE(suite) == -1) {
+            UTEST_SHOWSUITES();
+            return EXIT_FAILURE;
+        }
+    }
+
+    UTEST_FINI();
+    return EXIT_SUCCESS;
 }

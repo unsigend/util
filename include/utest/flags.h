@@ -32,13 +32,13 @@
 #define UT_SUITE 1
 
 #define UTF_STOPONASS                                                          \
-  (1 << 0) /* stop on assertion failure in a case, skip the rest of the tests  \
-              in a case */
+    (1 << 0) /* stop on assertion failure in a case, skip the rest of the      \
+                tests in a case */
 #define UTF_STOPONCASE                                                         \
-  (1 << 1) /* stop on case failure, skip the rest of the cases in a suite  */
+    (1 << 1) /* stop on case failure, skip the rest of the cases in a suite */
 #define UTF_STOPONSUITE                                                        \
-  (1 << 2) /* stop on suite failure, skip the rest of the suites in list       \
-            */
+    (1 << 2) /* stop on suite failure, skip the rest of the suites in list     \
+              */
 #define UTF_SHOWCASE (1 << 10)                       /* show case */
 #define UTF_SHOWSUITE (1 << 11)                      /* show suite */
 #define UTF_FULLSTYLE (UTF_SHOWCASE | UTF_SHOWSUITE) /* full style */

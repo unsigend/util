@@ -133,7 +133,7 @@ extern void ut_showsuites(void);
 #define UTEST_CLRFLAG(flag) utest_ctx.flags &= ~(flag)
 
 #define UTEST_CASE(name)                                                       \
-  static void CONCAT(CASEPREFIX, name)(struct utcase * cas)
+    static void CONCAT(CASEPREFIX, name)(struct utcase * cas)
 #define UTEST_SUITE(name) void CONCAT(SUITEPREFIX, name)(struct utsuite * suite)
 
 #define UTEST_RUNCASE(name) ut_runcase(suite, #name, CONCAT(CASEPREFIX, name))
@@ -144,207 +144,208 @@ extern void ut_showsuites(void);
 #define UTEST_SHOWSUITES() ut_showsuites()
 
 #define _UTASSERT(expr, fmt, ...)                                              \
-  do {                                                                         \
-    if (!(expr)) {                                                             \
-      (cas)->status = UT_FAIL;                                                 \
-      utbuf_printassert((cas)->buf, __LINE__, __FILE__, fmt, ##__VA_ARGS__);   \
-      if (utest_ctx.flags & UTF_STOPONASS)                                     \
-        return;                                                                \
-    }                                                                          \
-  } while (0)
+    do {                                                                       \
+        if (!(expr)) {                                                         \
+            (cas)->status = UT_FAIL;                                           \
+            utbuf_printassert((cas)->buf, __LINE__, __FILE__, fmt,             \
+                              ##__VA_ARGS__);                                  \
+            if (utest_ctx.flags & UTF_STOPONASS)                               \
+                return;                                                        \
+        }                                                                      \
+    } while (0)
 
 /* boolean */
 #define EXPECT_TRUE(expr)                                                      \
-  _UTASSERT((expr), "expect " #expr " was true, actual was false");
+    _UTASSERT((expr), "expect " #expr " was true, actual was false");
 #define EXPECT_FALSE(expr)                                                     \
-  _UTASSERT(!(expr), "expect " #expr " was false, actual was true");
+    _UTASSERT(!(expr), "expect " #expr " was false, actual was true");
 
 /* pointer */
 #define EXPECT_NULL(ptr)                                                       \
-  _UTASSERT(((uintptr_t)(ptr)) == (uintptr_t)NULL,                             \
-            "expect " #ptr " was NULL, actual was not NULL");
+    _UTASSERT(((uintptr_t)(ptr)) == (uintptr_t)NULL,                           \
+              "expect " #ptr " was NULL, actual was not NULL");
 #define EXPECT_NOTNULL(ptr)                                                    \
-  _UTASSERT(((uintptr_t)(ptr)) != (uintptr_t)NULL,                             \
-            "expect " #ptr " was not NULL, actual was NULL");
+    _UTASSERT(((uintptr_t)(ptr)) != (uintptr_t)NULL,                           \
+              "expect " #ptr " was not NULL, actual was NULL");
 #define EXPECT_EQ_PTR(actual, expect)                                          \
-  _UTASSERT(((uintptr_t)(actual)) == ((uintptr_t)(expect)),                    \
-            "expect " #actual " == " #expect ", actual was %p", (actual));
+    _UTASSERT(((uintptr_t)(actual)) == ((uintptr_t)(expect)),                  \
+              "expect " #actual " == " #expect ", actual was %p", (actual));
 #define EXPECT_NE_PTR(actual, expect)                                          \
-  _UTASSERT(((uintptr_t)(actual)) != ((uintptr_t)(expect)),                    \
-            "expect " #actual " != " #expect ", actual was %p", (actual));
+    _UTASSERT(((uintptr_t)(actual)) != ((uintptr_t)(expect)),                  \
+              "expect " #actual " != " #expect ", actual was %p", (actual));
 #define EXPECT_GT_PTR(actual, expect)                                          \
-  _UTASSERT(((uintptr_t)(actual)) > ((uintptr_t)(expect)),                     \
-            "expect " #actual " > " #expect ", actual was %p", (actual));
+    _UTASSERT(((uintptr_t)(actual)) > ((uintptr_t)(expect)),                   \
+              "expect " #actual " > " #expect ", actual was %p", (actual));
 #define EXPECT_GE_PTR(actual, expect)                                          \
-  _UTASSERT(((uintptr_t)(actual)) >= ((uintptr_t)(expect)),                    \
-            "expect " #actual " >= " #expect ", actual was %p", (actual));
+    _UTASSERT(((uintptr_t)(actual)) >= ((uintptr_t)(expect)),                  \
+              "expect " #actual " >= " #expect ", actual was %p", (actual));
 #define EXPECT_LT_PTR(actual, expect)                                          \
-  _UTASSERT(((uintptr_t)(actual)) < ((uintptr_t)(expect)),                     \
-            "expect " #actual " < " #expect ", actual was %p", (actual));
+    _UTASSERT(((uintptr_t)(actual)) < ((uintptr_t)(expect)),                   \
+              "expect " #actual " < " #expect ", actual was %p", (actual));
 #define EXPECT_LE_PTR(actual, expect)                                          \
-  _UTASSERT(((uintptr_t)(actual)) <= ((uintptr_t)(expect)),                    \
-            "expect " #actual " <= " #expect ", actual was %p", (actual));
+    _UTASSERT(((uintptr_t)(actual)) <= ((uintptr_t)(expect)),                  \
+              "expect " #actual " <= " #expect ", actual was %p", (actual));
 
 /* integer */
 #define EXPECT_EQ_INT(actual, expect)                                          \
-  _UTASSERT(((int64_t)(actual)) == ((int64_t)(expect)),                        \
-            "expect " #actual " == " #expect ", actual was %lld",              \
-            (int64_t)(actual));
+    _UTASSERT(((int64_t)(actual)) == ((int64_t)(expect)),                      \
+              "expect " #actual " == " #expect ", actual was %lld",            \
+              (int64_t)(actual));
 #define EXPECT_NE_INT(actual, expect)                                          \
-  _UTASSERT(((int64_t)(actual)) != ((int64_t)(expect)),                        \
-            "expect " #actual " != " #expect ", actual was %lld",              \
-            (int64_t)(actual));
+    _UTASSERT(((int64_t)(actual)) != ((int64_t)(expect)),                      \
+              "expect " #actual " != " #expect ", actual was %lld",            \
+              (int64_t)(actual));
 #define EXPECT_GT_INT(actual, expect)                                          \
-  _UTASSERT(((int64_t)(actual)) > ((int64_t)(expect)),                         \
-            "expect " #actual " > " #expect ", actual was %lld",               \
-            (int64_t)(actual));
+    _UTASSERT(((int64_t)(actual)) > ((int64_t)(expect)),                       \
+              "expect " #actual " > " #expect ", actual was %lld",             \
+              (int64_t)(actual));
 #define EXPECT_GE_INT(actual, expect)                                          \
-  _UTASSERT(((int64_t)(actual)) >= ((int64_t)(expect)),                        \
-            "expect " #actual " >= " #expect ", actual was %lld",              \
-            (int64_t)(actual));
+    _UTASSERT(((int64_t)(actual)) >= ((int64_t)(expect)),                      \
+              "expect " #actual " >= " #expect ", actual was %lld",            \
+              (int64_t)(actual));
 #define EXPECT_LT_INT(actual, expect)                                          \
-  _UTASSERT(((int64_t)(actual)) < ((int64_t)(expect)),                         \
-            "expect " #actual " < " #expect ", actual was %lld",               \
-            (int64_t)(actual));
+    _UTASSERT(((int64_t)(actual)) < ((int64_t)(expect)),                       \
+              "expect " #actual " < " #expect ", actual was %lld",             \
+              (int64_t)(actual));
 #define EXPECT_LE_INT(actual, expect)                                          \
-  _UTASSERT(((int64_t)(actual)) <= ((int64_t)(expect)),                        \
-            "expect " #actual " <= " #expect ", actual was %lld",              \
-            (int64_t)(actual));
+    _UTASSERT(((int64_t)(actual)) <= ((int64_t)(expect)),                      \
+              "expect " #actual " <= " #expect ", actual was %lld",            \
+              (int64_t)(actual));
 
 /* unsigned integer */
 #define EXPECT_EQ_UINT(actual, expect)                                         \
-  _UTASSERT(((uint64_t)(actual)) == ((uint64_t)(expect)),                      \
-            "expect " #actual " == " #expect ", actual was %llu",              \
-            (uint64_t)(actual));
+    _UTASSERT(((uint64_t)(actual)) == ((uint64_t)(expect)),                    \
+              "expect " #actual " == " #expect ", actual was %llu",            \
+              (uint64_t)(actual));
 #define EXPECT_NE_UINT(actual, expect)                                         \
-  _UTASSERT(((uint64_t)(actual)) != ((uint64_t)(expect)),                      \
-            "expect " #actual " != " #expect ", actual was %llu",              \
-            (uint64_t)(actual));
+    _UTASSERT(((uint64_t)(actual)) != ((uint64_t)(expect)),                    \
+              "expect " #actual " != " #expect ", actual was %llu",            \
+              (uint64_t)(actual));
 #define EXPECT_GT_UINT(actual, expect)                                         \
-  _UTASSERT(((uint64_t)(actual)) > ((uint64_t)(expect)),                       \
-            "expect " #actual " > " #expect ", actual was %llu",               \
-            (uint64_t)(actual));
+    _UTASSERT(((uint64_t)(actual)) > ((uint64_t)(expect)),                     \
+              "expect " #actual " > " #expect ", actual was %llu",             \
+              (uint64_t)(actual));
 #define EXPECT_GE_UINT(actual, expect)                                         \
-  _UTASSERT(((uint64_t)(actual)) >= ((uint64_t)(expect)),                      \
-            "expect " #actual " >= " #expect ", actual was %llu",              \
-            (uint64_t)(actual));
+    _UTASSERT(((uint64_t)(actual)) >= ((uint64_t)(expect)),                    \
+              "expect " #actual " >= " #expect ", actual was %llu",            \
+              (uint64_t)(actual));
 #define EXPECT_LT_UINT(actual, expect)                                         \
-  _UTASSERT(((uint64_t)(actual)) < ((uint64_t)(expect)),                       \
-            "expect " #actual " < " #expect ", actual was %llu",               \
-            (uint64_t)(actual));
+    _UTASSERT(((uint64_t)(actual)) < ((uint64_t)(expect)),                     \
+              "expect " #actual " < " #expect ", actual was %llu",             \
+              (uint64_t)(actual));
 #define EXPECT_LE_UINT(actual, expect)                                         \
-  _UTASSERT(((uint64_t)(actual)) <= ((uint64_t)(expect)),                      \
-            "expect " #actual " <= " #expect ", actual was %llu",              \
-            (uint64_t)(actual));
+    _UTASSERT(((uint64_t)(actual)) <= ((uint64_t)(expect)),                    \
+              "expect " #actual " <= " #expect ", actual was %llu",            \
+              (uint64_t)(actual));
 
 /* character */
 #define EXPECT_EQ_CHAR(actual, expect)                                         \
-  _UTASSERT(((char)(actual)) == ((char)(expect)),                              \
-            "expect " #actual " == " #expect ", actual was '%c'",              \
-            (char)(actual));
+    _UTASSERT(((char)(actual)) == ((char)(expect)),                            \
+              "expect " #actual " == " #expect ", actual was '%c'",            \
+              (char)(actual));
 #define EXPECT_NE_CHAR(actual, expect)                                         \
-  _UTASSERT(((char)(actual)) != ((char)(expect)),                              \
-            "expect " #actual " != " #expect ", actual was '%c'",              \
-            (char)(actual));
+    _UTASSERT(((char)(actual)) != ((char)(expect)),                            \
+              "expect " #actual " != " #expect ", actual was '%c'",            \
+              (char)(actual));
 #define EXPECT_GT_CHAR(actual, expect)                                         \
-  _UTASSERT(((char)(actual)) > ((char)(expect)),                               \
-            "expect " #actual " > " #expect ", actual was '%c'",               \
-            (char)(actual));
+    _UTASSERT(((char)(actual)) > ((char)(expect)),                             \
+              "expect " #actual " > " #expect ", actual was '%c'",             \
+              (char)(actual));
 #define EXPECT_GE_CHAR(actual, expect)                                         \
-  _UTASSERT(((char)(actual)) >= ((char)(expect)),                              \
-            "expect " #actual " >= " #expect ", actual was '%c'",              \
-            (char)(actual));
+    _UTASSERT(((char)(actual)) >= ((char)(expect)),                            \
+              "expect " #actual " >= " #expect ", actual was '%c'",            \
+              (char)(actual));
 #define EXPECT_LT_CHAR(actual, expect)                                         \
-  _UTASSERT(((char)(actual)) < ((char)(expect)),                               \
-            "expect " #actual " < " #expect ", actual was '%c'",               \
-            (char)(actual));
+    _UTASSERT(((char)(actual)) < ((char)(expect)),                             \
+              "expect " #actual " < " #expect ", actual was '%c'",             \
+              (char)(actual));
 #define EXPECT_LE_CHAR(actual, expect)                                         \
-  _UTASSERT(((char)(actual)) <= ((char)(expect)),                              \
-            "expect " #actual " <= " #expect ", actual was '%c'",              \
-            (char)(actual));
+    _UTASSERT(((char)(actual)) <= ((char)(expect)),                            \
+              "expect " #actual " <= " #expect ", actual was '%c'",            \
+              (char)(actual));
 
 /* unsigned character */
 #define EXPECT_EQ_UCHAR(actual, expect)                                        \
-  _UTASSERT(((unsigned char)(actual)) == ((unsigned char)(expect)),            \
-            "expect " #actual " == " #expect ", actual was '%c'",              \
-            (unsigned char)(actual));
+    _UTASSERT(((unsigned char)(actual)) == ((unsigned char)(expect)),          \
+              "expect " #actual " == " #expect ", actual was '%c'",            \
+              (unsigned char)(actual));
 #define EXPECT_NE_UCHAR(actual, expect)                                        \
-  _UTASSERT(((unsigned char)(actual)) != ((unsigned char)(expect)),            \
-            "expect " #actual " != " #expect ", actual was '%c'",              \
-            (unsigned char)(actual));
+    _UTASSERT(((unsigned char)(actual)) != ((unsigned char)(expect)),          \
+              "expect " #actual " != " #expect ", actual was '%c'",            \
+              (unsigned char)(actual));
 #define EXPECT_GT_UCHAR(actual, expect)                                        \
-  _UTASSERT(((unsigned char)(actual)) > ((unsigned char)(expect)),             \
-            "expect " #actual " > " #expect ", actual was '%c'",               \
-            (unsigned char)(actual));
+    _UTASSERT(((unsigned char)(actual)) > ((unsigned char)(expect)),           \
+              "expect " #actual " > " #expect ", actual was '%c'",             \
+              (unsigned char)(actual));
 #define EXPECT_GE_UCHAR(actual, expect)                                        \
-  _UTASSERT(((unsigned char)(actual)) >= ((unsigned char)(expect)),            \
-            "expect " #actual " >= " #expect ", actual was '%c'",              \
-            (unsigned char)(actual));
+    _UTASSERT(((unsigned char)(actual)) >= ((unsigned char)(expect)),          \
+              "expect " #actual " >= " #expect ", actual was '%c'",            \
+              (unsigned char)(actual));
 #define EXPECT_LT_UCHAR(actual, expect)                                        \
-  _UTASSERT(((unsigned char)(actual)) < ((unsigned char)(expect)),             \
-            "expect " #actual " < " #expect ", actual was '%c'",               \
-            (unsigned char)(actual));
+    _UTASSERT(((unsigned char)(actual)) < ((unsigned char)(expect)),           \
+              "expect " #actual " < " #expect ", actual was '%c'",             \
+              (unsigned char)(actual));
 #define EXPECT_LE_UCHAR(actual, expect)                                        \
-  _UTASSERT(((unsigned char)(actual)) <= ((unsigned char)(expect)),            \
-            "expect " #actual " <= " #expect ", actual was '%c'",              \
-            (unsigned char)(actual));
+    _UTASSERT(((unsigned char)(actual)) <= ((unsigned char)(expect)),          \
+              "expect " #actual " <= " #expect ", actual was '%c'",            \
+              (unsigned char)(actual));
 
 /* double */
 #define EXPECT_EQ_DOUBLE(actual, expect)                                       \
-  _UTASSERT(((double)(actual)) == ((double)(expect)),                          \
-            "expect " #actual " == " #expect ", actual was %f",                \
-            (double)(actual));
+    _UTASSERT(((double)(actual)) == ((double)(expect)),                        \
+              "expect " #actual " == " #expect ", actual was %f",              \
+              (double)(actual));
 #define EXPECT_NE_DOUBLE(actual, expect)                                       \
-  _UTASSERT(((double)(actual)) != ((double)(expect)),                          \
-            "expect " #actual " != " #expect ", actual was %f",                \
-            (double)(actual));
+    _UTASSERT(((double)(actual)) != ((double)(expect)),                        \
+              "expect " #actual " != " #expect ", actual was %f",              \
+              (double)(actual));
 #define EXPECT_GT_DOUBLE(actual, expect)                                       \
-  _UTASSERT(((double)(actual)) > ((double)(expect)),                           \
-            "expect " #actual " > " #expect ", actual was %f",                 \
-            (double)(actual));
+    _UTASSERT(((double)(actual)) > ((double)(expect)),                         \
+              "expect " #actual " > " #expect ", actual was %f",               \
+              (double)(actual));
 #define EXPECT_GE_DOUBLE(actual, expect)                                       \
-  _UTASSERT(((double)(actual)) >= ((double)(expect)),                          \
-            "expect " #actual " >= " #expect ", actual was %f",                \
-            (double)(actual));
+    _UTASSERT(((double)(actual)) >= ((double)(expect)),                        \
+              "expect " #actual " >= " #expect ", actual was %f",              \
+              (double)(actual));
 #define EXPECT_LT_DOUBLE(actual, expect)                                       \
-  _UTASSERT(((double)(actual)) < ((double)(expect)),                           \
-            "expect " #actual " < " #expect ", actual was %f",                 \
-            (double)(actual));
+    _UTASSERT(((double)(actual)) < ((double)(expect)),                         \
+              "expect " #actual " < " #expect ", actual was %f",               \
+              (double)(actual));
 #define EXPECT_LE_DOUBLE(actual, expect)                                       \
-  _UTASSERT(((double)(actual)) <= ((double)(expect)),                          \
-            "expect " #actual " <= " #expect ", actual was %f",                \
-            (double)(actual));
+    _UTASSERT(((double)(actual)) <= ((double)(expect)),                        \
+              "expect " #actual " <= " #expect ", actual was %f",              \
+              (double)(actual));
 
 /* string */
 #define EXPECT_EQ_STR(actual, expect)                                          \
-  _UTASSERT((actual) && strcmp((actual), (expect)) == 0,                       \
-            "expect " #actual " == " #expect ", actual was %c%s%c",            \
-            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
-            (actual) ? '\"' : '\0');
+    _UTASSERT((actual) && strcmp((actual), (expect)) == 0,                     \
+              "expect " #actual " == " #expect ", actual was %c%s%c",          \
+              (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",            \
+              (actual) ? '\"' : '\0');
 #define EXPECT_NE_STR(actual, expect)                                          \
-  _UTASSERT((actual) && strcmp((actual), (expect)) != 0,                       \
-            "expect " #actual " != " #expect ", actual was %c%s%c",            \
-            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
-            (actual) ? '\"' : '\0');
+    _UTASSERT((actual) && strcmp((actual), (expect)) != 0,                     \
+              "expect " #actual " != " #expect ", actual was %c%s%c",          \
+              (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",            \
+              (actual) ? '\"' : '\0');
 #define EXPECT_GT_STR(actual, expect)                                          \
-  _UTASSERT((actual) && strcmp((actual), (expect)) > 0,                        \
-            "expect " #actual " > " #expect ", actual was %c%s%c",             \
-            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
-            (actual) ? '\"' : '\0');
+    _UTASSERT((actual) && strcmp((actual), (expect)) > 0,                      \
+              "expect " #actual " > " #expect ", actual was %c%s%c",           \
+              (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",            \
+              (actual) ? '\"' : '\0');
 #define EXPECT_GE_STR(actual, expect)                                          \
-  _UTASSERT((actual) && strcmp((actual), (expect)) >= 0,                       \
-            "expect " #actual " >= " #expect ", actual was %c%s%c",            \
-            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
-            (actual) ? '\"' : '\0');
+    _UTASSERT((actual) && strcmp((actual), (expect)) >= 0,                     \
+              "expect " #actual " >= " #expect ", actual was %c%s%c",          \
+              (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",            \
+              (actual) ? '\"' : '\0');
 #define EXPECT_LT_STR(actual, expect)                                          \
-  _UTASSERT((actual) && strcmp((actual), (expect)) < 0,                        \
-            "expect " #actual " < " #expect ", actual was %c%s%c",             \
-            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
-            (actual) ? '\"' : '\0');
+    _UTASSERT((actual) && strcmp((actual), (expect)) < 0,                      \
+              "expect " #actual " < " #expect ", actual was %c%s%c",           \
+              (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",            \
+              (actual) ? '\"' : '\0');
 #define EXPECT_LE_STR(actual, expect)                                          \
-  _UTASSERT((actual) && strcmp((actual), (expect)) <= 0,                       \
-            "expect " #actual " <= " #expect ", actual was %c%s%c",            \
-            (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",              \
-            (actual) ? '\"' : '\0');
+    _UTASSERT((actual) && strcmp((actual), (expect)) <= 0,                     \
+              "expect " #actual " <= " #expect ", actual was %c%s%c",          \
+              (actual) ? '\"' : '\0', (actual) ? (actual) : "NULL",            \
+              (actual) ? '\"' : '\0');
 
 #endif

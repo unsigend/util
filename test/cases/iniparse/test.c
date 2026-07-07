@@ -5,11 +5,11 @@
 
 UTEST_SUITE(iniparse)
 {
-  UTEST_RUNCASE(simple);
-  UTEST_RUNCASE(complex);
-  UTEST_RUNCASE(edge);
-  UTEST_RUNCASE(modify);
-  UTEST_RUNCASE(create);
-  UTEST_RUNCASE(persist);
-  UTEST_RUNCASE(dump);
+    UTEST_RUNCASE(simple);
+    UTEST_RUNCASE(complex);
+    UTEST_RUNCASE(edge);
+    UTEST_RUNCASE(modify);
+    UTEST_RUNCASE(create);
+    UTEST_RUNCASE(persist);
+    UTEST_RUNCASE(dump);
 }

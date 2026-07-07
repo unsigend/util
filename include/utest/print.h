@@ -33,20 +33,20 @@
    based on the buffer and has no context related to the core. */
 
 struct ut_stats {
-  struct timespec start;
-  struct timespec end;
-  size_t cnpassed;
-  size_t cnfailed;
-  size_t cnskipped;
-  size_t snpassed;
-  size_t snfailed;
-  size_t snskipped;
+    struct timespec start;
+    struct timespec end;
+    size_t cnpassed;
+    size_t cnfailed;
+    size_t cnskipped;
+    size_t snpassed;
+    size_t snfailed;
+    size_t snskipped;
 };
 
 struct utbuf {
-  char *buf;
-  size_t bufsz;
-  size_t bufcap;
+    char *buf;
+    size_t bufsz;
+    size_t bufcap;
 };
 
 #ifdef __cplusplus
